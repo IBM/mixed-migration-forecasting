@@ -1,0 +1,2 @@
+# mixed-migration-forecasting
+Models used to provide strategic forecasts of mixed migration for the Danish Refugee Council. The base model focuses on movements from Ethiopia to three major destinations and uses development indicators and DRC survey data that capture migration drivers, the system provides forecasts and factors contributing to a prediction. With more than 65 million refugees in the world today, the highest number in history, the system aims at better equipping the humanitarian sector with AI tools to address the growing challenge.
