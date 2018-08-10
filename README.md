@@ -18,7 +18,7 @@ $ tar -xvf 5075w222jnkdtr24kmufdd6692ejxrmv.gz
 3. Set up python dependencies.
 ```
 $ cd mixed-migration-forecasting
-$ pip install -r requirements
+$ pip install -r requirements.txt
 ```
 
 4. Run the notebook server
