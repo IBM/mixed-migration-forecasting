@@ -11,8 +11,8 @@ $ git clone git@github.com:IBM/mixed-migration-forecasting.git
 
 2. Download the data and set up
 ```
-$ wget <BOX link>
-$ tar -xvf <FILE>
+$ wget https://ibm.box.com/shared/static/5075w222jnkdtr24kmufdd6692ejxrmv.gz
+$ tar -xvf 5075w222jnkdtr24kmufdd6692ejxrmv.gz
 ```
 
 3. Set up python dependencies.
@@ -21,7 +21,12 @@ $ cd mixed-migration-forecasting
 $ pip install -r requirements
 ```
 
-4. Run the notebooks
+4. Run the notebook server
 ```
 $ jupyter notebook
 ```
+
+# Models
+
+1. Gradient boosting trees
+2. A probabilistic graphical model
