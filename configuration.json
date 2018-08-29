@@ -54,6 +54,20 @@
 
             ],
             "transformer": "transformer.who.WHOTransformer"
+        },
+      {
+            "name": "HumanRights",
+            "sourcefile": "HumanRights/HumanRightsProtectionScores_v2.03.csv",
+            "transformer": "transformer.humanrights.HumanRightsTransformer"
+        },
+        {
+            "name": "SystemicPeace",
+            "sourcefile": [
+                "SystemicPeace/FDP2008a.xls",
+                "SystemicPeace/MEPVv2017.xls",
+                "SystemicPeace/PITF Adverse Regime Change 2016.xls"
+            ],
+            "transformer": "transformer.systemicpeace.SystemicPeaceTransformer"
         }
     ]
 }
