@@ -32,6 +32,7 @@ hypothesis==3.56.5
 idna==2.6
 iml==0.6.1
 ipykernel==4.8.2
+ipyparallel==6.2.2
 ipython==6.4.0
 ipython-genutils==0.2.0
 ipywidgets==7.2.1
@@ -43,7 +44,9 @@ jsonschema==2.6.0
 jupyter==1.0.0
 jupyter-client==5.2.3
 jupyter-console==5.2.0
+jupyter-contrib-core==0.3.3
 jupyter-core==4.4.0
+jupyter-nbextensions-configurator==0.4.0
 kiwisolver==1.0.1
 MarkupSafe==1.0
 matplotlib==2.2.2
