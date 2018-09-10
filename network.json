@@ -1,0 +1,116 @@
+{
+    "nodes": {
+        "mixed-migration": [
+            "ETH.TO.SAU",
+            "ETH.TO.ITA",
+            "ETH.TO.GBR",
+            "ETH.TO.DNK",
+            "ETH.TO.SWE",
+            "ETH.TO.ZAF"
+        ],
+        "idp": [
+            "UNHCR.OUT.IDP"
+        ],
+        "corruption": [],
+        "rule-of-law": [
+            "IQ.CPA.PROP.XQ",
+            "IT.NET.USER.ZS",
+            "EG.ELC.ACCS.ZS"
+        ],
+        "inequality": [
+            "SI.POV.GINI"
+        ],
+        "conflict": [
+            "ACLED.COUNT",
+            "ACLED.FATALITIES"
+        ],
+        "lack-of-rights": [],
+        "crime": [],
+        "employment": [],
+        "gdp": [
+            "NY.GDP.PCAP.PP.CD"
+        ],
+        "education": [
+            "SE.ADT.LITR.ZS"
+        ],
+        "food-security": [
+            "AG.PRD.FOOD.XD",
+            "AG.PRD.LVSK.XD"
+        ],
+        "health": [
+            "WHO.MAT.MORT.RATIO",
+            "WHO.MAT.DEATHS",
+            "WHO.TB.TMT.COV",
+            "WHO.NUM.TB.CAS",
+            "WHO.TB.CAS",
+            "WHO.UND.FIV.DTH",
+            "WHO.INF.DTH",
+            "WHO.NEO.DTH",
+            "WHO.EXT.HTLTH.EXP",
+            "WHO.OOP.HLTH.EXP"
+        ],
+        "environment": [
+            "EN.ATM.PM25.MC.M3",
+            "ER.GDP.FWTL.M3.KD",
+            "ER.H2O.INTR.PC"
+        ]
+    },
+    "edges": {
+        "idp": [
+            "mixed-migration"
+        ],
+        "lack-of-rights": [
+            "mixed-migration",
+            "idp",
+            "crime"
+        ],
+        "conflict": [
+            "lack-of-rights",
+            "idp",
+            "employment",
+            "mixed-migration"
+        ],
+        "corruption": [
+            "crime",
+            "inequality"
+        ],
+        "rule-of-law": [
+            "crime",
+            "inequality"
+        ],
+        "inequality": [
+            "conflict",
+            "crime",
+            "employment"
+        ],
+        "employment": [
+            "mixed-migration",
+            "food-security"
+        ],
+        "crime": [
+            "idp",
+            "mixed-migration"
+        ],
+        "education": [
+            "inequality",
+            "gdp"
+        ],
+        "environment": [
+            "gdp",
+            "food-security",
+            "idp"
+        ],
+        "gdp": [
+            "employment",
+            "food-security",
+            "health"
+        ],
+        "food-security": [
+            "mixed-migration",
+            "idp"
+        ],
+        "health": [
+            "mixed-migration"
+        ]
+    }
+}
