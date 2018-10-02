@@ -68,6 +68,16 @@
                 "SystemicPeace/PITF Adverse Regime Change 2016.xls"
             ],
             "transformer": "transformer.systemicpeace.SystemicPeaceTransformer"
-        }
+        },
+        {
+          "name": "emdat",
+          "sourcefile": "EMDAT/AllData.csv",
+          "transformer": "transformer.emdat.EMDATTransformer"
+      },
+      {
+          "name": "corruption",
+          "sourcefile": "DRC-collected/corruption_index.csv",
+          "transformer": "transformer.corruption.CorruptionTransformer"
+      }
     ]
 }
