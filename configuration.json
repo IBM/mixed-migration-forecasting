@@ -4,40 +4,35 @@
         "output": "../prm-datasets/processed/"
     },
     "sources": [
-      {
-          "name": "target",
-          "sourcefile": [
-              "UNHCR/unhcr_popstats_export_time_series_all_data.csv",
-              "DRC-collected/Yemen_migrant_arrivals.csv",
-              "UNDESA/UN_MigrantStockByOriginAndDestination_2017.xlsx"
-          ],
-          "transformer": "transformer.target.TargetTransformer"
-      },
-      {
-          "name": "worldbank",
-          "sourcefile": "worldbank/WDI/WDIData.csv",
-          "transformer": "transformer.worldbank.WorldBankTransformer"
-      },
-      {
-          "name": "UNHCR",
-          "sourcefile": "UNHCR/unhcr_popstats_export_time_series_all_data.csv",
-          "transformer": "transformer.unhcr.UnhcrTransformer"
-      },
-      {
-          "name": "ACLED",
-          "sourcefile": "ACLED/1996-03-01-2018-05-02.csv",
-          "transformer": "transformer.acled.ACLEDTransformer"
-      },
-      {
-          "name": "UN",
-          "sourcefile": [
-              "UN/1.WPP2017_POP_F01_1_TOTAL_POPULATION_BOTH_SEXES.xlsx",
-              "UN/2.WPP2017_POP_F01_2_TOTAL_POPULATION_MALE.xlsx",
-              "UN/3.WPP2017_POP_F01_3_TOTAL_POPULATION_FEMALE.xlsx",
-              "UN/4.WPP2017_POP_F02_POPULATION_GROWTH_RATE.xlsx"
-          ],
-          "transformer": "transformer.un.UNTransformer"
-      },
+        {
+            "name": "worldbank",
+            "sourcefile": "worldbank/WDI/WDIData.csv",
+            "transformer": "transformer.worldbank.WorldBankTransformer"
+        },
+        {
+            "name": "emdat",
+            "sourcefile": "EMDAT/AllData.csv",
+            "transformer": "transformer.emdat.EMDATTransformer"
+        },
+        {
+            "name": "target",
+            "sourcefile": [
+                "UNHCR/unhcr_popstats_export_time_series_all_data.csv",
+                "DRC-collected/Yemen_migrant_arrivals.csv",
+                "UNDESA/UN_MigrantStockByOriginAndDestination_2017.xlsx"
+            ],
+            "transformer": "transformer.target.TargetTransformer"
+        },
+        {
+            "name": "UNHCR",
+            "sourcefile": "UNHCR/unhcr_popstats_export_time_series_all_data.csv",
+            "transformer": "transformer.unhcr.UnhcrTransformer"
+        },
+        {
+            "name": "ACLED",
+            "sourcefile": "ACLED/1996-03-01-2018-05-02.csv",
+            "transformer": "transformer.acled.ACLEDTransformer"
+        },
         {
             "name": "FIW",
             "sourcefile": "FIW/Country and Territory Ratings and Statuses FIW1973-2018-1.csv",
@@ -51,14 +46,8 @@
                 "WHO/CM_01,CM_02,CM_03.csv",
                 "WHO/GHED_EXTCHE_SHA2011.csv",
                 "WHO/GHED_OOPSCHE_SHA2011.csv"
-
             ],
             "transformer": "transformer.who.WHOTransformer"
-        },
-      {
-            "name": "HumanRights",
-            "sourcefile": "HumanRights/HumanRightsProtectionScores_v2.03.csv",
-            "transformer": "transformer.humanrights.HumanRightsTransformer"
         },
         {
             "name": "SystemicPeace",
@@ -70,14 +59,9 @@
             "transformer": "transformer.systemicpeace.SystemicPeaceTransformer"
         },
         {
-          "name": "emdat",
-          "sourcefile": "EMDAT/AllData.csv",
-          "transformer": "transformer.emdat.EMDATTransformer"
-      },
-      {
-          "name": "corruption",
-          "sourcefile": "DRC-collected/corruption_index.csv",
-          "transformer": "transformer.corruption.CorruptionTransformer"
-      }
+            "name": "corruption",
+            "sourcefile": "DRC-collected/corruption_index.csv",
+            "transformer": "transformer.corruption.CorruptionTransformer"
+        }
     ]
 }
