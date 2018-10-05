@@ -11,10 +11,11 @@
         "idp": [
             "UNHCR.OUT.IDP"
         ],
-        "corruption": [],
+        "corruption": [
+            "DRC.CORR.INDEX"
+        ],
         "rule-of-law": [
             "IQ.CPA.PROP.XQ",
-            "IT.NET.USER.ZS",
             "EG.ELC.ACCS.ZS"
         ],
         "inequality": [
@@ -22,11 +23,28 @@
         ],
         "conflict": [
             "ACLED.COUNT",
-            "ACLED.FATALITIES"
+            "ACLED.FATALITIES",
+            "SP.PV.CIV.VIOL",
+            "SP.PV.CIV.WAR",
+            "SP.PV.ETH.VIOL",
+            "SP.PV.ETH.WAR",
+            "SP.PV.INDP",
+            "SP.PV.INT.VIOL",
+            "SP.PV.INT.WAR",
+            "SP.SF.MAG.VIOL"
         ],
-        "lack-of-rights": [],
+        "lack-of-rights": [
+            "FIW.CL",
+            "FIW.PR",
+            "SP.SF.MAG.COLLAPSE",
+            "SP.SF.MAG.FAIL"
+        ],
         "crime": [],
-        "employment": [],
+        "employment": [
+            "SL.UEM.TOTL.FE.ZS",
+            "SL.UEM.TOTL.MA.ZS",
+            "SL.UEM.TOTL.ZS"
+        ],
         "gdp": [
             "NY.GDP.PCAP.PP.CD"
         ],
