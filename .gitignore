@@ -2,3 +2,11 @@ prm-datasets
 .ipynb_checkpoints
 .DS_Store
 *.png
+
+model/
+proj/
+img/
+.vscode
+__pycache__
+
+DATA - *.ipynb
