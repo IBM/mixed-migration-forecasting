@@ -14,7 +14,7 @@ ipython==7.0.1
 ipython-genutils==0.2.0
 itsdangerous==1.1.0
 jedi==0.13.1
-Jinja2==2.10
+Jinja2>=2.10.1
 kiwisolver==1.0.1
 MarkupSafe==1.0
 matplotlib==3.0.0
@@ -42,5 +42,5 @@ statsmodels==0.9.0
 tqdm==4.27.0
 traitlets==4.3.2
 wcwidth==0.1.7
-Werkzeug==0.14.1
+Werkzeug>=0.15.3
 xlrd==1.2.0
