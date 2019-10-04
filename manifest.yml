@@ -1,0 +1,7 @@
+---
+applications:
+    - name: mm4sight
+      host: mm4sight
+      domain: mybluemix.net
+      buildpack: https://github.com/cloudfoundry/python-buildpack.git
+      memory: 1G

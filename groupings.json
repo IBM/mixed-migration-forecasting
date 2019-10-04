@@ -2,7 +2,7 @@
     "clusters": [
         {
             "theme": "Health",
-            "sub-theme": "Health",
+            "sub-theme": "health",
             "indicators": [
                 {
                     "code": "WHO.NUM.TB.CAS",
@@ -43,7 +43,7 @@
         },
         {
             "theme": "Society",
-            "sub-theme": "Food Security",
+            "sub-theme": "food-security",
             "indicators": [
                 {
                     "code": "AG.PRD.LVSK.XD",
@@ -59,7 +59,7 @@
         },
         {
             "theme": "Society",
-            "sub-theme": "Employment",
+            "sub-theme": "employment",
             "indicators": [
                 {
                     "code": "SL.UEM.TOTL.FE.ZS",
@@ -80,7 +80,7 @@
         },
         {
             "theme": "Society",
-            "sub-theme": "Infrastructure",
+            "sub-theme": "infrastructure",
             "indicators": [
                 {
                     "code": "EG.ELC.ACCS.ZS",
@@ -106,7 +106,7 @@
         },
         {
             "theme": "Society",
-            "sub-theme": "Conflict",
+            "sub-theme": "conflict",
             "indicators": [
                 {
                     "code": "ACLED.COUNT",

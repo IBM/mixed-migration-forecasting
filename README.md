@@ -1,34 +1,50 @@
-# mixed-migration-forecasting
+# mm4sight
+Asset with the Danish Refugee Council for the mixed migration and displacement forecasting project.
 
-*** Work in progress ***
+### Setting up
 
-Models used to provide strategic forecasts of mixed migration based on development indicators. The base model focuses on movements from Ethiopia to six major destinations and uses development indicators and survey data that capture migration drivers, the system provides forecasts and factors contributing to a prediction. With more than 65 million refugees in the world today, the highest number in history, the system aims at better equipping the humanitarian sector with AI tools to address the growing challenge.
+To get started, clone this repository.
 
-# Setting up
-
-1. Clone the repository
 ```
 $ git clone git@github.com:IBM/mixed-migration-forecasting.git
 ```
 
-2. Download the data and set up
+Then setup a python environment. If you use the Anaconda distribution (recommended), create a python virtual environment using `conda`. This way your project specific dependencies are isolated.
+
 ```
-$ wget https://ibm.box.com/shared/static/5075w222jnkdtr24kmufdd6692ejxrmv.gz
-$ tar -xvf 5075w222jnkdtr24kmufdd6692ejxrmv.gz
+$ conda create -n mm4sight python=3.6
+$ source activate mm4sight
+(mm4sight) $ pip install -r requirements.txt
 ```
 
-3. Set up python dependencies.
+Here `source activate mm4isght` activates the virtual environment (`source deactivate` will deactivate it). `pip install` directives will install packages for the virtual environment.
+
+Fetch the data artifacts. TBD
+
+
+### Running
+
+The code is in three parts. 
+
+*Data Transformation* (optional): Scripts related to data manipulation. Data transformations are run based on the `configuration.json` file that has a source file along with a transformer class for each source. All transformer implementations are within the [transformer](https://github.com/IBM/mixed-migration-forecasting/tree/master/transformer) folder. The entire transformation script can be run by activating your python virtual environment and running the wrapper script so. 
+
 ```
-$ cd mixed-migration-forecasting
-$ pip install -r requirements.txt
+$ source activate mm4sight
+(mm4sight) $ python executor.py
+```
+This standardizes the data and populates the [processed](https://github.com/IBM/mixed-migration-forecasting/tree/master/prm-datasets/processed) folder. A base set of processed data is available. So this step is only needed when new data sources or features are added.
+
+*Models*: The models specification is available as a module in this repository. To recreate the model objects, run
+```
+(mm4sight) $ python model/trainer.py
 ```
 
-4. Run the notebook server
-```
-$ jupyter notebook
-```
+Few additional helper scripts that may be of use.
 
-# Models
+1. [evaluation.py](https://github.com/IBM/mixed-migration-forecasting/tree/master/evaluation.py) runs the evaluations reported in the paper.
+2. [gridsearch.py](https://github.com/IBM/mixed-migration-forecasting/tree/master/gridsearch.py) determines grid search parameters for a country level model.
+3. [test_prediction.py](https://github.com/IBM/mixed-migration-forecasting/tree/master/test_prediction.py) to see how the scoring API can be invoked and how scenarios can be defined.
+4. [paper-plots.py](https://github.com/IBM/mixed-migration-forecasting/tree/master/paper-plots.py) shows some of the error analysis and plots used in the paper.
 
-1. Gradient boosting trees
-2. A probabilistic graphical model
+
+*Deployment*: We use a cloud foundry build pack which can be deployed to IBM Cloud.

@@ -1,7 +1,7 @@
 {
     "paths": {
-        "datasets": "../prm-datasets/indicators/",
-        "output": "../prm-datasets/processed/"
+        "datasets": "prm-datasets/indicators/",
+        "output": "prm-datasets/processed/"
     },
     "sources": [
         {
@@ -18,7 +18,7 @@
             "name": "target",
             "sourcefile": [
                 "UNHCR/unhcr_popstats_export_time_series_all_data.csv",
-                "DRC-collected/Yemen_migrant_arrivals.csv",
+                "DRC-collected/Yemen_arrivals_processed.csv",
                 "UNDESA/UN_MigrantStockByOriginAndDestination_2017.xlsx"
             ],
             "transformer": "transformer.target.TargetTransformer"
