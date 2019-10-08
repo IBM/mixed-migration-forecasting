@@ -48,6 +48,8 @@ class WorldBankTransformer(Transformer):
                "SP.POP.2024.MA.5Y",  # Population ages 20-24, male (% of male population)
                "SP.POP.2529.FE.5Y",  # Population ages 25-29, female (% of female population)
                "SP.POP.2529.MA.5Y",  # Population ages 25-29, male (% of male population)
+               "FP.CPI.TOTL.ZG",  # Inflation, consumer prices
+               "CC.EST",  # Control of corruption
                "SP.POP.TOTL"]  #: "Total Population"
 
         c1 = ~wb_df['value'].isnull()
