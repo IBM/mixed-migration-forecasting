@@ -53,8 +53,11 @@
             "name": "SystemicPeace",
             "sourcefile": [
                 "SystemicPeace/FDP2008a.xls",
-                "SystemicPeace/MEPVv2017.xls",
-                "SystemicPeace/PITF Adverse Regime Change 2016.xls"
+                "SystemicPeace/MEPVv2018.xls",
+                "SystemicPeace/PITF Adverse Regime Change 2017.xls",
+                "SystemicPeace/PITF Ethnic War 2017.xls",
+                "SystemicPeace/PITF Revolutionary War 2017.xls",
+                "SystemicPeace/PITF GenoPoliticide 2017.xls"
             ],
             "transformer": "transformer.systemicpeace.SystemicPeaceTransformer"
         },

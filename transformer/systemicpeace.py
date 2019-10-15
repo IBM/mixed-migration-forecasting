@@ -27,6 +27,15 @@ class SystemicPeaceTransformer(Transformer):
 
             self.state_fail_df = pd.read_excel(self.source[2],
                                                usecols="A:L")
+            
+            self.ethnic_war_df = pd.read_excel(self.source[3],
+                                               usecols="A:L")
+            
+            self.revolu_war_df = pd.read_excel(self.source[4],
+                                               usecols="A:L")
+            
+            self.genocide_df = pd.read_excel(self.source[5],
+                                               usecols="A:L")
 
         except FileNotFoundError as exc:
             raise ValueError("Source file {} not found.".format(self.source)) \
@@ -39,6 +48,9 @@ class SystemicPeaceTransformer(Transformer):
         # self.transform_forcibly_displaced_populations()
         self.transform_political_violence()
         self.transform_state_failure()
+        self.transform_ethnic_war()
+        self.transform_revolu_war()
+        self.transform_genocide()
         self.transform_country_code()
 
     def __repr__(self):
@@ -149,6 +161,110 @@ class SystemicPeaceTransformer(Transformer):
 
         self.state_fail_df = self.state_fail_df.dropna(how='any', axis=0)
         self.df = self.df.append(self.state_fail_df, sort="False")
+        
+    def transform_ethnic_war(self):
+
+        yr_begin_df = self.ethnic_war_df[["COUNTRY", "YEAR", "YRBEGIN"]]
+        yr_begin_df.columns.values[2] = 'value'
+
+        yr_end_df = self.ethnic_war_df[["COUNTRY", "YEAR", "YREND"]]
+        yr_end_df.columns.values[2] = 'value'
+
+        mag_fail_df = self.ethnic_war_df[["COUNTRY", "YEAR", "MAGFIGHT"]]
+        mag_fail_df.columns.values[2] = 'value'
+
+        mag_col_df = self.ethnic_war_df[["COUNTRY", "YEAR", "MAGFATAL"]]
+        mag_col_df.columns.values[2] = 'value'
+        mag_viol_df = self.ethnic_war_df[["COUNTRY", "YEAR", "MAGAREA"]]
+        mag_viol_df.columns.values[2] = 'value'
+
+        yr_begin_df.loc[:, "Indicator Code"] = "SP.EW.YR.BEGIN"
+        yr_begin_df.loc[:, "Indicator Name"] = "4-number numeric year denoting event beginning"
+
+        yr_end_df.loc[:, "Indicator Code"] = "SP.EW.YR.END"
+        yr_end_df.loc[:, "Indicator Name"] = "4-number numeric year denoting event ending (9999=ongoing)"
+
+        mag_fail_df.loc[:, "Indicator Code"] = "SP.EW.MAG.FIGHT"
+        mag_fail_df.loc[:, "Indicator Name"] = "Scaled number of rebel combatants or activists (range 1-4; 9=missing)"
+
+        mag_col_df.loc[:, "Indicator Code"] = "SP.EW.MAG.FATAL"
+        mag_col_df.loc[:, "Indicator Name"] = "Scaled annual number of fatalities related to fighting (range 1-4; 9=missing)"
+        mag_viol_df.loc[:, "Indicator Code"] = "SP.EW.MAG.AREA"
+        mag_viol_df.loc[:, "Indicator Name"] = "Scaled portion of country affected by fighting (range 1-4; 9=missing)"
+
+        self.ethnic_war_df = yr_begin_df.append(yr_end_df, sort="True").append(
+            mag_fail_df, sort="True").append(mag_col_df, sort="True").append(mag_viol_df, sort="True")
+
+        self.ethnic_war_df.rename(columns={'COUNTRY': 'country', 'YEAR': 'year'}, inplace=True)
+
+        self.ethnic_war_df = self.ethnic_war_df.dropna(how='any', axis=0)
+        self.df = self.df.append(self.ethnic_war_df, sort="False")
+        
+    def transform_revolu_war(self):
+
+        yr_begin_df = self.revolu_war_df[["COUNTRY", "YEAR", "YRBEGIN"]]
+        yr_begin_df.columns.values[2] = 'value'
+
+        yr_end_df = self.revolu_war_df[["COUNTRY", "YEAR", "YREND"]]
+        yr_end_df.columns.values[2] = 'value'
+
+        mag_fail_df = self.revolu_war_df[["COUNTRY", "YEAR", "MAGFIGHT"]]
+        mag_fail_df.columns.values[2] = 'value'
+
+        mag_col_df = self.revolu_war_df[["COUNTRY", "YEAR", "MAGFATAL"]]
+        mag_col_df.columns.values[2] = 'value'
+        mag_viol_df = self.revolu_war_df[["COUNTRY", "YEAR", "MAGAREA"]]
+        mag_viol_df.columns.values[2] = 'value'
+
+        yr_begin_df.loc[:, "Indicator Code"] = "SP.RW.YR.BEGIN"
+        yr_begin_df.loc[:, "Indicator Name"] = "4-number numeric year denoting event beginning"
+
+        yr_end_df.loc[:, "Indicator Code"] = "SP.RW.YR.END"
+        yr_end_df.loc[:, "Indicator Name"] = "4-number numeric year denoting event ending (9999=ongoing)"
+
+        mag_fail_df.loc[:, "Indicator Code"] = "SP.RW.MAG.FIGHT"
+        mag_fail_df.loc[:, "Indicator Name"] = "Scaled number of rebel combatants or activists (range 1-4; 9=missing)"
+
+        mag_col_df.loc[:, "Indicator Code"] = "SP.RW.MAG.FATAL"
+        mag_col_df.loc[:, "Indicator Name"] = "Scaled annual number of fatalities related to fighting (range 1-4; 9=missing)"
+        mag_viol_df.loc[:, "Indicator Code"] = "SP.RW.MAG.AREA"
+        mag_viol_df.loc[:, "Indicator Name"] = "Scaled portion of country affected by fighting (range 1-4; 9=missing)"
+
+        self.revolu_war_df = yr_begin_df.append(yr_end_df, sort="True").append(
+            mag_fail_df, sort="True").append(mag_col_df, sort="True").append(mag_viol_df, sort="True")
+
+        self.revolu_war_df.rename(columns={'COUNTRY': 'country', 'YEAR': 'year'}, inplace=True)
+
+        self.revolu_war_df = self.revolu_war_df.dropna(how='any', axis=0)
+        self.df = self.df.append(self.revolu_war_df, sort="False")
+        
+    def transform_genocide(self):
+
+        yr_begin_df = self.genocide_df[["COUNTRY", "YEAR", "YRBEGIN"]]
+        yr_begin_df.columns.values[2] = 'value'
+
+        yr_end_df = self.genocide_df[["COUNTRY", "YEAR", "YREND"]]
+        yr_end_df.columns.values[2] = 'value'
+
+        mag_fail_df = self.genocide_df[["COUNTRY", "YEAR", "DEATHMAG"]]
+        mag_fail_df.columns.values[2] = 'value'
+
+        yr_begin_df.loc[:, "Indicator Code"] = "SP.GE.YR.BEGIN"
+        yr_begin_df.loc[:, "Indicator Name"] = "4-number numeric year denoting event beginning"
+
+        yr_end_df.loc[:, "Indicator Code"] = "SP.GE.YR.END"
+        yr_end_df.loc[:, "Indicator Name"] = "4-number numeric year denoting event ending (9999=ongoing)"
+
+        mag_fail_df.loc[:, "Indicator Code"] = "SP.GE.MAG.DEATH"
+        mag_fail_df.loc[:, "Indicator Name"] = "Scaled annual number of deaths (range 0-5.0)"
+
+        self.genocide_df = yr_begin_df.append(yr_end_df, sort="True").append(
+            mag_fail_df, sort="True")
+
+        self.genocide_df.rename(columns={'COUNTRY': 'country', 'YEAR': 'year'}, inplace=True)
+
+        self.genocide_df = self.genocide_df.dropna(how='any', axis=0)
+        self.df = self.df.append(self.genocide_df, sort="False")
 
     def transform_country_code(self):
         # map country codes
