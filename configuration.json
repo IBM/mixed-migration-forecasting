@@ -62,6 +62,34 @@
             "transformer": "transformer.systemicpeace.SystemicPeaceTransformer"
         },
         {
+            "name": "PoliticalTerror",
+            "sourcefile": [
+                "PoliticalTerror/PTS-2019.xlsx"
+            ],
+            "transformer": "transformer.polterror.PolTerrorTransformer"
+        },
+        {
+            "name": "WFP",
+            "sourcefile": [
+                "WFP/wfpvam_foodprices.csv"
+            ],
+            "transformer": "transformer.wfp.WFPTransformer"
+        },
+        {
+            "name": "Polity",
+            "sourcefile": [
+                "Polity/p4v2018.xls"
+            ],
+            "transformer": "transformer.polity.PolityTransformer"
+        },
+        {
+            "name": "VDem",
+            "sourcefile": [
+                "VDem/V-Dem-CY-Full+Others-v9.csv"
+            ],
+            "transformer": "transformer.vdem.VDemTransformer"
+        },
+        {
             "name": "corruption",
             "sourcefile": "DRC-collected/corruption_index.csv",
             "transformer": "transformer.corruption.CorruptionTransformer"
