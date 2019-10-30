@@ -100,6 +100,26 @@
                 "UCDP/ged191.csv"
             ],
             "transformer": "transformer.ucdp.UCDPTransformer"
+        },
+        {
+            "name": "FragileStates",
+            "sourcefile": [
+                "FragileStates/fsi-2006.xlsx",
+                "FragileStates/fsi-2007.xlsx",
+                "FragileStates/fsi-2008.xlsx",
+                "FragileStates/fsi-2009.xlsx",
+                "FragileStates/fsi-2010.xlsx",
+                "FragileStates/fsi-2011.xlsx",
+                "FragileStates/fsi-2012.xlsx",
+                "FragileStates/fsi-2013.xlsx",
+                "FragileStates/fsi-2014.xlsx",
+                "FragileStates/fsi-2015.xlsx",
+                "FragileStates/fsi-2016.xlsx",
+                "FragileStates/fsi-2017.xlsx",
+                "FragileStates/fsi-2018.xlsx",
+                "FragileStates/fsi-2019.xlsx"
+            ],
+            "transformer": "transformer.fragile.FragileTransformer"
         }
     ]
 }
