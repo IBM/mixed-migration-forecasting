@@ -21,7 +21,7 @@
                 "DRC-collected/Yemen_arrivals_processed.csv",
                 "UNDESA/UN_MigrantStockByOriginAndDestination_2017.xlsx"
             ],
-            "transformer": "transformer.target.TargetTransformer"
+            "transformer": "transformer.mixedmigration.MixedMigrationTransformer"
         },
         {
             "name": "UNHCR",
