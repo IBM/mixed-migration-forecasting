@@ -15,6 +15,14 @@
             "transformer": "transformer.emdat.EMDATTransformer"
         },
         {
+            "name": "displacement",
+            "sourcefile":[
+                "Displacement/idmc_displacement_all_dataset.xlsx",
+                "Displacement/UNHCR_displacement.csv"
+            ],
+            "transformer": "transformer.displacement.DisplacementTransformer"
+        },
+        {
             "name": "mixedmigration",
             "sourcefile": [
                 "UNHCR/unhcr_popstats_export_time_series_all_data.csv",
