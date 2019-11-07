@@ -15,7 +15,7 @@
             "transformer": "transformer.emdat.EMDATTransformer"
         },
         {
-            "name": "target",
+            "name": "mixedmigration",
             "sourcefile": [
                 "UNHCR/unhcr_popstats_export_time_series_all_data.csv",
                 "DRC-collected/Yemen_arrivals_processed.csv",

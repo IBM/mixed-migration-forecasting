@@ -16,7 +16,7 @@ SOURCES = ['Burundi', 'Comoros', 'Djibouti',
 DESTINATIONS = ['Italy', 'Sweden', 'Denmark', 'United Kingdom', 'Saudi Arabia', 'South Africa']
 
 
-class TargetTransformer(Transformer):
+class MixedMigrationTransformer(Transformer):
     """
     Generates the target forecast variable for each destination cluster.
 
