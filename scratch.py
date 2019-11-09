@@ -1,22 +1,28 @@
 
-# Test Transformed regressor
-
-from sklearn.compose import TransformedTargetRegressor
-from sklearn.ensemble import GradientBoostingRegressor
-from sklearn.pipeline import Pipeline 
-from sklearn.impute import SimpleImputer
+#%% 
+import os
 import numpy as np
 import pandas as pd
 
-data = np.random.rand(100, 3)
+DATAFOLDER = "prm-datasets/indicators/"
+SP = "Displacement/FDP2008a.csv"
 
-pipe = Pipeline([('preproc', SimpleImputer()), 
-                ('regressor', GradientBoostingRegressor())])
+df = pd.read_csv(os.path.join(DATAFOLDER, SP), sep=";")
 
-# Do the log transform
-clf = TransformedTargetRegressor(regressor=pipe, 
-            func=np.log1p, 
-            inverse_func=np.expm1)
+# fix ISO code / name
+df['scode'].replace("MYA", "MMR", inplace=True)
+df['country'].replace("Myanmar (Burma)", "Myanmar", inplace=True)
 
-clf.fit(data[:, 0:2], data[:, 2])
-print(clf.predict(np.array([.54346771, 0.61627506]).reshape(1, -1)))
+# Value is in '000
+df.idp = df.idp * 1000
+
+df.drop(columns=['ccode', 'source', 'host'], inplace=True)
+df['Indicator Code'] = 'IDP'
+df['Indicator Name'] = 'Internally displaced persons'
+
+df.rename(columns={'country': 'Country Name', 
+                'scode': 'Country Code', 
+                'idp': 'value'}, inplace=True)
+# %%
+df.head()
+# %%

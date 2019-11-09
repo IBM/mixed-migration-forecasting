@@ -49,12 +49,9 @@ class DisplacementTransformer(Transformer):
     def __idmc_transformer(self):
         """ IDMC internally displaced persons since 2008 """
 
-        self.idmc['idp'] = self.idmc['Conflict New Displacements'] + self.idmc['Disaster New Displacements']
-        #print("IDMC data source")
-        #print("Data range: {} -> {}".format(idmc.Year.min(), idmc.Year.max()))
-        #print("Data for {} countries.".format(len(idmc.ISO3.unique())))
-        #print("IDP volumes range: {} -> {}".format(idmc.idp.min(), idmc.idp.max()))
-
+        self.idmc['idp'] = self.idmc['Conflict Stock Displacement']
+        # self.idmc['Conflict New Displacements'] + self.idmc['Disaster New Displacements']
+       
         self.idmc = self.idmc.rename(columns={'ISO3': 'Country Code', 
                                     'Name': 'Country Name', 
                                     'Year': 'year', 
