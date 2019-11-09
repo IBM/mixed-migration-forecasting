@@ -21,7 +21,9 @@ class DisplacementTransformer(Transformer):
         self.idmc = pd.read_excel(self.source[0], skiprows=[1])
 
         self.unhcr = pd.read_csv(self.source[1],
-                                usecols=['Origin', 'iso3', 'Year', 'variable', 'value'])
+                                usecols=['Origin', 'iso3', 'Year', 
+                                        'variable', 'value'])
+        self.sp = pd.read_csv(self.source[2], sep=";")
 
     def __unhcr_transformer(self):
         """ UNHCR externally displaced populations """
@@ -45,7 +47,7 @@ class DisplacementTransformer(Transformer):
         self.unhcr['Indicator Name'] = 'UNHCR total externally displaced persons'
 
     def __idmc_transformer(self):
-        """ IDMC internally displaced persons """
+        """ IDMC internally displaced persons since 2008 """
 
         self.idmc['idp'] = self.idmc['Conflict New Displacements'] + self.idmc['Disaster New Displacements']
         #print("IDMC data source")
@@ -58,15 +60,34 @@ class DisplacementTransformer(Transformer):
                                     'Year': 'year', 
                                     'idp': 'value'})
 
-        self.idmc['Indicator Code'] = 'IDMC.IDP'
+        self.idmc['Indicator Code'] = 'IDP'
         self.idmc['Indicator Name'] = 'Internally displaced persons'
         self.idmc = self.idmc[['Country Code', 'Country Name', 'year', 'Indicator Code', 'Indicator Name', 'value']]
+
+    def __sp_transformer(self):
+        """ Systemic Peace dataset till 2008 for IDP"""
+
+        # fix ISO code / name
+        self.sp['scode'].replace("MYA", "MMR", inplace=True)
+        self.sp['country'].replace("Myanmar (Burma)", "Myanmar", inplace=True)
+
+        # IDP values are in '000
+        self.sp.idp = self.sp.idp * 1000
+
+        self.sp.drop(columns=['ccode', 'source', 'host'], inplace=True)
+        self.sp['Indicator Code'] = 'IDP'
+        self.sp['Indicator Name'] = 'Internally displaced persons'
+
+        self.sp.rename(columns={'country': 'Country Name', 
+                        'scode': 'Country Code', 
+                        'idp': 'value'}, inplace=True)
 
     def transform(self):
         """ Transform each of the sources and merge """
         self.__unhcr_transformer()
         self.__idmc_transformer()
+        self.__sp_transformer()
 
         # merge
-        self.df = pd.concat([self.unhcr, self.idmc], ignore_index=True, sort=False)
+        self.df = pd.concat([self.unhcr, self.idmc, self.sp], ignore_index=True, sort=False)
 

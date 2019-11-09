@@ -18,7 +18,8 @@
             "name": "displacement",
             "sourcefile":[
                 "Displacement/idmc_displacement_all_dataset.xlsx",
-                "Displacement/UNHCR_displacement.csv"
+                "Displacement/UNHCR_displacement.csv",
+                "Displacement/FDP2008a.csv"
             ],
             "transformer": "transformer.displacement.DisplacementTransformer"
         },
