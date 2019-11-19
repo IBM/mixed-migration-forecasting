@@ -18,19 +18,9 @@
             "name": "displacement",
             "sourcefile":[
                 "Displacement/idmc_displacement_all_dataset.xlsx",
-                "Displacement/UNHCR_displacement.csv",
-                "Displacement/FDP2008a.csv"
+                "Displacement/UNHCR_displacement.csv"
             ],
             "transformer": "transformer.displacement.DisplacementTransformer"
-        },
-        {
-            "name": "mixedmigration",
-            "sourcefile": [
-                "UNHCR/unhcr_popstats_export_time_series_all_data.csv",
-                "DRC-collected/Yemen_arrivals_processed.csv",
-                "UNDESA/UN_MigrantStockByOriginAndDestination_2017.xlsx"
-            ],
-            "transformer": "transformer.mixedmigration.MixedMigrationTransformer"
         },
         {
             "name": "UNHCR",
@@ -71,64 +61,9 @@
             "transformer": "transformer.systemicpeace.SystemicPeaceTransformer"
         },
         {
-            "name": "PoliticalTerror",
-            "sourcefile": [
-                "PoliticalTerror/PTS-2019.xlsx"
-            ],
-            "transformer": "transformer.polterror.PolTerrorTransformer"
-        },
-        {
-            "name": "WFP",
-            "sourcefile": [
-                "WFP/wfpvam_foodprices.csv"
-            ],
-            "transformer": "transformer.wfp.WFPTransformer"
-        },
-        {
-            "name": "Polity",
-            "sourcefile": [
-                "Polity/p4v2018.xls"
-            ],
-            "transformer": "transformer.polity.PolityTransformer"
-        },
-        {
-            "name": "VDem",
-            "sourcefile": [
-                "VDem/V-Dem-CY-Full+Others-v9.csv"
-            ],
-            "transformer": "transformer.vdem.VDemTransformer"
-        },
-        {
             "name": "corruption",
             "sourcefile": "DRC-collected/corruption_index.csv",
             "transformer": "transformer.corruption.CorruptionTransformer"
-        },
-        {
-            "name": "UCDP",
-            "sourcefile": [
-                "UCDP/ged191.csv"
-            ],
-            "transformer": "transformer.ucdp.UCDPTransformer"
-        },
-        {
-            "name": "FragileStates",
-            "sourcefile": [
-                "FragileStates/fsi-2006.xlsx",
-                "FragileStates/fsi-2007.xlsx",
-                "FragileStates/fsi-2008.xlsx",
-                "FragileStates/fsi-2009.xlsx",
-                "FragileStates/fsi-2010.xlsx",
-                "FragileStates/fsi-2011.xlsx",
-                "FragileStates/fsi-2012.xlsx",
-                "FragileStates/fsi-2013.xlsx",
-                "FragileStates/fsi-2014.xlsx",
-                "FragileStates/fsi-2015.xlsx",
-                "FragileStates/fsi-2016.xlsx",
-                "FragileStates/fsi-2017.xlsx",
-                "FragileStates/fsi-2018.xlsx",
-                "FragileStates/fsi-2019.xlsx"
-            ],
-            "transformer": "transformer.fragile.FragileTransformer"
         }
     ]
 }
