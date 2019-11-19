@@ -5,6 +5,8 @@ from model.prediction import Scorer
 from model.features import Generator
 
 import json
+import os
+import pandas as pd
 import logging
 
 
@@ -126,3 +128,22 @@ def set_up(app, baseyear):
         logger.info(result)
 
         return jsonify(result), 200
+
+    @app.route("/indicators")
+    def indicators():
+        country = request.args.get('country')
+        indicator = request.args.get('indicator')
+
+        with open("configuration.json", 'rt') as infile:
+            config = json.load(infile)
+        sources = [os.path.join(config['paths']['output'],
+                                d['name'],
+                                'data.csv') for d in config['sources']]
+
+        for ds in sources:
+            df = pd.read_csv(ds)
+            indicators = df["Indicator Name"].unique()
+            # print(indicators)
+            if indicator in indicators:
+                df = df.loc[(df["Country Name"] == country) & (df["Indicator Name"] == indicator)]
+                return df.to_json(orient='records')
