@@ -125,12 +125,9 @@ class MixedMigrationTransformer(Transformer):
         print("UNDESA migration matrix with {} rows.".format(len(self.undesa)))
 
         # Excel reader doesn't read some of the headers
-        self.undesa.index = self.undesa.index.set_names(["Year",
-                                                         "Sort order",
-                                                         "Destination",
-                                                         "Notes",
-                                                         "Code",
-                                                         "Type of data"])
+        headers = ["Year", "Sort order", "Destination", "Notes", "Code", "Type of data"]
+        mapper = {"Unnamed: {}".format(k): v for k, v in zip(range(0, 6), headers)}
+        self.undesa.rename(columns=mapper, inplace=True)
 
         # Remove the multi index for now - and treat them as columns
         self.undesa = self.undesa.reset_index()
