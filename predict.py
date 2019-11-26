@@ -32,6 +32,16 @@ THEMES = [t['sub-theme'] for t in GROUPING['clusters']]
 LABELS = ['nan','worse', 'poor', 'average', 'good', 'best']
 
 
+#Datasets
+with open("configuration.json", 'rt') as infile:
+    config = json.load(infile)
+sources = [os.path.join(config['paths']['output'],
+                        d['name'],
+                        'data.csv') for d in config['sources']]
+datasets = []
+for ds in sources:
+    df = pd.read_csv(ds)
+    datasets.append(df)
 
 def set_up(app, baseyear):
 
@@ -134,16 +144,18 @@ def set_up(app, baseyear):
         country = request.args.get('country')
         indicator = request.args.get('indicator')
 
-        with open("configuration.json", 'rt') as infile:
-            config = json.load(infile)
-        sources = [os.path.join(config['paths']['output'],
-                                d['name'],
-                                'data.csv') for d in config['sources']]
+        # with open("configuration.json", 'rt') as infile:
+        #     config = json.load(infile)
+        # sources = [os.path.join(config['paths']['output'],
+        #                         d['name'],
+        #                         'data.csv') for d in config['sources']]
 
-        for ds in sources:
-            df = pd.read_csv(ds)
-            indicators = df["Indicator Name"].unique()
+        # for ds in sources:
+        # df = pd.read_csv(ds)
+        for df in datasets:
+            indicators = df["Indicator Code"].unique()
             # print(indicators)
             if indicator in indicators:
-                df = df.loc[(df["Country Name"] == country) & (df["Indicator Name"] == indicator)]
+                df = df.loc[(df["Country Name"] == country) & (df["Indicator Code"] == indicator)]
                 return df.to_json(orient='records')
+        return "Data not found"
