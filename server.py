@@ -28,6 +28,6 @@ def index():
 
 
 if __name__ == "__main__":
-    um.set_up(app)
-    predict.set_up(app, 2017)
+#    um.set_up(app)
+    predict.set_up(app, 2018)
     app.run(host=env.bind, port=env.port)
