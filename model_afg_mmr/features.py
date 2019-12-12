@@ -78,6 +78,7 @@ class Generator(object):
         c1 = self.data['Country Code'].isin(countries)
         c2 = self.data.year >= 1950
 
+        self.df_raw = self.df
         self.df = self.data.loc[c1 & c2, idx + features + target]
         self.df['TARGET'] = self.df['IDP'] + self.df['UNHCR.EDP']
 

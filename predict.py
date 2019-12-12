@@ -37,16 +37,7 @@ THEMES = [t['sub-theme'] for t in GROUPING['clusters']]
 LABELS = ['nan','worse', 'poor', 'average', 'good', 'best']
 
 
-#Datasets
-with open("configuration.json", 'rt') as infile:
-    config = json.load(infile)
-sources = [os.path.join(config['paths']['output'],
-                        d['name'],
-                        'data.csv') for d in config['sources']]
-datasets = []
-for ds in sources:
-    df = pd.read_csv(ds)
-    datasets.append(df)
+
 
 def set_up(app, baseyear):
 
@@ -174,24 +165,21 @@ def set_up(app, baseyear):
 
         # for ds in sources:
         # df = pd.read_csv(ds)
-
-        for df in datasets:
-            indicators = df["Indicator Code"].unique()
+        if indicator=='all':
+            df = pred_api2.features.df_raw.loc[pred_api2.features.df_raw["Country Code"].isin(countries)]
+        else:
+            df = pred_api2.features.df_raw.loc[(pred_api2.features.df_raw["Country Code"].isin(countries)) & (pred_api2.features.df_raw["Indicator Code"] == indicator)]
             # print(indicators)
-            if indicator in indicators:
-                if years:
-                    if len(years) == 4:
-                        df = df.loc[(df["Country Code"].isin(countries)) & (df["Indicator Code"] == indicator) & (
-                                df["year"] == int(years))]
-                    else:
-                        df = df.loc[(df["Country Code"].isin(countries)) & (df["Indicator Code"] == indicator)
-                                & (df["year"] >= int(years[:4]))]
-                        df = df.loc[(df["year"] <= int(years[5:]))]
-                    return df.to_json(orient='records')
-                else:
-                    df = df = df.loc[(df["Country Code"].isin(countries)) & (df["Indicator Code"] == indicator)]
-                    return df.to_json(orient='records')
-        return "Data not found"
+
+        if years:
+            if len(years) == 4:
+                df = df.loc[df["year"] == int(years)]
+            else:
+                df = df.loc[df["year"] >= int(years[:4])]
+                df = df.loc[df["year"] <= int(years[5:])]
+
+        return df.to_json(orient='records')
+
 
 
     @app.route("/predictam", methods=['get'])
@@ -235,25 +223,19 @@ def set_up(app, baseyear):
     @app.route("/indicatorCodeByName")
     def indicatorCodeByName():
         indicatorName = request.args.get('indicator')
-        responce = ''
-        for df in datasets:
-            indicatorNames = df["Indicator Name"].unique()
-            if indicatorName in indicatorNames:
-                responce = df.loc[(df["Indicator Name"] == indicatorName)]["Indicator Code"].unique()[0]
+        responce = pred_api2.features.df_raw.loc[(pred_api2.features.df_raw["Indicator Name"] == indicatorName)]["Indicator Code"].unique()[0]
         return jsonify(responce), 200
 
     @app.route("/uniqueIndicators")
     def uniqueIndicators():
-        responce = []
-        for df in datasets:
-            indicators = df["Indicator Code"].unique()
-            responce = [*responce, *indicators]
+
+        indicators = pred_api2.features.df_raw["Indicator Code"].unique()
+        responce = [*indicators]
         return jsonify(responce), 200
 
     @app.route("/uniqueIndicatorNames")
     def uniqueIndicatorNames():
-        responce = []
-        for df in datasets:
-            indicators = df["Indicator Name"].unique()
-            responce = [*responce, *indicators]
+
+        indicators = pred_api2.features.df_raw["Indicator Name"].unique()
+        responce = [*indicators]
         return jsonify(responce), 200
