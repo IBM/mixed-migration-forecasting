@@ -157,6 +157,8 @@ def set_up(app, baseyear):
 
         countries = country.split(',')
 
+        df = pred_api2.features.df_raw
+
         # with open("configuration.json", 'rt') as infile:
         #     config = json.load(infile)
         # sources = [os.path.join(config['paths']['output'],
@@ -165,10 +167,14 @@ def set_up(app, baseyear):
 
         # for ds in sources:
         # df = pd.read_csv(ds)
-        if indicator=='all':
-            df = pred_api2.features.df_raw.loc[pred_api2.features.df_raw["Country Code"].isin(countries)]
+        if indicator == 'all':
+            if country != 'all':
+                df = df.loc[df["Country Code"].isin(countries)]
         else:
-            df = pred_api2.features.df_raw.loc[(pred_api2.features.df_raw["Country Code"].isin(countries)) & (pred_api2.features.df_raw["Indicator Code"] == indicator)]
+            if country != 'all':
+                df = df.loc[(df["Country Code"].isin(countries)) & (df["Indicator Code"] == indicator)]
+            else:
+                df = df.loc[df["Indicator Code"] == indicator]
             # print(indicators)
 
         if years:
