@@ -40,7 +40,8 @@ class Generator(object):
         # Generate a data frame with all indicators
         self.df = pd.concat((pd.read_csv(f)
                              for f in sources), sort=False, ignore_index=True)
-
+        #self.df.year = self.df.year.fillna(method="ffill")
+        #self.df.year = self.df.year.astype(int)
         # Summary stats
         logger.info("Sources            : {}".format(len(sources)))
         logger.info("Row count          : {}".format(len(self.df)))
@@ -54,14 +55,16 @@ class Generator(object):
         # Do the projections for indicators of interest
         logger.info("Projecting indicators to {}.".format(baseyear))
         inds = list(set(self.df['Indicator Code'].unique()) - set(TARGETS + ['Country Code', 'year']))
-        proj = self.__projections(inds, baseyear)
+        #proj = self.__projections(inds, baseyear)
 
         # persist projections
         # self.df['type'] = "raw"
         # proj['type'] = 'projected'
 
         # Include projections with the raw data
-        self.df = pd.concat([self.df, proj], sort=False)
+#        self.df = pd.concat([self.df, proj], sort=False)
+
+
 
         # self.df.to_csv("projections.csv", index=False)
 
@@ -118,6 +121,7 @@ class Generator(object):
         start_time = time()
 
         pdf = self.df.copy(deep=True)
+        #print(pdf.year)
         pdf['year_idx'] = pd.to_datetime(pdf.year, format='%Y')
         pdf = pdf.set_index('year_idx').to_period(freq='Y')
 
@@ -156,7 +160,7 @@ class Generator(object):
                     model = AR(X, missing='raise')
                     model_fit = model.fit(maxlag=lag, trend='nc')
 
-                    pred = model_fit.predict(start=str(years.min()), end=str(years.max()))
+                    pred = model_fit.predict(start=str(years.min())[:4], end=str(years.max())[:4])
                     cnt += 1
 
                     # Conform to the overall dataframe
