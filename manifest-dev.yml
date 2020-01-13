@@ -1,0 +1,9 @@
+applications:
+- instances: 1
+  timeout: 600
+  name: DRCS2TDPtemporalapi
+  buildpack: python_buildpack
+  command: flask run --host=$CF_HOSTNAME --port=$PORT
+  memory: 256M
+  routes:
+    - route: drc-tdp-temp-api.eu-gb.mybluemix.net
