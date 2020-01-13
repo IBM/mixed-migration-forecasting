@@ -1,8 +1,16 @@
 from cfenv import AppEnv
-from flask import Flask, render_template, jsonify, request, redirect, url_for, session
+import json
+import os
+from flask import (Flask, render_template, jsonify, request, 
+            redirect, url_for, session)
 from flask_cors import CORS
+
 import user_management as um
-import predict as predict
+import indicators_api
+import migration_api
+
+CONFIGURATION = 'configuration.json'
+BASEYEAR = 2019
 
 env = AppEnv()
 app = Flask(env.name or __name__)
@@ -10,10 +18,12 @@ app.secret_key = "4656A742-1BAA-41B9-A618-6C61E85169B8"
 
 CORS(app)
 
-# Debug settings
-# um.set_up(app)
-# predict.set_up(app)
+with open(CONFIGURATION, 'rt') as infile:
+    config = json.load(infile)
 
+# Register app end points
+indicators_api.set_up(app, config)
+migration_api.set_up(app, BASEYEAR, config)
 
 @app.route('/swagger')
 def swagger_root():
@@ -28,6 +38,5 @@ def index():
 
 
 if __name__ == "__main__":
-#    um.set_up(app)
-    predict.set_up(app, 2018)
+
     app.run(host=env.bind, port=env.port)

@@ -2,6 +2,8 @@ prm-datasets/indicators
 prm-datasets/.DS_Store
 .DS_Store
 *.pkl
+.idea
+venv2
 
 
 # Byte-compiled / optimized / DLL files

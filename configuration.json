@@ -1,4 +1,9 @@
 {
+    "MODELFILE": {
+        "displacement": "model/displacement/model.joblib",
+        "migration": "model/migration/model.joblib"
+    },
+    "GROUPING": "groupings.json",
     "paths": {
         "datasets": "prm-datasets/indicators/",
         "output": "prm-datasets/processed/"
