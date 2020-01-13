@@ -1,7 +1,16 @@
 {
     "MODELFILE": {
-        "displacement": "model/displacement/model.joblib",
-        "migration": "model/migration/model.joblib"
+        "displacement": "model/displacement/models.joblib",
+        "migration": "model/migration/models.joblib"
+    },
+    "supported-countries": {
+        "displacement": [
+            "AFG",
+            "MMR"
+        ],
+        "migration": [
+            "ETH"
+        ]
     },
     "GROUPING": "groupings.json",
     "paths": {
@@ -21,7 +30,7 @@
         },
         {
             "name": "displacement",
-            "sourcefile":[
+            "sourcefile": [
                 "Displacement/idmc_displacement_all_dataset.xlsx",
                 "Displacement/UNHCR_displacement.csv",
                 "Displacement/FDP2008a.csv"

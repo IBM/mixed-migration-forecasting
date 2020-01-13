@@ -6,8 +6,7 @@ Differences from trainer (that\s used for the forecast)
     - Reduced feature sets
 
 """
-
-from sklearn.externals import joblib
+import joblib
 import numpy as np
 import pandas as pd
 import logging

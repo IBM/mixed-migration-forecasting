@@ -3,11 +3,11 @@ Offline script to train all the models
 
 """
 
-from sklearn.externals import joblib
 import numpy as np
 import pandas as pd
 import logging
 import os
+import joblib
 import json
 from time import time
 
@@ -28,7 +28,7 @@ warnings.filterwarnings(action="ignore", module="sklearn", message="^internal ge
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
 logger = logging.getLogger(__name__)
 
-CONFIGURATION = os.path.join(os.path.dirname(__file__), "..", "configuration.json")
+CONFIGURATION = os.path.join(os.path.dirname(__file__), "..", "..", "configuration.json")
 MODELFILE = os.path.join(os.path.dirname(__file__), "models.joblib")
 
 # Model variants used for ETH use case
@@ -261,7 +261,7 @@ def get_data(config):
 
     start_time = time()
 
-    sources = [os.path.join(os.path.dirname(__file__), "..", config['paths']['output'],
+    sources = [os.path.join(os.path.dirname(__file__), "..", "..", config['paths']['output'],
                             d['name'],
                             'data.csv') for d in config['sources']]
 

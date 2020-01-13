@@ -1,9 +1,8 @@
-from sklearn.externals import joblib
+import joblib
 import numpy as np
 import pandas as pd
 import logging
 import os
-import shap
 from time import time
 
 from .features import Generator

@@ -22,7 +22,7 @@ def set_up(app, baseyear, config):
     # Deal with variable groupings/clusters. These are used to
     # work with scenarios. Each scenario has a set of indicators
     # associated with it. 
-    with open(config['GROUPINGS'], 'rt') as infile:
+    with open(config['GROUPING'], 'rt') as infile:
         GROUPING = json.load(infile)
 
     # Indicators that we use for scenarios and their relative improvements
