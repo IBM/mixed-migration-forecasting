@@ -3,7 +3,7 @@ applications:
   timeout: 600
   name: drc-tdp-api-dev
   buildpack: python_buildpack
-  command: flask run --host=$CF_HOSTNAME --port=$PORT
-  memory: 256M
+  command: python server.py
+  memory: 512M
   routes:
     - route: drc-tdp-api-dev.eu-gb.mybluemix.net
