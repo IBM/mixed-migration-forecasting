@@ -85,6 +85,17 @@ class DisplacementTransformer(Transformer):
         self.__idmc_transformer()
         self.__sp_transformer()
 
-        # merge
-        self.df = pd.concat([self.unhcr, self.idmc, self.sp], ignore_index=True, sort=False)
+        # merge to create a total displacement figure
+        tmp = pd.concat([self.unhcr, self.idmc, self.sp], ignore_index=True, sort=False)
+
+        tmp = pd.pivot_table(tmp, index=['Country Code', 'year'],
+                      columns='Indicator Code', values='value')
+        tmp.reset_index(inplace=True)
+        tmp['value'] = tmp['UNHCR.EDP'].add(tmp['IDP'], fill_value=0)
+        tmp.drop(columns=['IDP', 'UNHCR.EDP'], inplace=True)
+        tmp['Indicator Code'] = 'DRC.TOT.DISP'
+        tmp['Indicator Name'] = 'Total forced displacement'
+
+        # Finally report all displacments (including totals)
+        self.df = pd.concat([self.unhcr, self.idmc, self.sp, tmp], ignore_index=True, sort=False)
 
