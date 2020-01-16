@@ -12,8 +12,8 @@ import pandas as pd
 from flask import jsonify
 from time import time
 import logging
+
 logger = logging.getLogger(__name__)
-CONFIGURATION = 'configuration.json'
 
 
 def fetch_data(config):
@@ -43,9 +43,6 @@ def fetch_data(config):
 
 def set_up(app, config):
     
-    with open(CONFIGURATION, 'rt') as infile:
-        config = json.load(infile)
-    
     df = fetch_data(config)
 
     COUNTRIES = config["supported-countries"]['displacement']
@@ -54,16 +51,15 @@ def set_up(app, config):
     def countries():
         """ Get the list of countries supported """
 
-        countries = []
-        afg = {}
-        afg["Country Name"]="Afghanistan"
-        afg["Country Code"]="AFG"
-        countries.append(afg)
-        mmr={}
-        mmr["Country Name"]="Myanmar"
-        mmr["Country Code"]="MMR"
-        countries.append(mmr)
-        return jsonify(countries), 200
+        # all countries names/codes in the data
+        grp = (df
+                .groupby(['Country Name', 'Country Code'])['year']
+                .count()
+                .reset_index()
+                .drop(columns='year'))
+        idx = grp['Country Code'].isin(COUNTRIES)
+
+        return grp[idx].to_json(orient='records'), 200
 
     @app.route("/indicators")
     def indicators():
