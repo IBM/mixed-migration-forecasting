@@ -27,7 +27,7 @@ def fetch_data(config):
     # Generate a data frame with all indicators
     df = pd.concat((pd.read_csv(f)
                             for f in sources), sort=False, ignore_index=True)
-    
+
     # Summary stats
     logger.info("Sources            : {}".format(len(sources)))
     logger.info("Row count          : {}".format(len(df)))
@@ -42,10 +42,10 @@ def fetch_data(config):
 
 
 def set_up(app, config):
-    
+
     with open(CONFIGURATION, 'rt') as infile:
         config = json.load(infile)
-    
+
     df = fetch_data(config)
 
     COUNTRIES = config["supported-countries"]['displacement']
@@ -73,7 +73,7 @@ def set_up(app, config):
         years = request.args.get('years')
 
         countries = country.split(',')
-        
+
         if indicator == 'all':
             if country != 'all':
                 sub_df = df.loc[df["Country Code"].isin(countries)]
@@ -91,7 +91,7 @@ def set_up(app, config):
                 sub_df = sub_df.loc[sub_df["year"] >= int(years[:4])]
                 sub_df = sub_df.loc[sub_df["year"] <= int(years[5:])]
 
-        return df.to_json(orient='records')
+        return sub_df.to_json(orient='records')
 
     @app.route("/indicatorCodeByName")
     def indicatorCodeByName():
