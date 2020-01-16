@@ -9,7 +9,7 @@ the model.
 import os
 import json
 import pandas as pd
-from flask import jsonify
+from flask import jsonify, request
 from time import time
 import logging
 
@@ -27,7 +27,7 @@ def fetch_data(config):
     # Generate a data frame with all indicators
     df = pd.concat((pd.read_csv(f)
                             for f in sources), sort=False, ignore_index=True)
-    
+
     # Summary stats
     logger.info("Sources            : {}".format(len(sources)))
     logger.info("Row count          : {}".format(len(df)))
@@ -69,25 +69,25 @@ def set_up(app, config):
         years = request.args.get('years')
 
         countries = country.split(',')
-        
+
         if indicator == 'all':
             if country != 'all':
-                df = df.loc[df["Country Code"].isin(countries)]
+                sub_df = df.loc[df["Country Code"].isin(countries)]
         else:
             if country != 'all':
-                df = df.loc[(df["Country Code"].isin(countries)) & (df["Indicator Code"] == indicator)]
+                sub_df = df.loc[(df["Country Code"].isin(countries)) & (df["Indicator Code"] == indicator)]
             else:
-                df = df.loc[df["Indicator Code"] == indicator]
+                sub_df = df.loc[df["Indicator Code"] == indicator]
             # print(indicators)
 
         if years:
             if len(years) == 4:
-                df = df.loc[df["year"] == int(years)]
+                sub_df = sub_df.loc[sub_df["year"] == int(years)]
             else:
-                df = df.loc[df["year"] >= int(years[:4])]
-                df = df.loc[df["year"] <= int(years[5:])]
+                sub_df = sub_df.loc[sub_df["year"] >= int(years[:4])]
+                sub_df = sub_df.loc[sub_df["year"] <= int(years[5:])]
 
-        return df.to_json(orient='records')
+        return sub_df.to_json(orient='records')
 
     @app.route("/indicatorCodeByName")
     def indicatorCodeByName():
