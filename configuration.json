@@ -21,18 +21,21 @@
         {
             "name": "worldbank",
             "source": "Worldbank",
+            "detail": "Data from the Worldbank Development Indicators information product.",
             "sourcefile": "worldbank/WDI/WDIData.csv",
             "transformer": "transformer.worldbank.WorldBankTransformer"
         },
         {
             "name": "emdat",
             "source": "EMDAT",
+            "detail": "Data from the Emergency-Events Database from the Centre for Research on the Epidemiology of Disasters (CRED).",
             "sourcefile": "EMDAT/AllData.csv",
             "transformer": "transformer.emdat.EMDATTransformer"
         },
         {
             "name": "displacement",
             "source": "IDMC, UNHCR, Systemic Peace",
+            "detail": "Data aggregated from multiple sources. Internal displacement estimates from 2008 onward are from IDMC, prior to 2008 from Systemic Peace. External displacement volumes estimated from UNHCR stock data.",
             "sourcefile": [
                 "Displacement/idmc_displacement_all_dataset.xlsx",
                 "Displacement/UNHCR_displacement.csv",
@@ -43,6 +46,7 @@
         {
             "name": "mixedmigration",
             "source": "UNHCR, DRC, UNDESA",
+            "detail": "Mixed-migration estimates aggregated from various sources. UNHCR estimates of annual stock figures are included. UNDESA matrix of flows have been interpolated linearly between the years the data is unavailable. Refugee numbers are factored out for countries where these are reported to avoid double counting. For some specific corridors, estimates derived from survey data conduded by DRC.",
             "sourcefile": [
                 "UNHCR/unhcr_popstats_export_time_series_all_data.csv",
                 "DRC-collected/Yemen_arrivals_processed.csv",
@@ -53,24 +57,28 @@
         {
             "name": "UNHCR",
             "source": "UNHCR",
+            "detail": "Total volume of displacement aggregated across all destination countries",
             "sourcefile": "UNHCR/unhcr_popstats_export_time_series_all_data.csv",
             "transformer": "transformer.unhcr.UnhcrTransformer"
         },
         {
             "name": "ACLED",
             "source": "ACLED",
+            "detail": "Data from the  Armed Conflict Location & Event Data Project (ACLED).",
             "sourcefile": "ACLED/1996-03-01-2018-05-02.csv",
             "transformer": "transformer.acled.ACLEDTransformer"
         },
         {
             "name": "FIW",
             "source": "Freedom House",
+            "detail": "Data from the Freedom in the World index from Freedom House.",
             "sourcefile": "FIW/Country and Territory Ratings and Statuses FIW1973-2018-1.csv",
             "transformer": "transformer.fiw.FreedomTransformer"
         },
         {
             "name": "WHO",
             "source": "WHO",
+            "detail": "Data from the World Health Organization",
             "sourcefile": [
                 "WHO/MDG_0000000026_MORT_MATERNALNUM.csv",
                 "WHO/TB_effective_treatment_coverage,TB_e_inc_num,TB_c_newinc,TB_1.csv",
@@ -83,6 +91,7 @@
         {
             "name": "SystemicPeace",
             "source": "Systemic Peace",
+            "detail": "Data from Systemic Peace on adverse regime change, ethnic and revolutionary war.",
             "sourcefile": [
                 "SystemicPeace/FDP2008a.xls",
                 "SystemicPeace/MEPVv2018.xls",
@@ -96,6 +105,7 @@
         {
             "name": "PoliticalTerror",
             "source": "Political Terror Scale",
+            "detail": "Data from the Political Terror Scale - a five level scale that encodes state violations of human rights.",
             "sourcefile": [
                 "PoliticalTerror/PTS-2019.xlsx"
             ],
@@ -104,6 +114,7 @@
         {
             "name": "WFP",
             "source": "World Food Programme",
+            "detail": "Data from the World Food Program.",
             "sourcefile": [
                 "WFP/wfpvam_foodprices.csv"
             ],
@@ -112,6 +123,7 @@
         {
             "name": "Polity",
             "source": "Systemic Peace",
+            "detail": "Data from Center for Systemic Peace on polity.",
             "sourcefile": [
                 "Polity/p4v2018.xls"
             ],
@@ -120,6 +132,7 @@
         {
             "name": "VDem",
             "source": "V-Dem: Varieties of Democracy",
+            "detail": "Data from V-Dem.",
             "sourcefile": [
                 "VDem/V-Dem-CY-Full+Others-v9.csv"
             ],
@@ -128,12 +141,14 @@
         {
             "name": "corruption",
             "source": "DRC",
+            "detail": "Corruption indices gathered by the DRC.",
             "sourcefile": "DRC-collected/corruption_index.csv",
             "transformer": "transformer.corruption.CorruptionTransformer"
         },
         {
             "name": "UCDP",
             "source": "Uppsala Conflict Data Program",
+            "detail": "Conflict data from the Uppsala Conflict Data Program.",
             "sourcefile": [
                 "UCDP/ged191.csv"
             ],
@@ -142,6 +157,7 @@
         {
             "name": "FragileStates",
             "source": "Fund for Peace",
+            "detail": "Fragile State Index from the Fund for Peace.",
             "sourcefile": [
                 "FragileStates/fsi-2006.xlsx",
                 "FragileStates/fsi-2007.xlsx",
