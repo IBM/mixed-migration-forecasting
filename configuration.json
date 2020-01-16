@@ -20,16 +20,19 @@
     "sources": [
         {
             "name": "worldbank",
+            "source": "Worldbank",
             "sourcefile": "worldbank/WDI/WDIData.csv",
             "transformer": "transformer.worldbank.WorldBankTransformer"
         },
         {
             "name": "emdat",
+            "source": "EMDAT",
             "sourcefile": "EMDAT/AllData.csv",
             "transformer": "transformer.emdat.EMDATTransformer"
         },
         {
             "name": "displacement",
+            "source": "IDMC, UNHCR, Systemic Peace",
             "sourcefile": [
                 "Displacement/idmc_displacement_all_dataset.xlsx",
                 "Displacement/UNHCR_displacement.csv",
@@ -39,6 +42,7 @@
         },
         {
             "name": "mixedmigration",
+            "source": "UNHCR, DRC, UNDESA",
             "sourcefile": [
                 "UNHCR/unhcr_popstats_export_time_series_all_data.csv",
                 "DRC-collected/Yemen_arrivals_processed.csv",
@@ -48,21 +52,25 @@
         },
         {
             "name": "UNHCR",
+            "source": "UNHCR",
             "sourcefile": "UNHCR/unhcr_popstats_export_time_series_all_data.csv",
             "transformer": "transformer.unhcr.UnhcrTransformer"
         },
         {
             "name": "ACLED",
+            "source": "ACLED",
             "sourcefile": "ACLED/1996-03-01-2018-05-02.csv",
             "transformer": "transformer.acled.ACLEDTransformer"
         },
         {
             "name": "FIW",
+            "source": "Freedom House",
             "sourcefile": "FIW/Country and Territory Ratings and Statuses FIW1973-2018-1.csv",
             "transformer": "transformer.fiw.FreedomTransformer"
         },
         {
             "name": "WHO",
+            "source": "WHO",
             "sourcefile": [
                 "WHO/MDG_0000000026_MORT_MATERNALNUM.csv",
                 "WHO/TB_effective_treatment_coverage,TB_e_inc_num,TB_c_newinc,TB_1.csv",
@@ -74,6 +82,7 @@
         },
         {
             "name": "SystemicPeace",
+            "source": "Systemic Peace",
             "sourcefile": [
                 "SystemicPeace/FDP2008a.xls",
                 "SystemicPeace/MEPVv2018.xls",
@@ -86,6 +95,7 @@
         },
         {
             "name": "PoliticalTerror",
+            "source": "Political Terror Scale",
             "sourcefile": [
                 "PoliticalTerror/PTS-2019.xlsx"
             ],
@@ -93,6 +103,7 @@
         },
         {
             "name": "WFP",
+            "source": "World Food Programme",
             "sourcefile": [
                 "WFP/wfpvam_foodprices.csv"
             ],
@@ -100,6 +111,7 @@
         },
         {
             "name": "Polity",
+            "source": "Systemic Peace",
             "sourcefile": [
                 "Polity/p4v2018.xls"
             ],
@@ -107,6 +119,7 @@
         },
         {
             "name": "VDem",
+            "source": "V-Dem: Varieties of Democracy",
             "sourcefile": [
                 "VDem/V-Dem-CY-Full+Others-v9.csv"
             ],
@@ -114,11 +127,13 @@
         },
         {
             "name": "corruption",
+            "source": "DRC",
             "sourcefile": "DRC-collected/corruption_index.csv",
             "transformer": "transformer.corruption.CorruptionTransformer"
         },
         {
             "name": "UCDP",
+            "source": "Uppsala Conflict Data Program",
             "sourcefile": [
                 "UCDP/ged191.csv"
             ],
@@ -126,6 +141,7 @@
         },
         {
             "name": "FragileStates",
+            "source": "Fund for Peace",
             "sourcefile": [
                 "FragileStates/fsi-2006.xlsx",
                 "FragileStates/fsi-2007.xlsx",
