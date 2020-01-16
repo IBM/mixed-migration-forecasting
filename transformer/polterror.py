@@ -58,6 +58,7 @@ class PolTerrorTransformer(Transformer):
             'Country': 'Country Name'}, inplace=True)
 
         self.pol_terror_df = self.pol_terror_df.dropna(how='any', axis=0)
+        self.pol_terror_df.rename(columns={'Year': 'year'}, inplace=True)
         self.df = self.pol_terror_df
 
         # self.df = self.df.append(self.pol_viol_df, sort="False")
