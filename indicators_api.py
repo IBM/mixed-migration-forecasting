@@ -48,7 +48,7 @@ def indicator_summary(config):
 
     result = []
     for d in config['sources']:
-        tmp = pd.read_csv(os.path.join("..", config['paths']['output'], 
+        tmp = pd.read_csv(os.path.join(os.getcwd(), config['paths']['output'], 
                             d['name'], 
                             'data.csv'))
         
