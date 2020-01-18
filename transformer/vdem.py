@@ -119,6 +119,7 @@ class VDemTransformer(Transformer):
                                                                     "Korea (Democratic People's Republic of)")
         self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("South Korea", "Korea (Republic of)")
         self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Myanmar (Burma)", "Myanmar")
+        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Burma/Myanmar", "Myanmar")
         self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Laos", "Lao People's Democratic Republic")
         self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Vietnam", "Viet Nam")
         self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("East Timor", "Timor-Leste")

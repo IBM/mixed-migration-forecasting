@@ -5,7 +5,6 @@ import os
 
 ISO_COUNTRY_CODES = os.path.join(os.path.dirname(__file__), 'countrycodes.csv')
 
-
 class SystemicPeaceTransformer(Transformer):
     """ Data source specific transformers """
 
@@ -125,15 +124,20 @@ class SystemicPeaceTransformer(Transformer):
         # self.df = self.df.append(self.pol_viol_df, sort="False")
 
     def transform_state_failure(self):
-
-        self.state_fail_df = self.state_fail_df.assign(YRON = self.state_fail_df.YEAR - self.state_fail_df.YRBEGIN + 1)
- 
-        yr_begin_df = self.state_fail_df[["COUNTRY", "YEAR", "YRBEGIN"]]
-        yr_begin_df.columns.values[2] = 'value'
-
-        yr_end_df = self.state_fail_df[["COUNTRY", "YEAR", "YREND"]]
-        yr_end_df.columns.values[2] = 'value'
         
+        unique_states = self.state_fail_df.drop_duplicates("COUNTRY")[["COUNTRY"]].reset_index(drop = True)
+        unique_states["key"] = 1
+        
+        unique_years = self.state_fail_df.drop_duplicates("YEAR")[["YEAR"]].reset_index(drop = True)
+        unique_years["key"] = 1
+        
+        states_years_df = pd.merge(unique_states, unique_years, on = "key")
+        
+        self.state_fail_df = pd.merge(states_years_df, self.state_fail_df, how = "left", on = ["COUNTRY","YEAR"]).fillna(0)
+        
+        self.state_fail_df["YRON"] = np.where(self.state_fail_df["YRBEGIN"] == 0, 0, self.state_fail_df.YEAR - self.state_fail_df.YRBEGIN + 1)
+
+
         yr_on_df = self.state_fail_df[["COUNTRY", "YEAR", "YRON"]]
         yr_on_df.columns.values[2] = 'value'
 
@@ -145,13 +149,7 @@ class SystemicPeaceTransformer(Transformer):
         mag_viol_df = self.state_fail_df[["COUNTRY", "YEAR", "MAGVIOL"]]
         mag_viol_df.columns.values[2] = 'value'
 
-        yr_begin_df.loc[:, "Indicator Code"] = "SP.SF.YR.BEGIN"
-        yr_begin_df.loc[:, "Indicator Name"] = "4-number numeric year denoting event beginning"
-
-        yr_end_df.loc[:, "Indicator Code"] = "SP.SF.YR.END"
-        yr_end_df.loc[:, "Indicator Name"] = "4-number numeric year denoting event ending (9999=ongoing)"
-
-        yr_on_df.loc[:, "Indicator Code"] = "SP.EW.YR.LENGTH"
+        yr_on_df.loc[:, "Indicator Code"] = "SP.SF.YR.LENGTH"
         yr_on_df.loc[:, "Indicator Name"] = "Length of conflict in years"
 
         mag_fail_df.loc[:, "Indicator Code"] = "SP.SF.MAG.FAIL"
@@ -162,8 +160,7 @@ class SystemicPeaceTransformer(Transformer):
         mag_viol_df.loc[:, "Indicator Code"] = "SP.SF.MAG.VIOL"
         mag_viol_df.loc[:, "Indicator Name"] = "Scaled violence associated with regime transition (range 1-4; 9=missing)"
 
-        self.state_fail_df = yr_begin_df.append(yr_end_df, sort="True").append(yr_on_df, sort="True").append(
-            mag_fail_df, sort="True").append(mag_col_df, sort="True").append(mag_viol_df, sort="True")
+        self.state_fail_df = yr_on_df.append(mag_fail_df, sort="True").append(mag_col_df, sort="True").append(mag_viol_df, sort="True")
 
         self.state_fail_df.rename(columns={'COUNTRY': 'country', 'YEAR': 'year'}, inplace=True)
 
@@ -171,15 +168,19 @@ class SystemicPeaceTransformer(Transformer):
         self.df = self.df.append(self.state_fail_df, sort="False")
         
     def transform_ethnic_war(self):
-
-        self.ethnic_war_df = self.ethnic_war_df.assign(YRON = self.ethnic_war_df.YEAR - self.ethnic_war_df.YRBEGIN + 1)
- 
-        yr_begin_df = self.ethnic_war_df[["COUNTRY", "YEAR", "YRBEGIN"]]
-        yr_begin_df.columns.values[2] = 'value'
-
-        yr_end_df = self.ethnic_war_df[["COUNTRY", "YEAR", "YREND"]]
-        yr_end_df.columns.values[2] = 'value'
+               
+        unique_states = self.ethnic_war_df.drop_duplicates("COUNTRY")[["COUNTRY"]].reset_index(drop = True)
+        unique_states["key"] = 1
         
+        unique_years = self.ethnic_war_df.drop_duplicates("YEAR")[["YEAR"]].reset_index(drop = True)
+        unique_years["key"] = 1
+        
+        states_years_df = pd.merge(unique_states, unique_years, on = "key")
+        
+        self.ethnic_war_df = pd.merge(states_years_df, self.ethnic_war_df, how = "left", on = ["COUNTRY","YEAR"]).fillna(0)
+        
+        self.ethnic_war_df["YRON"] = np.where(self.ethnic_war_df["YRBEGIN"] == 0, 0, self.ethnic_war_df.YEAR - self.ethnic_war_df.YRBEGIN + 1)
+     
         yr_on_df = self.ethnic_war_df[["COUNTRY", "YEAR", "YRON"]]
         yr_on_df.columns.values[2] = 'value'
 
@@ -190,12 +191,6 @@ class SystemicPeaceTransformer(Transformer):
         mag_col_df.columns.values[2] = 'value'
         mag_viol_df = self.ethnic_war_df[["COUNTRY", "YEAR", "MAGAREA"]]
         mag_viol_df.columns.values[2] = 'value'
-
-        yr_begin_df.loc[:, "Indicator Code"] = "SP.EW.YR.BEGIN"
-        yr_begin_df.loc[:, "Indicator Name"] = "4-number numeric year denoting event beginning"
-
-        yr_end_df.loc[:, "Indicator Code"] = "SP.EW.YR.END"
-        yr_end_df.loc[:, "Indicator Name"] = "4-number numeric year denoting event ending (9999=ongoing)"
 
         yr_on_df.loc[:, "Indicator Code"] = "SP.EW.YR.LENGTH"
         yr_on_df.loc[:, "Indicator Name"] = "Length of conflict in years"
@@ -208,7 +203,7 @@ class SystemicPeaceTransformer(Transformer):
         mag_viol_df.loc[:, "Indicator Code"] = "SP.EW.MAG.AREA"
         mag_viol_df.loc[:, "Indicator Name"] = "Scaled portion of country affected by fighting (range 1-4; 9=missing)"
 
-        self.ethnic_war_df = yr_begin_df.append(yr_end_df, sort="True").append(yr_on_df, sort="True").append(
+        self.ethnic_war_df = yr_on_df.append(
             mag_fail_df, sort="True").append(mag_col_df, sort="True").append(mag_viol_df, sort="True")
 
         self.ethnic_war_df.rename(columns={'COUNTRY': 'country', 'YEAR': 'year'}, inplace=True)
@@ -217,15 +212,19 @@ class SystemicPeaceTransformer(Transformer):
         self.df = self.df.append(self.ethnic_war_df, sort="False")
         
     def transform_revolu_war(self):
-
-        self.revolu_war_df = self.revolu_war_df.assign(YRON = self.revolu_war_df.YEAR - self.revolu_war_df.YRBEGIN + 1)
+               
+        unique_states = self.revolu_war_df.drop_duplicates("COUNTRY")[["COUNTRY"]].reset_index(drop = True)
+        unique_states["key"] = 1
         
-        yr_begin_df = self.revolu_war_df[["COUNTRY", "YEAR", "YRBEGIN"]]
-        yr_begin_df.columns.values[2] = 'value'
-
-        yr_end_df = self.revolu_war_df[["COUNTRY", "YEAR", "YREND"]]
-        yr_end_df.columns.values[2] = 'value'
+        unique_years = self.revolu_war_df.drop_duplicates("YEAR")[["YEAR"]].reset_index(drop = True)
+        unique_years["key"] = 1
         
+        states_years_df = pd.merge(unique_states, unique_years, on = "key")
+        
+        self.revolu_war_df = pd.merge(states_years_df, self.revolu_war_df, how = "left", on = ["COUNTRY","YEAR"]).fillna(0)
+        
+        self.revolu_war_df["YRON"] = np.where(self.revolu_war_df["YRBEGIN"] == 0, 0, self.revolu_war_df.YEAR - self.revolu_war_df.YRBEGIN + 1)
+      
         yr_on_df = self.revolu_war_df[["COUNTRY", "YEAR", "YRON"]]
         yr_on_df.columns.values[2] = 'value'
 
@@ -237,15 +236,8 @@ class SystemicPeaceTransformer(Transformer):
         mag_viol_df = self.revolu_war_df[["COUNTRY", "YEAR", "MAGAREA"]]
         mag_viol_df.columns.values[2] = 'value'
 
-        yr_begin_df.loc[:, "Indicator Code"] = "SP.RW.YR.BEGIN"
-        yr_begin_df.loc[:, "Indicator Name"] = "4-number numeric year denoting event beginning"
-
-        yr_end_df.loc[:, "Indicator Code"] = "SP.RW.YR.END"
-        yr_end_df.loc[:, "Indicator Name"] = "4-number numeric year denoting event ending (9999=ongoing)"
-
         yr_on_df.loc[:, "Indicator Code"] = "SP.RW.YR.LENGTH"
         yr_on_df.loc[:, "Indicator Name"] = "Length of conflict in years"
-
 
         mag_fail_df.loc[:, "Indicator Code"] = "SP.RW.MAG.FIGHT"
         mag_fail_df.loc[:, "Indicator Name"] = "Scaled number of rebel combatants or activists (range 1-4; 9=missing)"
@@ -255,7 +247,7 @@ class SystemicPeaceTransformer(Transformer):
         mag_viol_df.loc[:, "Indicator Code"] = "SP.RW.MAG.AREA"
         mag_viol_df.loc[:, "Indicator Name"] = "Scaled portion of country affected by fighting (range 1-4; 9=missing)"
 
-        self.revolu_war_df = yr_begin_df.append(yr_end_df, sort="True").append(yr_on_df, sort="True").append(
+        self.revolu_war_df = yr_on_df.append(
             mag_fail_df, sort="True").append(mag_col_df, sort="True").append(mag_viol_df, sort="True")
 
         self.revolu_war_df.rename(columns={'COUNTRY': 'country', 'YEAR': 'year'}, inplace=True)
@@ -264,26 +256,24 @@ class SystemicPeaceTransformer(Transformer):
         self.df = self.df.append(self.revolu_war_df, sort="False")
         
     def transform_genocide(self):
-
-        self.genocide_df = self.genocide_df.assign(YRON = self.genocide_df.YEAR - self.genocide_df.YRBEGIN + 1)
+               
+        unique_states = self.genocide_df.drop_duplicates("COUNTRY")[["COUNTRY"]].reset_index(drop = True)
+        unique_states["key"] = 1
         
-        yr_begin_df = self.genocide_df[["COUNTRY", "YEAR", "YRBEGIN"]]
-        yr_begin_df.columns.values[2] = 'value'
-
-        yr_end_df = self.genocide_df[["COUNTRY", "YEAR", "YREND"]]
-        yr_end_df.columns.values[2] = 'value'
+        unique_years = self.genocide_df.drop_duplicates("YEAR")[["YEAR"]].reset_index(drop = True)
+        unique_years["key"] = 1
         
+        states_years_df = pd.merge(unique_states, unique_years, on = "key")
+        
+        self.genocide_df = pd.merge(states_years_df, self.genocide_df, how = "left", on = ["COUNTRY","YEAR"]).fillna(0)
+        
+        self.genocide_df["YRON"] = np.where(self.genocide_df["YRBEGIN"] == 0, 0, self.genocide_df.YEAR - self.genocide_df.YRBEGIN + 1)
+       
         yr_on_df = self.genocide_df[["COUNTRY", "YEAR", "YRON"]]
         yr_on_df.columns.values[2] = 'value'
 
         mag_fail_df = self.genocide_df[["COUNTRY", "YEAR", "DEATHMAG"]]
         mag_fail_df.columns.values[2] = 'value'
-
-        yr_begin_df.loc[:, "Indicator Code"] = "SP.GE.YR.BEGIN"
-        yr_begin_df.loc[:, "Indicator Name"] = "4-number numeric year denoting event beginning"
-
-        yr_end_df.loc[:, "Indicator Code"] = "SP.GE.YR.END"
-        yr_end_df.loc[:, "Indicator Name"] = "4-number numeric year denoting event ending (9999=ongoing)"
 
         yr_on_df.loc[:, "Indicator Code"] = "SP.GE.YR.LENGTH"
         yr_on_df.loc[:, "Indicator Name"] = "Length of conflict in years"
@@ -291,8 +281,7 @@ class SystemicPeaceTransformer(Transformer):
         mag_fail_df.loc[:, "Indicator Code"] = "SP.GE.MAG.DEATH"
         mag_fail_df.loc[:, "Indicator Name"] = "Scaled annual number of deaths (range 0-5.0)"
 
-        self.genocide_df = yr_begin_df.append(yr_end_df, sort="True").append(yr_on_df, sort="True").append(
-            mag_fail_df, sort="True")
+        self.genocide_df = yr_on_df.append( mag_fail_df, sort="True")
 
         self.genocide_df.rename(columns={'COUNTRY': 'country', 'YEAR': 'year'}, inplace=True)
 
