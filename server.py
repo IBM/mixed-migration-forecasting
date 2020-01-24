@@ -7,7 +7,7 @@ from flask_cors import CORS
 
 import user_management as um
 import indicators_api
-import migration_api
+import forecast_api
 
 CONFIGURATION = 'configuration.json'
 BASEYEAR = 2019
@@ -23,7 +23,7 @@ with open(CONFIGURATION, 'rt') as infile:
 
 # Register app end points
 indicators_api.set_up(app, config)
-migration_api.set_up(app, BASEYEAR, config)
+forecast_api.set_up(app, BASEYEAR, config)
 
 @app.route('/swagger')
 def swagger_root():
