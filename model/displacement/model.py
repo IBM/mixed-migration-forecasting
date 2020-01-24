@@ -41,6 +41,11 @@ class Trainer(object):
         if isinstance(countries, str):
             countries = [countries]
 
+        for c in countries:
+            if c not in COUNTRIES: # Support list of countries for models
+                return {'status': 'error', 
+                        'msg': "Forecast not supported for country {}.".format(c)}
+
         result = []
 
         for c in countries:
@@ -65,6 +70,7 @@ class Trainer(object):
                 pred.append(M)
 
             MC['prediction'] = pred
+            MC['status'] = 'OK'
             result.append(MC)
 
         return result

@@ -1,5 +1,6 @@
 from cfenv import AppEnv
 import json
+import logging
 import os
 from flask import (Flask, render_template, jsonify, request, 
             redirect, url_for, session)
@@ -8,6 +9,10 @@ from flask_cors import CORS
 import user_management as um
 import indicators_api
 import forecast_api
+
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
+logger = logging.getLogger(__name__)
+
 
 CONFIGURATION = 'configuration.json'
 BASEYEAR = 2019

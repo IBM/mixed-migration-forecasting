@@ -39,7 +39,9 @@ def set_up(app, baseyear, config):
 
         logger.info("Predicting for country {} for current/base year {}.".format(source, baseyear))
         
-        result = tr.score(source)
-        logger.info(result)
-
-        return jsonify(result), 200
+        try:
+            result = tr.score(source)
+            logger.info(result)
+            return jsonify(result), 200
+        except AssertionError as e:
+            result = {e}
