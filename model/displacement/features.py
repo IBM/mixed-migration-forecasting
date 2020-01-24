@@ -1,3 +1,4 @@
+from . import *
 import pandas as pd
 from time import time
 import logging
@@ -10,93 +11,83 @@ from statsmodels.tsa.ar_model import AR
 logger = logging.getLogger(__name__)
 
 
-# Set of variables to predict
-TARGETS = ['TARGET']
-
-# User facing labels
-LABELS = ['worse', 'poor', 'average', 'good', 'best']
-
-# Maximum number of lag variables to consider for projections
-MAX_LAG = 3
-
-
 class Generator(object):
-    """ Feature generation routine for scoring """
+    """
+    Data assembly and feature generation routines for training and scoring.
+    
+    Does:
+    1. Loads data from the configuration object `config`
+    2. Applies some filters and then makes projections for indicators
+    3. Assembles data for training or scoring.
+    4. TODO: Scenario conversions from user-labels to indicator values
+    """
 
-    def __init__(self, config,  baseyear):
-        """ Initialize with a configuration object and the indicator groupings """
+    def __init__(self, config, baseyear):
+        """ 
+        Get the data from static assets described in `config` object.
+        `baseyear` is the current year for which the feature set is determined.
+        """
 
-        """ Get the data from static assets """
+        self.baseyear = baseyear
 
         start_time = time()
 
-        sources = [os.path.join(os.path.dirname(__file__), "..", config['paths']['output'],
+        sources = [os.path.join(os.path.dirname(__file__),
+                                "..", "..", config['paths']['output'],
                                 d['name'],
                                 'data.csv') for d in config['sources']]
 
-        # Generate a data frame with all indicators
+        # Generate a data frame with all the raw data
         self.df = pd.concat((pd.read_csv(f)
-                        for f in sources), sort=False, ignore_index=True)
+                             for f in sources), sort=False, ignore_index=True)
 
         # Summary stats
         logger.info("Sources            : {}".format(len(sources)))
         logger.info("Row count          : {}".format(len(self.df)))
-        logger.info("Geographies        : {}".format(len(self.df['Country Name'].unique())))
-        logger.info("Indicators         : {}".format(len(self.df['Indicator Code'].unique())))
-        logger.info("Temporal coverage  : {} -> {}".format(self.df.year.min(), self.df.year.max()))
-        logger.info("Null values        : {}".format(sum(self.df['value'].isnull())))
+        logger.info("Geographies        : {}".format(
+            len(self.df['Country Name'].unique())))
+        logger.info("Indicators         : {}".format(
+            len(self.df['Indicator Code'].unique())))
+        logger.info(
+            "Temporal coverage  : {} -> {}".format(self.df.year.min(), self.df.year.max()))
+        logger.info("Null values        : {}".format(
+            sum(self.df['value'].isnull())))
 
         logger.info("Loaded data in {:3.2f} sec.".format(time() - start_time))
 
         # Now arrange data in long form
         self.data = pd.pivot_table(self.df, index=['Country Code', 'year'],
-                              columns='Indicator Code', values='value')
+                                   columns='Indicator Code', values='value')
 
         # Consider country/year as features (and not an index)
         self.data.reset_index(inplace=True)
 
-        self.data = self.data.fillna(method='ffill').fillna(method='bfill')
-
-        #print(self.data.columns)
-
         # Get the set of indicators/code mappings
         self.labels = {i[0]: i[1]
-                       for i in self.df[['Indicator Code', 'Indicator Name']].drop_duplicates().values.tolist()}
-        countries = ['AFG', 'MMR']
+                       for i in (self
+                                 .df[['Indicator Code', 'Indicator Name']]
+                                 .drop_duplicates()
+                                 .values
+                                 .tolist())}
 
-        # Features
-        idx = ['Country Code', 'year']
-        mm = ['ETH.TO.{}'.format(i) for i in ['DNK', 'GBR', 'ITA', 'SAU', 'SWE', 'ZAF']]
-        endo = ['UNHCR.OUT.AS', 'UNHCR.OUT.IDP', 'UNHCR.OUT.OOC',
-                'UNHCR.OUT.REF', 'UNHCR.OUT.RET', 'UNHCR.OUT.RETIDP']
-        # missing entirely
-        emdat = ['EMDAT.CPX.OCCURRENCE', 'EMDAT.CPX.TOTAL.DEATHS', 'EMDAT.CPX.TOTAL.AFFECTED', 'EMDAT.CPX.AFFECTED']
-        target = ['IDP', 'UNHCR.EDP']
-        features = list(set(self.data.columns.tolist()) - set(idx + mm + endo + target + emdat))
+        # Indicators in the data
+        self.indicators = list(set(self.data.columns.tolist()) -
+                               set(EXCLUSIONS + TARGETS))
 
-        # filter
-        c1 = self.data['Country Code'].isin(countries)
-        c2 = self.data.year >= 1950
+        # filter down to the countries we are interested in.
+        c1 = self.data['Country Code'].isin(COUNTRIES)
+        c2 = self.data.year >= MIN_YEAR
 
-        self.df_raw = self.df
-        self.df = self.data.loc[c1 & c2, idx + features + target]
-        self.df['TARGET'] = self.df['IDP'] + self.df['UNHCR.EDP']
+        # References to raw and subset of the data
+        self.df_raw = self.df.copy(deep=True)
+        self.df = self.data.loc[c1 & c2, FE_IDX + self.indicators + TARGETS]
 
-        # These are the set of indicators to consider
-        t_var = ['TARGET']
+        # make projections to handle data gaps
+        self.proj_df = pd.concat([self.df, self.__projections()], sort=False)
 
-        # Indicators that can serve as features
-        self.indicators = list(set(self.df.columns.tolist()) - set(idx + mm + endo + target + emdat))
-
-
-
-
-
-
-
-    def __projections(self, indicators, baseyear):
+    def __projections(self):
         """
-        Generates indicator level projections till current year.
+        Generates indicator level projections till base year.
 
         This treats each indicator for each country as a time series. The
         projections are made using an AR(n) model, where n is determined by
@@ -110,6 +101,7 @@ class Generator(object):
 
         returns: a dataframe
         """
+
         start_time = time()
 
         pdf = self.df.copy(deep=True)
@@ -126,16 +118,18 @@ class Generator(object):
 
         for (country, ind), grp in ts:
 
-            if (country in SSA) & (ind in indicators):
+            if ind in self.indicators:
 
                 # Years for which projection is needed
-                years = np.arange(grp.year.max() + 1, baseyear + 1)
+                # `stop` has a +1 since the interval does not include the specified value
+                years = np.arange(start=grp.year.max() + 1,
+                                  stop=self.baseyear + 1)
 
                 # observations available in this time series
                 obs = len(grp)
 
                 # Maximum lag to consider for the AR model
-                lag = min(len(grp) - 1, MAX_LAG)
+                lag = min(len(grp) - 1, PROJECTION_MAX_LAGS)
 
                 logger.debug("Country: {}, Indicator: {}, observations: {}, maxlag: {}, num years to project: {}".
                              format(country, ind, obs, lag, len(years)))
@@ -151,7 +145,8 @@ class Generator(object):
                     model = AR(X, missing='raise')
                     model_fit = model.fit(maxlag=lag, trend='nc')
 
-                    pred = model_fit.predict(start=str(years.min()), end=str(years.max()))
+                    pred = model_fit.predict(
+                        start=str(years.min()), end=str(years.max()))
                     cnt += 1
 
                     # Conform to the overall dataframe
@@ -169,85 +164,23 @@ class Generator(object):
                     proj_df = pd.concat([proj_df, curr_df], ignore_index=True)
 
                 else:
-                    # Don't do projections if relatively recent data isn't available
-                    # or isn't needed.
-                    # print("long time series")
+                    # Don't do projections if relatively recent data isn't available, or too
+                    # few observations, or if its not needed
                     ign += 1
 
             else:
-                # No projections needed for countries outside Sub-Saharan Africa
+                # No projections needed for this indicators
                 pass
 
-        logger.info("Projections made for {} time series ({} ignored or not needed).".format(cnt, ign))
-        logger.info("Projections made in {:3.2f} sec.".format(time() - start_time))
+        logger.info(
+            "Projections made for {} time series ({} ignored or not needed).".format(cnt, ign))
+        logger.info("Projections made in {:3.2f} sec.".format(
+            time() - start_time))
 
         # Change the year from period to integer
         proj_df.year = proj_df.year.apply(lambda x: int(x.strftime("%Y")))
 
         return proj_df
-
-    def value_to_category(self, ind, val):
-        """ Converts a numeric value to a user facing category """
-
-        if np.isnan(val):
-            return 'nan'
-
-        if not self.indicator_exists(ind):
-            raise ValueError("Indicator {} does not exist.".format(ind))
-
-        if ind not in self.indicator_bins.keys():
-            raise ValueError("Indicator {} does not exist in the indicator clusters".format(ind))
-
-        # Get the bins/labels
-        ind_b, ind_l = self.indicator_bins[ind]
-
-        # Handle out of bounds cases
-        if val <= ind_b[0]:
-            return ind_l[0]
-        elif val >= ind_b[-1]:
-            return ind_l[-1]
-        else:
-            return ind_l[np.digitize(val, ind_b)-1]
-
-    def category_to_value(self, ind, cat):
-        """ Converts a user-facing category to numeric value """
-
-        if not self.indicator_exists(ind):
-            raise ValueError("Indicator {} does not exist.".format(ind))
-
-        if cat not in LABELS:
-            raise ValueError("Category {} is not defined.".format(cat))
-
-        try:
-            return self.category_lookup[(ind, cat)]
-
-        except KeyError:
-            raise ValueError("Does the indicator {} exist in the clusters of interest?".format(ind))
-
-    def __generate_lookup(self, x, labels):
-        """ Discretize indicators """
-
-        # Quantile discretization of 5 classes for all other numeric quantities
-        try:
-            # logger.debug("Column: {}".format(x.name))
-            _, bins = pd.qcut(x, 5, labels=labels, retbins=True, duplicates='drop')
-
-        except ValueError:
-
-            # Resort to ranking if data is sparse
-            # WARNING: Same values will be discretized to separate bins
-            try:
-                # logger.debug("Column: {} +++ Ranked bins".format(x.name))
-                _, bins = pd.qcut(x.rank(method='first'), 5, retbins=True,
-                                  labels=labels, duplicates='drop')
-
-            except ValueError:
-                # logger.info("Column: {} ------------- ERROR.".format(x.name))
-                return {}, []
-
-        # Assign the bin centers as the value
-        mids = [(a + b) / 2 for a, b in zip(bins[:-1], bins[1:])]
-        return {(x.name, lbl): v for (v, lbl) in zip(mids, labels)}, bins
 
     def indicator_exists(self, v):
         """ Check if an indicator code exists """
@@ -267,57 +200,93 @@ class Generator(object):
         if not self.indicator_exists(ind):
             raise ValueError("Indicator code {} does not exist.".format(ind))
 
-        # TODO: validity checks
         c1 = self.data['Country Code'] == country
         c2 = self.data['year'] == year
 
         return self.data[ind][c1 & c2].values[0]
 
+    def features(self,
+                 country,
+                 forecast_year,
+                 method='scoring'):
+        """
+        Generate features for training/scoring.
+
+        :param str country: ISO-3 code for country
+        :param int forecast_year: year for which this feature set is being assembled
+        :param str method: feature set for training/scoring (default)
+
+        :returns dict: dataframes for scoring/training
+
+        Notes:
+        - We use the projected dataframe for feature generation.
+
+        """
+
+        assert method in ['scoring', 'training'], \
+            "{} isn't a valid method ('scoring'/'training' are).".format(method)
+
+        dt = forecast_year - self.baseyear
+
+        # Target variable offset by a year (y_(t+dt))
+        data, varname = self.__lag_variables(self.proj_df, TARGETS, dt)
+        true_target_var = varname[0]
+
+        # Include current year target as a feature
+        true_feature_var = self.indicators + TARGETS
+
+        # Handle the missing features
+        data = (self
+                .proj_df
+                .copy(deep=True)
+                .fillna(method='ffill')
+                .fillna(method='bfill'))
+
+        # Temporal filters
+        t1 = self.proj_df.year == self.baseyear
+
+        # Spatial filter
+        s1 = self.proj_df['Country Code'] == country
+
+        if method == 'training':
+            Xt = data.loc[s1, true_feature_var]
+            yt = data.loc[s1, true_target_var]
+            Xv = None
+
+            # Drop missing training labels
+            idx = ~pd.isnull(yt)
+            yt = yt[idx]
+            Xt = Xt[idx]
+
+        elif method == 'scoring':
+
+            Xt = None
+            yt = None
+            Xv = data.loc[t1 & s1, true_feature_var]
+
+        
+        return {'data': (Xt, yt, Xv), 'Country code': country, 'baseyear': self.baseyear}
+    
+
     def __lag_variables(self, data, var, lag):
         """
-        Append lagged variables to frame.
+        Append lagged variables to a frame.
 
         var - list of variable names to lag
         lag - integer (years to lag the variables by)
 
+        Returns a DataFrame and the list of new column names
         """
+
         idx_cols = ['year', 'Country Code']
         fv = var + idx_cols
 
         tmp = data[fv].copy(deep=True)
 
         col_name = [v + ".T" + "{0:+}".format(lag) for v in var]
-        tmp.rename(columns={k: v for (k, v) in zip(var, col_name)}, inplace=True)
+        tmp.rename(columns={k: v for (k, v) in zip(
+            var, col_name)}, inplace=True)
         tmp.year -= lag
         data = pd.merge(data, tmp, on=idx_cols, how='left')
 
         return data, col_name
-
-    def fetch(self, baseyear, country):
-        """
-        Generate a feature set for a target variable (targetvar) for a base year.
-        The input feature set will be for the previous year.
-        """
-
-
-
-        data = self.df.copy(deep=True)
-
-        dcols = data.columns
-
-
-        true_feature_var = [f for f in self.indicators]
-
-
-        # Temporal filter
-        v1 = data.year == baseyear
-
-
-
-        #print(true_feature_var)
-        #print(self.v1.columns)
-        # Pull it all together
-        v2 = data['Country Code'] == country
-        Xv = data.loc[v1 & v2, true_feature_var]
-
-        return Xv
