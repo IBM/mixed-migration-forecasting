@@ -38,25 +38,25 @@ class Generator(object):
                                 'data.csv') for d in config['sources']]
 
         # Generate a data frame with all the raw data
-        self.df = pd.concat((pd.read_csv(f)
+        self.raw = pd.concat((pd.read_csv(f)
                              for f in sources), sort=False, ignore_index=True)
 
         # Summary stats
         logger.info("Sources            : {}".format(len(sources)))
-        logger.info("Row count          : {}".format(len(self.df)))
+        logger.info("Row count          : {}".format(len(self.raw)))
         logger.info("Geographies        : {}".format(
-            len(self.df['Country Name'].unique())))
+            len(self.raw['Country Name'].unique())))
         logger.info("Indicators         : {}".format(
-            len(self.df['Indicator Code'].unique())))
+            len(self.raw['Indicator Code'].unique())))
         logger.info(
-            "Temporal coverage  : {} -> {}".format(self.df.year.min(), self.df.year.max()))
+            "Temporal coverage  : {} -> {}".format(self.raw.year.min(), self.raw.year.max()))
         logger.info("Null values        : {}".format(
-            sum(self.df['value'].isnull())))
+            sum(self.raw['value'].isnull())))
 
         logger.info("Loaded data in {:3.2f} sec.".format(time() - start_time))
 
         # Now arrange data in long form
-        self.data = pd.pivot_table(self.df, index=['Country Code', 'year'],
+        self.data = pd.pivot_table(self.raw, index=['Country Code', 'year'],
                                    columns='Indicator Code', values='value')
 
         # Consider country/year as features (and not an index)
@@ -65,7 +65,7 @@ class Generator(object):
         # Get the set of indicators/code mappings
         self.labels = {i[0]: i[1]
                        for i in (self
-                                 .df[['Indicator Code', 'Indicator Name']]
+                                 .raw[['Indicator Code', 'Indicator Name']]
                                  .drop_duplicates()
                                  .values
                                  .tolist())}
@@ -79,7 +79,7 @@ class Generator(object):
         c2 = self.data.year >= MIN_YEAR
 
         # References to raw and subset of the data
-        self.df_raw = self.df.copy(deep=True)
+        # self.df_raw = self.df.copy(deep=True)
         self.df = self.data.loc[c1 & c2, FE_IDX + self.indicators + TARGETS]
 
         # make projections to handle data gaps
@@ -104,7 +104,8 @@ class Generator(object):
 
         start_time = time()
 
-        pdf = self.df.copy(deep=True)
+        pdf = self.raw.copy(deep=True)
+        pdf = pdf[pdf['Country Code'].isin(COUNTRIES)]
         pdf['year_idx'] = pd.to_datetime(pdf.year, format='%Y')
         pdf = pdf.set_index('year_idx').to_period(freq='Y')
 
@@ -118,7 +119,7 @@ class Generator(object):
 
         for (country, ind), grp in ts:
 
-            if ind in self.indicators:
+            if (ind in self.indicators):
 
                 # Years for which projection is needed
                 # `stop` has a +1 since the interval does not include the specified value
@@ -138,6 +139,7 @@ class Generator(object):
 
                     # Do some interpolation if needed
                     X = grp.value.copy(deep=True)
+                    X = X.loc[~X.index.duplicated(keep='first')]
                     X = X.resample('Y').sum()
                     X = X.interpolate()
 
@@ -236,17 +238,15 @@ class Generator(object):
         true_feature_var = self.indicators + TARGETS
 
         # Handle the missing features
-        data = (self
-                .proj_df
-                .copy(deep=True)
+        data = (data
                 .fillna(method='ffill')
                 .fillna(method='bfill'))
 
         # Temporal filters
-        t1 = self.proj_df.year == self.baseyear
+        t1 = data.year == self.baseyear
 
         # Spatial filter
-        s1 = self.proj_df['Country Code'] == country
+        s1 = data['Country Code'] == country
 
         if method == 'training':
             Xt = data.loc[s1, true_feature_var]
