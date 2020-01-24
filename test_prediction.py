@@ -20,3 +20,5 @@ if __name__ == "__main__":
     tr = Trainer(config, baseyear)
     tr.train()
     pprint(tr.score('AFG'))
+    pprint(tr.score('AFG'))
+    pprint(tr.score.cache_info())

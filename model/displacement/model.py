@@ -13,6 +13,7 @@ import os
 import json
 from time import time
 from itertools import product
+from functools import lru_cache
 
 from . import *
 from .features import Generator
@@ -29,7 +30,8 @@ class Trainer(object):
         self.baseyear = baseyear
         self.generator = Generator(config, baseyear)
 
-    def score(self, countries=COUNTRIES):
+    @lru_cache(maxsize=1024)
+    def score(self, countries=COUNTRIES, scenario=None):
         """ Scoring loop to generate forecasts """
         
         if not hasattr(self, 'models'):
@@ -46,18 +48,24 @@ class Trainer(object):
             F = self.generator.features(c, self.baseyear)
             _, _, Xv = F['data']
 
+            MC = {'country': c,
+                 'explanation': "Here is a test explanation clause that will be updated."}
+            pred = []
             for lg in LAGS:
                 
                 key = (c, lg)
-                M = {'country': c}
+                
                 clf = self.models[key]['CLF']
                 fc = clf.predict(Xv)
-                M['year'] = self.baseyear + lg
-                M['forecast'] = fc[0]
-                M['CI_low'] = fc[0] - CI_LOOKUP[key]['lower']
-                M['CI_high'] = fc[0] + CI_LOOKUP[key]['upper']
-        
-                result.append(M)
+                M = {'year' :self.baseyear + lg, 
+                     'forecast' : fc[0], 
+                     'CI_low':  fc[0] - CI_LOOKUP[key]['lower'], 
+                     'CI_high': fc[0] + CI_LOOKUP[key]['upper']}
+                
+                pred.append(M)
+
+            MC['prediction'] = pred
+            result.append(MC)
 
         return result
 
