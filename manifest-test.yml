@@ -1,0 +1,8 @@
+applications:
+- instances: 1
+  timeout: 600
+  name: drc-tdp-api-dev
+  buildpack: python_buildpack
+  memory: 1024M
+  routes:
+    - route: foresight-api.eu-de.mybluemix.net
