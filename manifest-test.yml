@@ -1,7 +1,7 @@
 applications:
 - instances: 1
   timeout: 600
-  name: drc-tdp-api-dev
+  name: Foresight-Project-API
   buildpack: python_buildpack
   memory: 1024M
   routes:
