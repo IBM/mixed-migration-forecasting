@@ -12,8 +12,8 @@ class FoodTransformer(Transformer):
     def __init__(self, source, target):
         super().__init__(source, target)
         self.iso = pd.read_csv(ISO_COUNTRY_CODES,
-                               usecols=[0, 2, 3],
-                               names=['name', 'iso3', 'country-code'],
+                               usecols=[0, 2],
+                               names=['name', 'iso3'],
                                header=0)
 
     def read(self):
@@ -39,7 +39,7 @@ class FoodTransformer(Transformer):
 
     def transform_dietary(self):
         #df = pd.DataFrame(columns=["Country Name","Indicator Name","Indicator Code","year","value"])
-        df = pd.melt(self.avg_dietary_df, id_vars='Regions.Subregions.Countries', var_name='year', value_name='values')
+        df = pd.melt(self.avg_dietary_df, id_vars='Regions.Subregions.Countries', var_name='year', value_name='value')
         df = df.rename(columns={"Regions.Subregions.Countries": "country"})
         df["year"] = df["year"].str[:4]
         df["Indicator Name"] = "Average dietary energy supply adequacy"
@@ -47,7 +47,7 @@ class FoodTransformer(Transformer):
         self.avg_dietary_df = df
 
     def transform_prevalence(self):
-        df = pd.melt(self.prevalence_df, id_vars='Regions.Subregions.Countries', var_name='year', value_name='values')
+        df = pd.melt(self.prevalence_df, id_vars='Regions.Subregions.Countries', var_name='year', value_name='value')
         df = df.rename(columns={"Regions.Subregions.Countries": "country"})
         df["year"] = df["year"].apply(lambda x : int(2000+(int(x[2:4])+int(x[5:7]))/2))
         df["Indicator Name"] = "Prevalence of moderate or severe food insecurity in the total population, 3-year averages"
@@ -58,13 +58,15 @@ class FoodTransformer(Transformer):
         # self.transform_forcibly_displaced_populations()
         self.transform_dietary()
         self.transform_prevalence()
-        self.df = self.avg_dietary_df.append(self.prevalence_df, sort="True")
+        # self.df = self.avg_dietary_df.append(self.prevalence_df, sort="True")
+        self.df = self.avg_dietary_df
 
+        self.df = self.df.dropna(how='any', axis=0)
 
         self.transform_country_code()
 
     def __repr__(self):
-        return "<PolityTransformer data for {}-{} ({} rows)>".format(self.df['year'].min(),
+        return "FoodTransformer data for {}-{} ({} rows)>".format(self.df['year'].min(),
                                                                      self.df['year'].max(),
                                                                      len(self.df))
 

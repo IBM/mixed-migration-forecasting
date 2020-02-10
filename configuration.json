@@ -69,6 +69,13 @@
             "transformer": "transformer.acled.ACLEDTransformer"
         },
         {
+            "name": "FOOD",
+            "source": "FAO",
+            "detail": "Data from FAO about the food situation.",
+            "sourcefile": "FAO/Food_Security_Indicators_1Oct2019.xlsx",
+            "transformer": "transformer.food.FoodTransformer"
+        },
+        {
             "name": "FIW",
             "source": "Freedom House",
             "detail": "Data from the Freedom in the World index from Freedom House.",
