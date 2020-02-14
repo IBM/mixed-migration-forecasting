@@ -1,0 +1,281 @@
+year,variable,value,Country Code,Country Name,Indicator Code
+1999,Persons under trial in Rakhine,242.0,MMR,Myanmar,MMR.NSO.PUTR
+2000,Persons under trial in Rakhine,295.0,MMR,Myanmar,MMR.NSO.PUTR
+2001,Persons under trial in Rakhine,282.0,MMR,Myanmar,MMR.NSO.PUTR
+2002,Persons under trial in Rakhine,155.0,MMR,Myanmar,MMR.NSO.PUTR
+2003,Persons under trial in Rakhine,196.0,MMR,Myanmar,MMR.NSO.PUTR
+2004,Persons under trial in Rakhine,265.0,MMR,Myanmar,MMR.NSO.PUTR
+2005,Persons under trial in Rakhine,328.0,MMR,Myanmar,MMR.NSO.PUTR
+2006,Persons under trial in Rakhine,258.0,MMR,Myanmar,MMR.NSO.PUTR
+2007,Persons under trial in Rakhine,291.0,MMR,Myanmar,MMR.NSO.PUTR
+2008,Persons under trial in Rakhine,281.0,MMR,Myanmar,MMR.NSO.PUTR
+2009,Persons under trial in Rakhine,262.0,MMR,Myanmar,MMR.NSO.PUTR
+2010,Persons under trial in Rakhine,280.0,MMR,Myanmar,MMR.NSO.PUTR
+2011,Persons under trial in Rakhine,200.0,MMR,Myanmar,MMR.NSO.PUTR
+2012,Persons under trial in Rakhine,1133.0,MMR,Myanmar,MMR.NSO.PUTR
+2013,Persons under trial in Rakhine,548.0,MMR,Myanmar,MMR.NSO.PUTR
+2014,Persons under trial in Rakhine,563.0,MMR,Myanmar,MMR.NSO.PUTR
+2015,Persons under trial in Rakhine,349.0,MMR,Myanmar,MMR.NSO.PUTR
+2016,Persons under trial in Rakhine,733.0,MMR,Myanmar,MMR.NSO.PUTR
+2017,Persons under trial in Rakhine,1024.0,MMR,Myanmar,MMR.NSO.PUTR
+2018,Persons under trial in Rakhine,444.0,MMR,Myanmar,MMR.NSO.PUTR
+1999,Murders in Rakhine,28.0,MMR,Myanmar,MMR.NSO.MR
+2000,Murders in Rakhine,83.0,MMR,Myanmar,MMR.NSO.MR
+2001,Murders in Rakhine,50.0,MMR,Myanmar,MMR.NSO.MR
+2002,Murders in Rakhine,54.0,MMR,Myanmar,MMR.NSO.MR
+2003,Murders in Rakhine,64.0,MMR,Myanmar,MMR.NSO.MR
+2004,Murders in Rakhine,60.0,MMR,Myanmar,MMR.NSO.MR
+2005,Murders in Rakhine,88.0,MMR,Myanmar,MMR.NSO.MR
+2006,Murders in Rakhine,94.0,MMR,Myanmar,MMR.NSO.MR
+2007,Murders in Rakhine,84.0,MMR,Myanmar,MMR.NSO.MR
+2008,Murders in Rakhine,100.0,MMR,Myanmar,MMR.NSO.MR
+2009,Murders in Rakhine,114.0,MMR,Myanmar,MMR.NSO.MR
+2010,Murders in Rakhine,139.0,MMR,Myanmar,MMR.NSO.MR
+2011,Murders in Rakhine,108.0,MMR,Myanmar,MMR.NSO.MR
+2012,Murders in Rakhine,185.0,MMR,Myanmar,MMR.NSO.MR
+2013,Murders in Rakhine,161.0,MMR,Myanmar,MMR.NSO.MR
+2014,Murders in Rakhine,104.0,MMR,Myanmar,MMR.NSO.MR
+2015,Murders in Rakhine,91.0,MMR,Myanmar,MMR.NSO.MR
+2016,Murders in Rakhine,105.0,MMR,Myanmar,MMR.NSO.MR
+2017,Murders in Rakhine,154.0,MMR,Myanmar,MMR.NSO.MR
+2018,Murders in Rakhine,127.0,MMR,Myanmar,MMR.NSO.MR
+1999,Theft in Rakhine,89.0,MMR,Myanmar,MMR.NSO.TR
+2000,Theft in Rakhine,108.0,MMR,Myanmar,MMR.NSO.TR
+2001,Theft in Rakhine,118.0,MMR,Myanmar,MMR.NSO.TR
+2002,Theft in Rakhine,104.0,MMR,Myanmar,MMR.NSO.TR
+2003,Theft in Rakhine,139.0,MMR,Myanmar,MMR.NSO.TR
+2004,Theft in Rakhine,110.0,MMR,Myanmar,MMR.NSO.TR
+2005,Theft in Rakhine,147.0,MMR,Myanmar,MMR.NSO.TR
+2006,Theft in Rakhine,144.0,MMR,Myanmar,MMR.NSO.TR
+2007,Theft in Rakhine,190.0,MMR,Myanmar,MMR.NSO.TR
+2008,Theft in Rakhine,171.0,MMR,Myanmar,MMR.NSO.TR
+2009,Theft in Rakhine,157.0,MMR,Myanmar,MMR.NSO.TR
+2010,Theft in Rakhine,133.0,MMR,Myanmar,MMR.NSO.TR
+2011,Theft in Rakhine,104.0,MMR,Myanmar,MMR.NSO.TR
+2012,Theft in Rakhine,88.0,MMR,Myanmar,MMR.NSO.TR
+2013,Theft in Rakhine,107.0,MMR,Myanmar,MMR.NSO.TR
+2014,Theft in Rakhine,132.0,MMR,Myanmar,MMR.NSO.TR
+2015,Theft in Rakhine,120.0,MMR,Myanmar,MMR.NSO.TR
+2016,Theft in Rakhine,101.0,MMR,Myanmar,MMR.NSO.TR
+2017,Theft in Rakhine,124.0,MMR,Myanmar,MMR.NSO.TR
+2018,Theft in Rakhine,171.0,MMR,Myanmar,MMR.NSO.TR
+1999,Rape,2.0,MMR,Myanmar,MMR.NSO.R
+2000,Rape,6.0,MMR,Myanmar,MMR.NSO.R
+2001,Rape,1.0,MMR,Myanmar,MMR.NSO.R
+2002,Rape,15.0,MMR,Myanmar,MMR.NSO.R
+2003,Rape,5.0,MMR,Myanmar,MMR.NSO.R
+2004,Rape,19.0,MMR,Myanmar,MMR.NSO.R
+2005,Rape,18.0,MMR,Myanmar,MMR.NSO.R
+2006,Rape,27.0,MMR,Myanmar,MMR.NSO.R
+2007,Rape,21.0,MMR,Myanmar,MMR.NSO.R
+2008,Rape,35.0,MMR,Myanmar,MMR.NSO.R
+2009,Rape,35.0,MMR,Myanmar,MMR.NSO.R
+2010,Rape,41.0,MMR,Myanmar,MMR.NSO.R
+2011,Rape,24.0,MMR,Myanmar,MMR.NSO.R
+2012,Rape,24.0,MMR,Myanmar,MMR.NSO.R
+2013,Rape,29.0,MMR,Myanmar,MMR.NSO.R
+2014,Rape,44.0,MMR,Myanmar,MMR.NSO.R
+2015,Rape,31.0,MMR,Myanmar,MMR.NSO.R
+2016,Rape,45.0,MMR,Myanmar,MMR.NSO.R
+2017,Rape,54.0,MMR,Myanmar,MMR.NSO.R
+2018,Rape,62.0,MMR,Myanmar,MMR.NSO.R
+1999,Theft,89.0,MMR,Myanmar,MMR.NSO.T
+2000,Theft,108.0,MMR,Myanmar,MMR.NSO.T
+2001,Theft,118.0,MMR,Myanmar,MMR.NSO.T
+2002,Theft,104.0,MMR,Myanmar,MMR.NSO.T
+2003,Theft,139.0,MMR,Myanmar,MMR.NSO.T
+2004,Theft,110.0,MMR,Myanmar,MMR.NSO.T
+2005,Theft,147.0,MMR,Myanmar,MMR.NSO.T
+2006,Theft,144.0,MMR,Myanmar,MMR.NSO.T
+2007,Theft,190.0,MMR,Myanmar,MMR.NSO.T
+2008,Theft,171.0,MMR,Myanmar,MMR.NSO.T
+2009,Theft,157.0,MMR,Myanmar,MMR.NSO.T
+2010,Theft,133.0,MMR,Myanmar,MMR.NSO.T
+2011,Theft,104.0,MMR,Myanmar,MMR.NSO.T
+2012,Theft,88.0,MMR,Myanmar,MMR.NSO.T
+2013,Theft,107.0,MMR,Myanmar,MMR.NSO.T
+2014,Theft,132.0,MMR,Myanmar,MMR.NSO.T
+2015,Theft,120.0,MMR,Myanmar,MMR.NSO.T
+2016,Theft,101.0,MMR,Myanmar,MMR.NSO.T
+2017,Theft,124.0,MMR,Myanmar,MMR.NSO.T
+2018,Theft,171.0,MMR,Myanmar,MMR.NSO.T
+1999,Animal Theft,1.0,MMR,Myanmar,MMR.NSO.AT
+2000,Animal Theft,1.0,MMR,Myanmar,MMR.NSO.AT
+2001,Animal Theft,1.0,MMR,Myanmar,MMR.NSO.AT
+2002,Animal Theft,3.0,MMR,Myanmar,MMR.NSO.AT
+2003,Animal Theft,1.0,MMR,Myanmar,MMR.NSO.AT
+2004,Animal Theft,3.0,MMR,Myanmar,MMR.NSO.AT
+2005,Animal Theft,6.0,MMR,Myanmar,MMR.NSO.AT
+2006,Animal Theft,11.0,MMR,Myanmar,MMR.NSO.AT
+2007,Animal Theft,24.0,MMR,Myanmar,MMR.NSO.AT
+2008,Animal Theft,21.0,MMR,Myanmar,MMR.NSO.AT
+2009,Animal Theft,33.0,MMR,Myanmar,MMR.NSO.AT
+2010,Animal Theft,15.0,MMR,Myanmar,MMR.NSO.AT
+2011,Animal Theft,3.0,MMR,Myanmar,MMR.NSO.AT
+2012,Animal Theft,11.0,MMR,Myanmar,MMR.NSO.AT
+2013,Animal Theft,,MMR,Myanmar,MMR.NSO.AT
+2014,Animal Theft,16.0,MMR,Myanmar,MMR.NSO.AT
+2015,Animal Theft,17.0,MMR,Myanmar,MMR.NSO.AT
+2016,Animal Theft,16.0,MMR,Myanmar,MMR.NSO.AT
+2017,Animal Theft,12.0,MMR,Myanmar,MMR.NSO.AT
+2018,Animal Theft,20.0,MMR,Myanmar,MMR.NSO.AT
+1999,Offences under the People's Property Protection Act,27.0,MMR,Myanmar,MMR.NSO.OUPPP
+2000,Offences under the People's Property Protection Act,16.0,MMR,Myanmar,MMR.NSO.OUPPP
+2001,Offences under the People's Property Protection Act,13.0,MMR,Myanmar,MMR.NSO.OUPPP
+2002,Offences under the People's Property Protection Act,17.0,MMR,Myanmar,MMR.NSO.OUPPP
+2003,Offences under the People's Property Protection Act,36.0,MMR,Myanmar,MMR.NSO.OUPPP
+2004,Offences under the People's Property Protection Act,31.0,MMR,Myanmar,MMR.NSO.OUPPP
+2005,Offences under the People's Property Protection Act,29.0,MMR,Myanmar,MMR.NSO.OUPPP
+2006,Offences under the People's Property Protection Act,71.0,MMR,Myanmar,MMR.NSO.OUPPP
+2007,Offences under the People's Property Protection Act,79.0,MMR,Myanmar,MMR.NSO.OUPPP
+2008,Offences under the People's Property Protection Act,77.0,MMR,Myanmar,MMR.NSO.OUPPP
+2009,Offences under the People's Property Protection Act,43.0,MMR,Myanmar,MMR.NSO.OUPPP
+2010,Offences under the People's Property Protection Act,24.0,MMR,Myanmar,MMR.NSO.OUPPP
+2011,Offences under the People's Property Protection Act,13.0,MMR,Myanmar,MMR.NSO.OUPPP
+2012,Offences under the People's Property Protection Act,22.0,MMR,Myanmar,MMR.NSO.OUPPP
+2013,Offences under the People's Property Protection Act,10.0,MMR,Myanmar,MMR.NSO.OUPPP
+2014,Offences under the People's Property Protection Act,11.0,MMR,Myanmar,MMR.NSO.OUPPP
+2015,Offences under the People's Property Protection Act,24.0,MMR,Myanmar,MMR.NSO.OUPPP
+2016,Offences under the People's Property Protection Act,9.0,MMR,Myanmar,MMR.NSO.OUPPP
+2017,Offences under the People's Property Protection Act,7.0,MMR,Myanmar,MMR.NSO.OUPPP
+2018,Offences under the People's Property Protection Act,19.0,MMR,Myanmar,MMR.NSO.OUPPP
+1999,Narcotic Offences,17.0,MMR,Myanmar,MMR.NSO.NO
+2000,Narcotic Offences,8.0,MMR,Myanmar,MMR.NSO.NO
+2001,Narcotic Offences,16.0,MMR,Myanmar,MMR.NSO.NO
+2002,Narcotic Offences,23.0,MMR,Myanmar,MMR.NSO.NO
+2003,Narcotic Offences,28.0,MMR,Myanmar,MMR.NSO.NO
+2004,Narcotic Offences,31.0,MMR,Myanmar,MMR.NSO.NO
+2005,Narcotic Offences,26.0,MMR,Myanmar,MMR.NSO.NO
+2006,Narcotic Offences,21.0,MMR,Myanmar,MMR.NSO.NO
+2007,Narcotic Offences,28.0,MMR,Myanmar,MMR.NSO.NO
+2008,Narcotic Offences,28.0,MMR,Myanmar,MMR.NSO.NO
+2009,Narcotic Offences,40.0,MMR,Myanmar,MMR.NSO.NO
+2010,Narcotic Offences,46.0,MMR,Myanmar,MMR.NSO.NO
+2011,Narcotic Offences,40.0,MMR,Myanmar,MMR.NSO.NO
+2012,Narcotic Offences,18.0,MMR,Myanmar,MMR.NSO.NO
+2013,Narcotic Offences,49.0,MMR,Myanmar,MMR.NSO.NO
+2014,Narcotic Offences,60.0,MMR,Myanmar,MMR.NSO.NO
+2015,Narcotic Offences,78.0,MMR,Myanmar,MMR.NSO.NO
+2016,Narcotic Offences,121.0,MMR,Myanmar,MMR.NSO.NO
+2017,Narcotic Offences,170.0,MMR,Myanmar,MMR.NSO.NO
+2018,Narcotic Offences,277.0,MMR,Myanmar,MMR.NSO.NO
+1999,Hardwood production Rakhine (cubic ton),8115.0,MMR,Myanmar,MMR.NSO.HPRC
+2000,Hardwood production Rakhine (cubic ton),12619.0,MMR,Myanmar,MMR.NSO.HPRC
+2001,Hardwood production Rakhine (cubic ton),27514.0,MMR,Myanmar,MMR.NSO.HPRC
+2002,Hardwood production Rakhine (cubic ton),13859.0,MMR,Myanmar,MMR.NSO.HPRC
+2003,Hardwood production Rakhine (cubic ton),15439.0,MMR,Myanmar,MMR.NSO.HPRC
+2004,Hardwood production Rakhine (cubic ton),14955.0,MMR,Myanmar,MMR.NSO.HPRC
+2005,Hardwood production Rakhine (cubic ton),17767.0,MMR,Myanmar,MMR.NSO.HPRC
+2006,Hardwood production Rakhine (cubic ton),16000.0,MMR,Myanmar,MMR.NSO.HPRC
+2007,Hardwood production Rakhine (cubic ton),17000.0,MMR,Myanmar,MMR.NSO.HPRC
+2008,Hardwood production Rakhine (cubic ton),19058.0,MMR,Myanmar,MMR.NSO.HPRC
+2009,Hardwood production Rakhine (cubic ton),14227.0,MMR,Myanmar,MMR.NSO.HPRC
+2010,Hardwood production Rakhine (cubic ton),14599.0,MMR,Myanmar,MMR.NSO.HPRC
+2011,Hardwood production Rakhine (cubic ton),16904.0,MMR,Myanmar,MMR.NSO.HPRC
+2012,Hardwood production Rakhine (cubic ton),12823.0,MMR,Myanmar,MMR.NSO.HPRC
+2013,Hardwood production Rakhine (cubic ton),20038.0,MMR,Myanmar,MMR.NSO.HPRC
+2014,Hardwood production Rakhine (cubic ton),3842.0,MMR,Myanmar,MMR.NSO.HPRC
+2015,Hardwood production Rakhine (cubic ton),4136.0,MMR,Myanmar,MMR.NSO.HPRC
+2016,Hardwood production Rakhine (cubic ton),6090.0,MMR,Myanmar,MMR.NSO.HPRC
+2017,Hardwood production Rakhine (cubic ton),1516.0,MMR,Myanmar,MMR.NSO.HPRC
+2018,Hardwood production Rakhine (cubic ton),1693.0,MMR,Myanmar,MMR.NSO.HPRC
+1999,Fish & Prawn production Rakhine (Thousand Viss),52677.0,MMR,Myanmar,MMR.NSO.FPPRTV
+2000,Fish & Prawn production Rakhine (Thousand Viss),59856.0,MMR,Myanmar,MMR.NSO.FPPRTV
+2001,Fish & Prawn production Rakhine (Thousand Viss),64880.0,MMR,Myanmar,MMR.NSO.FPPRTV
+2002,Fish & Prawn production Rakhine (Thousand Viss),74249.0,MMR,Myanmar,MMR.NSO.FPPRTV
+2003,Fish & Prawn production Rakhine (Thousand Viss),88039.0,MMR,Myanmar,MMR.NSO.FPPRTV
+2004,Fish & Prawn production Rakhine (Thousand Viss),89879.0,MMR,Myanmar,MMR.NSO.FPPRTV
+2005,Fish & Prawn production Rakhine (Thousand Viss),96687.0,MMR,Myanmar,MMR.NSO.FPPRTV
+2006,Fish & Prawn production Rakhine (Thousand Viss),107096.0,MMR,Myanmar,MMR.NSO.FPPRTV
+2007,Fish & Prawn production Rakhine (Thousand Viss),114016.0,MMR,Myanmar,MMR.NSO.FPPRTV
+2008,Fish & Prawn production Rakhine (Thousand Viss),132863.0,MMR,Myanmar,MMR.NSO.FPPRTV
+2009,Fish & Prawn production Rakhine (Thousand Viss),145279.0,MMR,Myanmar,MMR.NSO.FPPRTV
+2010,Fish & Prawn production Rakhine (Thousand Viss),152507.0,MMR,Myanmar,MMR.NSO.FPPRTV
+2011,Fish & Prawn production Rakhine (Thousand Viss),162462.0,MMR,Myanmar,MMR.NSO.FPPRTV
+2012,Fish & Prawn production Rakhine (Thousand Viss),162392.0,MMR,Myanmar,MMR.NSO.FPPRTV
+2013,Fish & Prawn production Rakhine (Thousand Viss),165890.0,MMR,Myanmar,MMR.NSO.FPPRTV
+2014,Fish & Prawn production Rakhine (Thousand Viss),170475.0,MMR,Myanmar,MMR.NSO.FPPRTV
+2015,Fish & Prawn production Rakhine (Thousand Viss),171718.0,MMR,Myanmar,MMR.NSO.FPPRTV
+2016,Fish & Prawn production Rakhine (Thousand Viss),169077.0,MMR,Myanmar,MMR.NSO.FPPRTV
+2017,Fish & Prawn production Rakhine (Thousand Viss),171884.0,MMR,Myanmar,MMR.NSO.FPPRTV
+2018,Fish & Prawn production Rakhine (Thousand Viss),85647.0,MMR,Myanmar,MMR.NSO.FPPRTV
+1999,School constructions Rakhine,57.0,MMR,Myanmar,MMR.NSO.SCR
+2000,School constructions Rakhine,48.0,MMR,Myanmar,MMR.NSO.SCR
+2001,School constructions Rakhine,123.0,MMR,Myanmar,MMR.NSO.SCR
+2002,School constructions Rakhine,112.0,MMR,Myanmar,MMR.NSO.SCR
+2003,School constructions Rakhine,116.0,MMR,Myanmar,MMR.NSO.SCR
+2004,School constructions Rakhine,532.0,MMR,Myanmar,MMR.NSO.SCR
+2005,School constructions Rakhine,72.0,MMR,Myanmar,MMR.NSO.SCR
+2006,School constructions Rakhine,270.0,MMR,Myanmar,MMR.NSO.SCR
+2007,School constructions Rakhine,436.0,MMR,Myanmar,MMR.NSO.SCR
+2008,School constructions Rakhine,74.0,MMR,Myanmar,MMR.NSO.SCR
+2009,School constructions Rakhine,75.0,MMR,Myanmar,MMR.NSO.SCR
+2010,School constructions Rakhine,307.0,MMR,Myanmar,MMR.NSO.SCR
+2011,School constructions Rakhine,246.0,MMR,Myanmar,MMR.NSO.SCR
+2012,School constructions Rakhine,1394.0,MMR,Myanmar,MMR.NSO.SCR
+2013,School constructions Rakhine,1626.0,MMR,Myanmar,MMR.NSO.SCR
+2014,School constructions Rakhine,279.0,MMR,Myanmar,MMR.NSO.SCR
+2015,School constructions Rakhine,183.0,MMR,Myanmar,MMR.NSO.SCR
+2016,School constructions Rakhine,136.0,MMR,Myanmar,MMR.NSO.SCR
+2017,School constructions Rakhine,227.0,MMR,Myanmar,MMR.NSO.SCR
+2018,School constructions Rakhine,2.0,MMR,Myanmar,MMR.NSO.SCR
+1999,Bituminious roads Rakhine,516.0,MMR,Myanmar,MMR.NSO.BRR
+2000,Bituminious roads Rakhine,520.0,MMR,Myanmar,MMR.NSO.BRR
+2001,Bituminious roads Rakhine,525.0,MMR,Myanmar,MMR.NSO.BRR
+2002,Bituminious roads Rakhine,537.0,MMR,Myanmar,MMR.NSO.BRR
+2003,Bituminious roads Rakhine,541.0,MMR,Myanmar,MMR.NSO.BRR
+2004,Bituminious roads Rakhine,548.0,MMR,Myanmar,MMR.NSO.BRR
+2005,Bituminious roads Rakhine,555.0,MMR,Myanmar,MMR.NSO.BRR
+2006,Bituminious roads Rakhine,558.0,MMR,Myanmar,MMR.NSO.BRR
+2007,Bituminious roads Rakhine,561.0,MMR,Myanmar,MMR.NSO.BRR
+2008,Bituminious roads Rakhine,566.0,MMR,Myanmar,MMR.NSO.BRR
+2009,Bituminious roads Rakhine,568.0,MMR,Myanmar,MMR.NSO.BRR
+2010,Bituminious roads Rakhine,569.0,MMR,Myanmar,MMR.NSO.BRR
+2011,Bituminious roads Rakhine,461.0,MMR,Myanmar,MMR.NSO.BRR
+2012,Bituminious roads Rakhine,529.0,MMR,Myanmar,MMR.NSO.BRR
+2013,Bituminious roads Rakhine,616.0,MMR,Myanmar,MMR.NSO.BRR
+2014,Bituminious roads Rakhine,615.0,MMR,Myanmar,MMR.NSO.BRR
+2015,Bituminious roads Rakhine,658.0,MMR,Myanmar,MMR.NSO.BRR
+2016,Bituminious roads Rakhine,654.0,MMR,Myanmar,MMR.NSO.BRR
+2017,Bituminious roads Rakhine,739.0,MMR,Myanmar,MMR.NSO.BRR
+2018,Bituminious roads Rakhine,737.0,MMR,Myanmar,MMR.NSO.BRR
+1999,Average annual rainfall Sittwaay Thantwe (mm),,MMR,Myanmar,MMR.NSO.AARST
+2000,Average annual rainfall Sittwaay Thantwe (mm),,MMR,Myanmar,MMR.NSO.AARST
+2001,Average annual rainfall Sittwaay Thantwe (mm),,MMR,Myanmar,MMR.NSO.AARST
+2002,Average annual rainfall Sittwaay Thantwe (mm),,MMR,Myanmar,MMR.NSO.AARST
+2003,Average annual rainfall Sittwaay Thantwe (mm),,MMR,Myanmar,MMR.NSO.AARST
+2004,Average annual rainfall Sittwaay Thantwe (mm),5401.5,MMR,Myanmar,MMR.NSO.AARST
+2005,Average annual rainfall Sittwaay Thantwe (mm),5157.0,MMR,Myanmar,MMR.NSO.AARST
+2006,Average annual rainfall Sittwaay Thantwe (mm),5600.5,MMR,Myanmar,MMR.NSO.AARST
+2007,Average annual rainfall Sittwaay Thantwe (mm),5840.5,MMR,Myanmar,MMR.NSO.AARST
+2008,Average annual rainfall Sittwaay Thantwe (mm),4655.0,MMR,Myanmar,MMR.NSO.AARST
+2009,Average annual rainfall Sittwaay Thantwe (mm),4750.5,MMR,Myanmar,MMR.NSO.AARST
+2010,Average annual rainfall Sittwaay Thantwe (mm),4334.0,MMR,Myanmar,MMR.NSO.AARST
+2011,Average annual rainfall Sittwaay Thantwe (mm),5726.5,MMR,Myanmar,MMR.NSO.AARST
+2012,Average annual rainfall Sittwaay Thantwe (mm),5354.5,MMR,Myanmar,MMR.NSO.AARST
+2013,Average annual rainfall Sittwaay Thantwe (mm),5249.5,MMR,Myanmar,MMR.NSO.AARST
+2014,Average annual rainfall Sittwaay Thantwe (mm),4225.5,MMR,Myanmar,MMR.NSO.AARST
+2015,Average annual rainfall Sittwaay Thantwe (mm),5048.5,MMR,Myanmar,MMR.NSO.AARST
+2016,Average annual rainfall Sittwaay Thantwe (mm),4736.5,MMR,Myanmar,MMR.NSO.AARST
+2017,Average annual rainfall Sittwaay Thantwe (mm),4878.5,MMR,Myanmar,MMR.NSO.AARST
+2018,Average annual rainfall Sittwaay Thantwe (mm),3683.0,MMR,Myanmar,MMR.NSO.AARST
+1999,Average max temperature Sittwaay Thantwe (C),,MMR,Myanmar,MMR.NSO.ATST
+2000,Average max temperature Sittwaay Thantwe (C),,MMR,Myanmar,MMR.NSO.ATST
+2001,Average max temperature Sittwaay Thantwe (C),,MMR,Myanmar,MMR.NSO.ATST
+2002,Average max temperature Sittwaay Thantwe (C),,MMR,Myanmar,MMR.NSO.ATST
+2003,Average max temperature Sittwaay Thantwe (C),,MMR,Myanmar,MMR.NSO.ATST
+2004,Average max temperature Sittwaay Thantwe (C),31.35,MMR,Myanmar,MMR.NSO.ATST
+2005,Average max temperature Sittwaay Thantwe (C),30.95,MMR,Myanmar,MMR.NSO.ATST
+2006,Average max temperature Sittwaay Thantwe (C),31.15,MMR,Myanmar,MMR.NSO.ATST
+2007,Average max temperature Sittwaay Thantwe (C),31.150000000000002,MMR,Myanmar,MMR.NSO.ATST
+2008,Average max temperature Sittwaay Thantwe (C),31.049999999999997,MMR,Myanmar,MMR.NSO.ATST
+2009,Average max temperature Sittwaay Thantwe (C),31.75,MMR,Myanmar,MMR.NSO.ATST
+2010,Average max temperature Sittwaay Thantwe (C),32.1,MMR,Myanmar,MMR.NSO.ATST
+2011,Average max temperature Sittwaay Thantwe (C),31.25,MMR,Myanmar,MMR.NSO.ATST
+2012,Average max temperature Sittwaay Thantwe (C),31.650000000000002,MMR,Myanmar,MMR.NSO.ATST
+2013,Average max temperature Sittwaay Thantwe (C),32.0,MMR,Myanmar,MMR.NSO.ATST
+2014,Average max temperature Sittwaay Thantwe (C),32.15,MMR,Myanmar,MMR.NSO.ATST
+2015,Average max temperature Sittwaay Thantwe (C),31.75,MMR,Myanmar,MMR.NSO.ATST
+2016,Average max temperature Sittwaay Thantwe (C),32.05,MMR,Myanmar,MMR.NSO.ATST
+2017,Average max temperature Sittwaay Thantwe (C),32.1,MMR,Myanmar,MMR.NSO.ATST
+2018,Average max temperature Sittwaay Thantwe (C),31.700000000000003,MMR,Myanmar,MMR.NSO.ATST
