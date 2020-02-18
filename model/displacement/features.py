@@ -70,9 +70,8 @@ class Generator(object):
                                  .values
                                  .tolist())}
 
-        # Indicators in the data
-        self.indicators = list(set(self.data.columns.tolist()) -
-                               set(EXCLUSIONS + TARGETS))
+        # Indicators in the data. This a a country specific feature set
+        self.indicators = feature_sets(self.data.columns.tolist())
 
         # filter down to the countries we are interested in.
         c1 = self.data['Country Code'].isin(COUNTRIES)
@@ -80,7 +79,7 @@ class Generator(object):
 
         # References to raw and subset of the data
         # self.df_raw = self.df.copy(deep=True)
-        self.df = self.data.loc[c1 & c2, FE_IDX + self.indicators + TARGETS]
+        self.df = self.data.loc[c1 & c2, FE_IDX + self.indicators['all'] + TARGETS]
 
         # make projections to handle data gaps
         self.proj_df = pd.concat([self.df, self.__projections()], sort=False)
@@ -119,7 +118,7 @@ class Generator(object):
 
         for (country, ind), grp in ts:
 
-            if (ind in self.indicators):
+            if (ind in self.indicators[country]):
 
                 # Years for which projection is needed
                 # `stop` has a +1 since the interval does not include the specified value
@@ -235,7 +234,7 @@ class Generator(object):
         true_target_var = varname[0]
 
         # Include current year target as a feature
-        true_feature_var = self.indicators + TARGETS
+        true_feature_var = self.indicators[country] + TARGETS
 
         # Handle the missing features
         data = (data

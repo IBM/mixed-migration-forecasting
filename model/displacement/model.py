@@ -23,12 +23,12 @@ logger = logging.getLogger(__name__)
 
 class Trainer(object):
 
-    def __init__(self, config, baseyear):
+    def __init__(self, config):
         """ Needs a configuration object and base year """
 
         self.config = config
-        self.baseyear = baseyear
-        self.generator = Generator(config, baseyear)
+        self.baseyear = config['BASEYEAR']
+        self.generator = Generator(config, self.baseyear)
 
     @lru_cache(maxsize=1024)
     def score(self, countries=COUNTRIES, scenario=None):

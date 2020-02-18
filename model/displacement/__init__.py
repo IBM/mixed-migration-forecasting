@@ -11,18 +11,26 @@ COUNTRIES = ['AFG', 'MMR']
 # Earliest year to include for building the model
 MIN_YEAR = 1995
 
-# Number of years to predict
+# A forecast is made for a base-year, defined in `configuration.json`
+# Lags here define years from the base year for which the prediction
+# models are trained and generate forecasts. Mean-absolute percentage
+# error beyond year 3 can be high (~25-30%).
 LAGS = [0, 1, 2, 3, 4, 5]
 
-# Number of years for indicator level projections (used to
-# compensate for tardy data).
+# If indicators for a country are old, we will attempt an indicator
+# level projection using an ARIMA model. The projection is this included
+# in the model. Here we can constrain the number of years we can project
+# for.
 PROJECTION_MAX_LAGS = 3
 
 # End user labels (used to assign quantiles of indicators)
 LABELS = ['worse', 'poor', 'average', 'good', 'best']
 
-# Target variable in the data
+# Target variable in the data - this is the internally displaced
+# population + total external population.
 TARGETS = ['DRC.TOT.DISP']
+
+# Feature configurations
 
 # Feature exclusions (these features are excluded from training/predictions)
 # Everything else in the data are considered as a feature.
@@ -35,7 +43,20 @@ FE_MISSING = ['EMDAT.CPX.OCCURRENCE', 'EMDAT.CPX.TOTAL.DEATHS',
               'EMDAT.CPX.TOTAL.AFFECTED', 'EMDAT.CPX.AFFECTED']
 
 
-EXCLUSIONS = FE_IDX + FE_MM + FE_ENDO + FE_MISSING
+def feature_sets(cols):
+    """ Country specific feature sets """
+
+    allfeatures = list(set(cols) - set(FE_IDX + FE_MM + FE_ENDO + FE_MISSING))
+
+    # We have some Myanmar specific data there
+    mmr_data = [f for f in allfeatures if f.startswith('MMR.NSO')]
+
+    features = {
+        'all': allfeatures,
+        'AFG': list(set(allfeatures) - set(mmr_data)),
+        'MMR': allfeatures}
+    
+    return features
 
 # Model specifications:
 # The remainder of these will be updated once experiments are complete.
@@ -48,6 +69,7 @@ CLF = Pipeline([("Preprocessor", SimpleImputer(strategy='mean')),
 
 # Empirical bootstrap error results for 95% CI (these are computed
 # in the exploratory/Displacement Forecasts.ipynb notebook)
+# TODO:
 CI_LOOKUP = {('AFG', 1): {'lower': 95671.38802200087, 'upper': 498273.9865344732},
              ('AFG', 2): {'lower': 95775.92203712976, 'upper': 485417.5078871537},
              ('AFG', 3): {'lower': 82110.733467414, 'upper': 517566.08459815086},
