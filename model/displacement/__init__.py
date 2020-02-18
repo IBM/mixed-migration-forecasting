@@ -34,6 +34,7 @@ FE_ENDO = ['UNHCR.OUT.AS', 'UNHCR.OUT.IDP', 'UNHCR.OUT.OOC',
 FE_MISSING = ['EMDAT.CPX.OCCURRENCE', 'EMDAT.CPX.TOTAL.DEATHS',
               'EMDAT.CPX.TOTAL.AFFECTED', 'EMDAT.CPX.AFFECTED']
 
+
 EXCLUSIONS = FE_IDX + FE_MM + FE_ENDO + FE_MISSING
 
 # Model specifications:
@@ -45,7 +46,8 @@ CLF = Pipeline([("Preprocessor", SimpleImputer(strategy='mean')),
                                                         learning_rate=0.1,
                                                         loss='ls'))])
 
-# Empirical bootstrap error results for 95% CI.
+# Empirical bootstrap error results for 95% CI (these are computed
+# in the exploratory/Displacement Forecasts.ipynb notebook)
 CI_LOOKUP = {('AFG', 1): {'lower': 95671.38802200087, 'upper': 498273.9865344732},
              ('AFG', 2): {'lower': 95775.92203712976, 'upper': 485417.5078871537},
              ('AFG', 3): {'lower': 82110.733467414, 'upper': 517566.08459815086},
