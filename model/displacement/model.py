@@ -15,6 +15,8 @@ from time import time
 from itertools import product
 from functools import lru_cache
 
+from sklearn.base import clone
+
 from . import *
 from .features import Generator
 
@@ -53,19 +55,38 @@ class Trainer(object):
             F = self.generator.features(c, self.baseyear)
             _, _, Xv = F['data']
 
+            D = self.generator.features(c, self.baseyear, differencing=True)
+            _, _, Xdv = D['data']
+            curr_for = D['baseline']
+
             MC = {'country': c,
                  'explanation': "Here is a test explanation clause that will be updated."}
+            
             pred = []
+
             for lg in LAGS:
                 
                 key = (c, lg)
                 
-                clf = self.models[key]['CLF']
-                fc = clf.predict(Xv)
+                bm = self.models[key]['base']
+                cm = self.models[key]['change']
+
+                fb = bm.predict(Xv)[0]
+                logger.debug("Base forecast:{}".format(fb))
+
+                # changes model predicts change in displacement.
+                # for subsequent lag, update the displacement
+                fc = cm.predict(Xdv)[0] + curr_for
+                curr_for = fc
+                logger.debug("Change forecast:{}".format(fc))
+
+                # ensemble
+                forecast = 0.5 * (fb + fc)
+
                 M = {'year' :self.baseyear + lg, 
-                     'forecast' : fc[0], 
-                     'CI_low':  fc[0] - CI_LOOKUP[key]['lower'], 
-                     'CI_high': fc[0] + CI_LOOKUP[key]['upper']}
+                     'forecast' : forecast, 
+                     'CI_low':  forecast - CI_LOOKUP[key]['lower'], 
+                     'CI_high': forecast + CI_LOOKUP[key]['upper']}
                 
                 pred.append(M)
 
@@ -80,7 +101,7 @@ class Trainer(object):
         """ Main training loop """
 
         logger.info("Training {} models for {} countries.".format(
-            len(LAGS), len(COUNTRIES)))
+            2 * len(LAGS), len(COUNTRIES)))
 
         start_time = time()
         self.models = {}
@@ -89,14 +110,24 @@ class Trainer(object):
 
             M = {'country': c, 'lag': lg, 'baseyear': self.baseyear}
 
-            # Get training data for this
+            # Get training data for the base model
             F = self.generator.features(
                 c, self.baseyear + lg, method='training')
 
-            Xt, yt, _ = F['data']
-            CLF.fit(Xt, yt)
+            D = self.generator.features(
+                c, self.baseyear + lg, method='training', differencing=True)
 
-            M['CLF'] = CLF
+            Xt, yt, _ = F['data']
+
+            base_model = clone(CLF)
+            base_model.fit(Xt, yt)
+            M['base'] = base_model
+
+            Xdt, ydt, _ = D['data']
+            change_model = clone(CLF)
+            change_model.fit(Xdt, ydt)
+            M['change'] = change_model
+            M['baseline'] = D['baseline']
 
             self.models[(c, lg)] = M
 

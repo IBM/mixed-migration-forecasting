@@ -25,7 +25,7 @@ def set_up(app, baseyear, config):
 
     # Train the models
     logger.info("Training the models.")
-    tr = Trainer(config, baseyear)
+    tr = Trainer(config)
     tr.train()
 
     @app.route("/predict", methods=['get'])

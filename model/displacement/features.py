@@ -82,7 +82,10 @@ class Generator(object):
         self.df = self.data.loc[c1 & c2, FE_IDX + self.indicators['all'] + TARGETS]
 
         # make projections to handle data gaps
-        self.proj_df = pd.concat([self.df, self.__projections()], sort=False)
+        tmp = pd.concat([self.raw, self.__projections()], sort=False)
+        self.proj_df = pd.pivot_table(tmp, index=['Country Code', 'year'],
+                                   columns='Indicator Code', values='value')
+        self.proj_df.reset_index(inplace=True)
 
     def __projections(self):
         """
@@ -98,7 +101,10 @@ class Generator(object):
         indicators: all indicators to project
         baseyear: year to project to.
 
-        returns: a dataframe
+        returns: a dataframe in long form
+
+        Note:
+        - also contains the 
         """
 
         start_time = time()
@@ -118,7 +124,7 @@ class Generator(object):
 
         for (country, ind), grp in ts:
 
-            if (ind in self.indicators[country]):
+            if (ind in self.indicators[country] + TARGETS):
 
                 # Years for which projection is needed
                 # `stop` has a +1 since the interval does not include the specified value
@@ -141,15 +147,17 @@ class Generator(object):
                     X = X.loc[~X.index.duplicated(keep='first')]
                     X = X.resample('Y').sum()
                     X = X.interpolate()
+                    X.dropna(inplace=True)
 
                     # Fit and score an AR(n) model
                     model = AR(X, missing='raise')
                     model_fit = model.fit(maxlag=lag, trend='nc')
 
+                    
                     pred = model_fit.predict(
-                        start=str(years.min()), end=str(years.max()))
+                            start=str(years.min()), end=str(years.max()))
                     cnt += 1
-
+                    
                     # Conform to the overall dataframe
                     curr_df = pd.DataFrame()
                     curr_df['value'] = pred
@@ -206,16 +214,30 @@ class Generator(object):
 
         return self.data[ind][c1 & c2].values[0]
 
+    @staticmethod
+    def get_diff(fr):
+        """ Helper function to compute diffs """
+    
+        fr = fr.sort_values(by='year')
+        tmp = fr.year
+        res = fr.diff()
+        res['year'] = tmp
+        res.fillna(-10^9, inplace=True)
+        return res
+
+
     def features(self,
                  country,
                  forecast_year,
-                 method='scoring'):
+                 method='scoring',
+                 differencing=False):
         """
         Generate features for training/scoring.
 
         :param str country: ISO-3 code for country
         :param int forecast_year: year for which this feature set is being assembled
         :param str method: feature set for training/scoring (default)
+        :param bool differencing: feature/targets are differences or not (default: no differencing)
 
         :returns dict: dataframes for scoring/training
 
@@ -229,8 +251,23 @@ class Generator(object):
 
         dt = forecast_year - self.baseyear
 
+        # build the changes feature set
+        if differencing:
+            idx = self.proj_df['Country Code'] == country
+            data = self.proj_df[idx].groupby(['Country Code']).apply(self.get_diff)
+            data = data.reset_index()
+
+            # For changes, we need to anchor the changes. Here
+            # we select the baseyear value.
+            t1 = self.proj_df.year == self.baseyear
+            bv = self.proj_df.loc[idx & t1, TARGETS[0]].values[0]
+
+        else:
+            data = self.proj_df.copy(deep=True)
+            bv = None
+
         # Target variable offset by a year (y_(t+dt))
-        data, varname = self.__lag_variables(self.proj_df, TARGETS, dt)
+        data, varname = self.__lag_variables(data, TARGETS, dt)
         true_target_var = varname[0]
 
         # Include current year target as a feature
@@ -264,7 +301,10 @@ class Generator(object):
             Xv = data.loc[t1 & s1, true_feature_var]
 
         
-        return {'data': (Xt, yt, Xv), 'Country code': country, 'baseyear': self.baseyear}
+        return {'data': (Xt, yt, Xv), 
+                'Country code': country, 
+                'baseyear': self.baseyear,
+                'baseline': bv}
     
 
     def __lag_variables(self, data, var, lag):

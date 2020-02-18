@@ -6,7 +6,7 @@ from pprint import pprint
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
 logger = logging.getLogger(__name__)
 
-baseyear = 2019
+baseyear = 2018
 countries = ['AFG', 'MMR']
 
 CONFIGURATION = 'configuration.json'
@@ -17,8 +17,8 @@ with open(CONFIGURATION, 'rt') as infile:
 if __name__ == "__main__":
 
 
-    tr = Trainer(config, baseyear)
+    tr = Trainer(config)
     tr.train()
     pprint(tr.score('AFG'))
-    pprint(tr.score('AFG'))
+    pprint(tr.score('MMR'))
     pprint(tr.score.cache_info())

@@ -18,7 +18,7 @@ MIN_YEAR = 1995
 LAGS = [0, 1, 2, 3, 4, 5]
 
 # If indicators for a country are old, we will attempt an indicator
-# level projection using an ARIMA model. The projection is this included
+# level projection using an AR model. The projection is this included
 # in the model. Here we can constrain the number of years we can project
 # for.
 PROJECTION_MAX_LAGS = 3
@@ -58,27 +58,29 @@ def feature_sets(cols):
     
     return features
 
-# Model specifications:
-# The remainder of these will be updated once experiments are complete.
-
-CLF = Pipeline([("Preprocessor", SimpleImputer(strategy='mean')),
-                ("Estimator", GradientBoostingRegressor(n_estimators=500,
+# Model specification:
+CLF = Pipeline([("Estimator", GradientBoostingRegressor(n_estimators=500,
+                                                        random_state=42,
                                                         max_depth=6,
                                                         learning_rate=0.1,
                                                         loss='ls'))])
 
 # Empirical bootstrap error results for 95% CI (these are computed
-# in the exploratory/Displacement Forecasts.ipynb notebook)
-# TODO:
-CI_LOOKUP = {('AFG', 1): {'lower': 95671.38802200087, 'upper': 498273.9865344732},
-             ('AFG', 2): {'lower': 95775.92203712976, 'upper': 485417.5078871537},
-             ('AFG', 3): {'lower': 82110.733467414, 'upper': 517566.08459815086},
-             ('AFG', 4): {'lower': 91059.84676786399, 'upper': 565971.2516878153},
-             ('AFG', 5): {'lower': 273563.39880516473, 'upper': 670423.0911384362},
-             ('AFG', 6): {'lower': 594069.1856631859, 'upper': 832696.0595408867},
-             ('MMR', 1): {'lower': 47899.69608123234, 'upper': 236411.6306831434},
-             ('MMR', 2): {'lower': 47662.79860382158, 'upper': 239130.9937380911},
-             ('MMR', 3): {'lower': 48781.772393325264, 'upper': 240009.12752662893},
-             ('MMR', 4): {'lower': 60903.23593884809, 'upper': 244049.93522725202},
-             ('MMR', 5): {'lower': 65907.04621774254, 'upper': 268163.07676308986},
-             ('MMR', 6): {'lower': 77751.24012441446, 'upper': 296631.7712564872}}
+# in the exploratory/Displacement Forecasts.ipynb notebook). This is
+# based on the evaluation tests between 2010 - 2017. Very small observation
+# set. Even with 1000 resamples, difficult to accurately estimate intervals
+# so comes with caveats.
+CI_LOOKUP = {('AFG', 0): {'lower': 5.665219699343046e-05, 'upper': 0.0001889530879755815},
+ ('AFG', 1): {'lower': 96941.94317469536, 'upper': 391701.3087687436},
+ ('AFG', 2): {'lower': 70886.55776713863, 'upper': 511274.55076823005},
+ ('AFG', 3): {'lower': 302342.9467569618, 'upper': 1047273.0196963713},
+ ('AFG', 4): {'lower': 83635.7922783768, 'upper': 625348.5347889329},
+ ('AFG', 5): {'lower': 94393.85366714257, 'upper': 233173.67421005908},
+ ('AFG', 6): {'lower': 228579.76717816075, 'upper': 756210.2841820027},
+ ('MMR', 0): {'lower': 7.362287093807633e-05, 'upper': 0.0006437247308592001},
+ ('MMR', 1): {'lower': 20180.67174192898, 'upper': 154056.17746027187},
+ ('MMR', 2): {'lower': 58416.27593719851, 'upper': 235484.84038550747},
+ ('MMR', 3): {'lower': 199513.05857889878, 'upper': 313093.3757420884},
+ ('MMR', 4): {'lower': 161987.04375370123, 'upper': 268034.8947075358},
+ ('MMR', 5): {'lower': 134434.82442245784, 'upper': 334274.76533757104},
+ ('MMR', 6): {'lower': 87810.55039265723, 'upper': 350986.925064245}}
