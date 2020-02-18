@@ -12,7 +12,7 @@ COUNTRIES = ['AFG', 'MMR']
 MIN_YEAR = 1995
 
 # Number of years to predict
-LAGS = [1, 2, 3, 4, 5]
+LAGS = [0, 1, 2, 3, 4, 5]
 
 # Number of years for indicator level projections (used to
 # compensate for tardy data).
