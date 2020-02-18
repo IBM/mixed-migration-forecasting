@@ -1,8 +1,5 @@
 {
-    "MODELFILE": {
-        "displacement": "model/displacement/models.joblib",
-        "migration": "model/migration/models.joblib"
-    },
+    "BASEYEAR": 2019,
     "supported-countries": {
         "displacement": [
             "AFG",
