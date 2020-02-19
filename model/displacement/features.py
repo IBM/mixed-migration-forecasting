@@ -42,6 +42,7 @@ class Generator(object):
                              for f in sources), sort=False, ignore_index=True)
 
         # Summary stats
+        logger.info("Base year          : {}".format(baseyear))
         logger.info("Sources            : {}".format(len(sources)))
         logger.info("Row count          : {}".format(len(self.raw)))
         logger.info("Geographies        : {}".format(
@@ -55,7 +56,7 @@ class Generator(object):
 
         logger.info("Loaded data in {:3.2f} sec.".format(time() - start_time))
 
-        # Now arrange data in long form
+        # Now arrange data in wide form
         self.data = pd.pivot_table(self.raw, index=['Country Code', 'year'],
                                    columns='Indicator Code', values='value')
 
@@ -86,6 +87,9 @@ class Generator(object):
         self.proj_df = pd.pivot_table(tmp, index=['Country Code', 'year'],
                                    columns='Indicator Code', values='value')
         self.proj_df.reset_index(inplace=True)
+        c1 = self.proj_df['Country Code'].isin(COUNTRIES)
+        c2 = self.proj_df.year >= MIN_YEAR
+        self.proj_df = self.proj_df.loc[c1 & c2, FE_IDX + self.indicators['all'] + TARGETS]
 
     def __projections(self):
         """
@@ -246,32 +250,42 @@ class Generator(object):
 
         """
 
+        logger.debug("Country: {}, forecast year: {}, difference:{}".format(country, forecast_year, differencing))
+
         assert method in ['scoring', 'training'], \
             "{} isn't a valid method ('scoring'/'training' are).".format(method)
 
         dt = forecast_year - self.baseyear
+        logger.debug("dt:{} (forecast: {}, base: {})".format(dt, forecast_year, self.baseyear))
 
         # build the changes feature set
         if differencing:
-            idx = self.proj_df['Country Code'] == country
-            data = self.proj_df[idx].groupby(['Country Code']).apply(self.get_diff)
+            c1 = self.proj_df['Country Code'] == country
+            c2 = ~pd.isnull(self.proj_df[TARGETS[0]])
+            data = self.proj_df[c1 & c2].groupby(['Country Code']).apply(self.get_diff)
             data = data.reset_index()
 
             # For changes, we need to anchor the changes. Here
             # we select the baseyear value.
             t1 = self.proj_df.year == self.baseyear
-            bv = self.proj_df.loc[idx & t1, TARGETS[0]].values[0]
+            bv = self.proj_df.loc[c1 & t1, TARGETS[0]].values[0]
+
+            logger.debug("Baseline value: {}".format(bv))
 
         else:
             data = self.proj_df.copy(deep=True)
             bv = None
 
         # Target variable offset by a year (y_(t+dt))
+        # TODO: Fix cases when dt == 0 (no lagged target variables)
         data, varname = self.__lag_variables(data, TARGETS, dt)
         true_target_var = varname[0]
+        logger.debug("Target: {}".format(true_target_var))
+        
 
         # Include current year target as a feature
         true_feature_var = self.indicators[country] + TARGETS
+        logger.debug("Total # Features: {}".format(len(true_feature_var)))
 
         # Handle the missing features
         data = (data
@@ -288,17 +302,21 @@ class Generator(object):
             Xt = data.loc[s1, true_feature_var]
             yt = data.loc[s1, true_target_var]
             Xv = None
+            logger.debug("Training samples: {} obs, {} features.".format(*Xt.shape))
 
             # Drop missing training labels
             idx = ~pd.isnull(yt)
             yt = yt[idx]
             Xt = Xt[idx]
+            logger.debug("Training samples: {} obs, {} features.".format(*Xt.shape))
 
         elif method == 'scoring':
 
             Xt = None
             yt = None
             Xv = data.loc[t1 & s1, true_feature_var]
+            logger.debug("Scoring samples: {} obs, {} features.".format(*Xv.shape))
+
 
         
         return {'data': (Xt, yt, Xv), 

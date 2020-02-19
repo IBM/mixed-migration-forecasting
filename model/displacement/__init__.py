@@ -46,7 +46,7 @@ FE_MISSING = ['EMDAT.CPX.OCCURRENCE', 'EMDAT.CPX.TOTAL.DEATHS',
 def feature_sets(cols):
     """ Country specific feature sets """
 
-    allfeatures = list(set(cols) - set(FE_IDX + FE_MM + FE_ENDO + FE_MISSING))
+    allfeatures = list(set(cols) - set(FE_IDX + FE_MM + FE_ENDO + FE_MISSING + TARGETS))
 
     # We have some Myanmar specific data there
     mmr_data = [f for f in allfeatures if f.startswith('MMR.NSO')]

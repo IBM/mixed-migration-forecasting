@@ -4,7 +4,8 @@ prm-datasets/.DS_Store
 *.pkl
 .idea
 venv2
-
+exploratory/Cross-validation experiments.ipynb
+exploratory/Testbed.ipynb
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

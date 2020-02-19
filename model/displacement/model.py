@@ -72,16 +72,16 @@ class Trainer(object):
                 cm = self.models[key]['change']
 
                 fb = bm.predict(Xv)[0]
-                logger.debug("Base forecast:{}".format(fb))
 
                 # changes model predicts change in displacement.
                 # for subsequent lag, update the displacement
                 fc = cm.predict(Xdv)[0] + curr_for
                 curr_for = fc
-                logger.debug("Change forecast:{}".format(fc))
 
                 # ensemble
                 forecast = 0.5 * (fb + fc)
+
+                logger.info("Forecasts {} (lag {}): base: {} change: {} ensemble:{}".format(c, lg, fb, fc, forecast))
 
                 M = {'year' :self.baseyear + lg, 
                      'forecast' : forecast, 

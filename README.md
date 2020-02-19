@@ -12,7 +12,7 @@ $ git clone git@github.com:IBM/mixed-migration-forecasting.git
 Then setup a python environment. If you use the Anaconda distribution (recommended), create a python virtual environment using `conda`. This way your project specific dependencies are isolated.
 
 ```
-$ conda create -n mm4sight python=3.6
+$ conda create -n mm4sight python=3.7.4
 $ source activate mm4sight
 (mm4sight) $ pip install -r requirements.txt
 ```
