@@ -11,7 +11,7 @@ class WorldBankTransformer(Transformer):
         """ World bank indicator data transform to long form """
 
         # Fix separator error in source
-        self.df.drop(['Unnamed: 62'], axis=1, inplace=True)
+        self.df.drop(['Unnamed: 64'], axis=1, inplace=True)
 
         # Transform the year variables to row-oriented
         wb_df = pd.melt(self.df,
