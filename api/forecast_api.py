@@ -10,13 +10,11 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-def set_up(app, baseyear, config):
+def set_up(app, config):
     """
     Set up the prediction api's with
 
     :param app: a flask app to register the end point on
-    :param baseyear: year considered "current". Forecasts are made
-               for baseyear+1, baseyear+2, ...
     :param config: application configuration object
 
     :returns: None
@@ -37,7 +35,7 @@ def set_up(app, baseyear, config):
         if source is None:
             return make_response(jsonify({"msg": "Invalid call. Source country missing."}), 405)
 
-        logger.info("Predicting for country {} for current/base year {}.".format(source, baseyear))
+        logger.info("Predicting for country {} for current/base year {}.".format(source, config['BASEYEAR']))
         
         try:
             result = tr.score(source)
