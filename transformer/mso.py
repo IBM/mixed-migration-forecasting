@@ -38,5 +38,6 @@ class MyanmarTransformer(Transformer):
         data['Country Code'] = 'MMR'
         data['Country Name'] = 'Myanmar'
         data['Indicator Code'] = data['variable'].apply(lambda x: codes[x])
+        data.rename(columns={'variable': 'Indicator Name'}, inplace=True)
 
         self.df = data
