@@ -1,74 +1,16 @@
 {
     "clusters": [
         {
-            "theme": "Health",
-            "sub-theme": "health",
+            "theme": "Economy",
             "indicators": [
                 {
-                    "code": "WHO.NUM.TB.CAS",
-                    "description": "Number of incident tuberculosis cases",
-                    "direction-improvement": "lower"
-                },
-                {
-                    "code": "WHO.TB.TMT.COV",
-                    "description": "Tuberculosis treatment coverage",
+                    "code": "NY.GDP.PCAP.PP.CD",
+                    "description": "GDP per capita, PPP (current international $)",
                     "direction-improvement": "higher"
                 },
                 {
-                    "code": "WHO.TB.CAS",
-                    "description": "Tuberculosis - new and relapse cases",
-                    "direction-improvement": "lower"
-                },
-                {
-                    "code": "WHO.INF.DTH",
-                    "description": "Number of infant deaths (thousands)",
-                    "direction-improvement": "lower"
-                },
-                {
-                    "code": "WHO.MAT.DEATHS",
-                    "description": "Number of maternal deaths",
-                    "direction-improvement": "lower"
-                },
-                {
-                    "code": "WHO.NEO.DTH",
-                    "description": "Number of neonatal deaths (thousands)",
-                    "direction-improvement": "lower"
-                },
-                {
-                    "code": "WHO.UND.FIV.DTH",
-                    "description": "Number of under-five deaths (thousands)",
-                    "direction-improvement": "lower"
-                }
-            ]
-        },
-        {
-            "theme": "Society",
-            "sub-theme": "food-security",
-            "indicators": [
-                {
-                    "code": "AG.PRD.LVSK.XD",
-                    "description": "Livestock production index (2004-2006 = 100)",
-                    "direction-improvement": "higher"
-                },
-                {
-                    "code": "AG.PRD.FOOD.XD",
-                    "description": "Food production index (2004-2006 = 100)",
-                    "direction-improvement": "higher"
-                }
-            ]
-        },
-        {
-            "theme": "Society",
-            "sub-theme": "employment",
-            "indicators": [
-                {
-                    "code": "SL.UEM.TOTL.FE.ZS",
-                    "description": "Unemployment, female (% of female labor force) (modeled ILO estimate)",
-                    "direction-improvement": "lower"
-                },
-                {
-                    "code": "SL.UEM.TOTL.MA.ZS",
-                    "description": "Unemployment, male (% of male labor force) (modeled ILO estimate)",
+                    "code": "FP.CPI.TOTL.ZG",
+                    "description": "Inflation, consumer prices (annual %)",
                     "direction-improvement": "lower"
                 },
                 {
@@ -79,48 +21,81 @@
             ]
         },
         {
-            "theme": "Society",
-            "sub-theme": "infrastructure",
+            "theme": "Conflict",
             "indicators": [
                 {
-                    "code": "EG.ELC.ACCS.ZS",
-                    "description": "Access to electricity (% of population)",
-                    "direction-improvement": "higher"
-                },
-                {
-                    "code": "IT.NET.USER.ZS",
-                    "description": "Individuals using the Internet (% of population)",
-                    "direction-improvement": "higher"
-                },
-                {
-                    "code": "EMDAT.TEC.TOTAL.AFFECTED",
-                    "description": "EMDAT estimate of Total affected for Technological disaster group",
+                    "code": "VC.BTL.DETH",
+                    "description": "Battle-related deaths (number of people)",
                     "direction-improvement": "lower"
                 },
                 {
-                    "code": "EN.ATM.PM25.MC.M3",
-                    "description": "PM2.5 air pollution, mean annual exposure (micrograms per cubic meter)",
+                    "code": "VDEM.FRD.POL.KILL",
+                    "description": "Freedom from political killings",
+                    "direction-improvement": "lower"
+                },
+                {
+                    "code": "ACLED.COUNT",
+                    "description": "ACLED total number of violent incidents annually.",
                     "direction-improvement": "lower"
                 }
             ]
         },
         {
-            "theme": "Society",
-            "sub-theme": "conflict",
+            "theme": "Governance",
             "indicators": [
                 {
-                    "code": "ACLED.COUNT",
-                    "description": "ACLED total number of violent incidents annually",
+                    "code": "DRC.CORR.INDEX",
+                    "description": "DRC Collected Corruption Index",
                     "direction-improvement": "lower"
                 },
                 {
-                    "code": "ACLED.FATALITIES",
-                    "description": "ACLED number of fatalities annually from violence",
+                    "code": "HR.SCR.MEAN",
+                    "description": "Human Rights Score Mean",
                     "direction-improvement": "lower"
                 },
                 {
-                    "code": "VC.BTL.DETH",
-                    "description": "Battle-related deaths (number of people)",
+                    "code": "FSI.STA.LEG",
+                    "description": "State Legitimacy",
+                    "direction-improvement": "higher"
+                },
+                {
+                    "code": "FSI.PUB.SER",
+                    "description": "Public Services",
+                    "direction-improvement": "higher"
+                }
+            ]
+        },
+        {
+            "theme": "Natural",
+            "indicators": [
+                {
+                    "code": "EMDAT.NAT.OCCURRENCE",
+                    "description": "EMDAT estimate of occurrence for Natural disaster group",
+                    "direction-improvement": "lower"
+                },
+                {
+                    "code": "ER.H2O.INTR.PC",
+                    "description": "Renewable internal freshwater resources per capita (cubic meters)",
+                    "direction-improvement": "higher"
+                },
+                {
+                    "code": "WFP.PRC.WHT",
+                    "description": "Price of wheat in retail",
+                    "direction-improvement": "lower"
+                }
+            ]
+        },
+        {
+            "theme": "Population",
+            "indicators": [
+                {
+                    "code": "SP.POP.GROW",
+                    "description": "Population growth (annual %)",
+                    "direction-improvement": "lower"
+                },
+                {
+                    "code": "SP.URB.GROW",
+                    "description": "Urban population growth (annual %)",
                     "direction-improvement": "lower"
                 }
             ]
