@@ -34,8 +34,8 @@
                     "direction-improvement": "lower"
                 },
                 {
-                    "code": "ACLED.COUNT",
-                    "description": "ACLED total number of violent incidents annually.",
+                    "code": "UC.FAT.CIV",
+                    "description": "UCDP annual number of civilian fatalities",
                     "direction-improvement": "lower"
                 }
             ]
@@ -79,9 +79,9 @@
                     "direction-improvement": "higher"
                 },
                 {
-                    "code": "WFP.PRC.WHT",
-                    "description": "Price of wheat in retail",
-                    "direction-improvement": "lower"
+                    "code": "ADESA",
+                    "description": "FAO: Average dietary energy supply adequacy",
+                    "direction-improvement": "higher"
                 }
             ]
         },
