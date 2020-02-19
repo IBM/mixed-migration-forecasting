@@ -16,19 +16,27 @@
     },
     "sources": [
         {
-            "name": "myanmar",
-            "source": "Myanmar Statistics Office",
-            "detail": "Data from the Myanmar Statistics Office for the Rakhine area. Note this is not a national dataset.",
-            "sourcefile": "Myanmar/200124_Foresight_Myanmar_data_NSO.xlsx",
-            "transformer": "transformer.mso.MyanmarTransformer"
-        },
-        {
             "name": "worldbank",
             "source": "Worldbank",
             "detail": "Data from the Worldbank Development Indicators information product.",
             "sourcefile": "worldbank/WDI/WDIData.csv",
             "transformer": "transformer.worldbank.WorldBankTransformer"
         },
+        {
+            "name": "HumanRights",
+            "source": "Human Rights",
+            "detail": "Human rights protection scores.",
+            "sourcefile": "HumanRights/HumanRightsProtectionScores_v2.03.csv",
+            "transformer": "transformer.humanrights.HumanRightsTransformer"
+        },
+        {
+            "name": "myanmar",
+            "source": "Myanmar Statistics Office",
+            "detail": "Data from the Myanmar Statistics Office for the Rakhine area. Note this is not a national dataset.",
+            "sourcefile": "Myanmar/200124_Foresight_Myanmar_data_NSO.xlsx",
+            "transformer": "transformer.mso.MyanmarTransformer"
+        },
+
         {
             "name": "emdat",
             "source": "EMDAT",

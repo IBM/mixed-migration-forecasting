@@ -60,69 +60,69 @@ class HumanRightsTransformer(Transformer):
 
     def transform_country_code(self):
         # map country codes
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("United States","United States of America")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Trinidad & Tobago", "Trinidad and Tobago")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Venezuela", "Venezuela (Bolivarian Republic of)")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Bolivia", "Bolivia (Plurinational State of)")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("United Kingdom", "United Kingdom of Great Britain and Northern Ireland")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Germany West", "Germany")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Germany East", "Germany")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Czechoslovakia", "Czechia")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Czech Republic", "Czechia")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Slovak Republic", "Slovakia")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Macedonia", "Macedonia (the former Yugoslav Republic of)")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("United States","United States of America")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Trinidad & Tobago", "Trinidad and Tobago")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Venezuela", "Venezuela (Bolivarian Republic of)")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Bolivia", "Bolivia (Plurinational State of)")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("United Kingdom", "United Kingdom of Great Britain and Northern Ireland")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Germany West", "Germany")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Germany East", "Germany")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Czechoslovakia", "Czechia")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Czech Republic", "Czechia")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Slovak Republic", "Slovakia")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Macedonia", "Macedonia (the former Yugoslav Republic of)")
 
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Yugoslavia", "Yugoslavia") #
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Bosnia", "Bosnia and Herzegovina")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Serbia and Montenegro", "Serbia") #
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Moldova", "Moldova (Republic of)")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Russia", "Russian Federation")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Ivory Coast", "Côte d'Ivoire")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Congo-Brazzaville", "Congo")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Congo-Kinshasa", "Congo (Democratic Republic of the)")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Congo Brazzaville", "Congo")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Congo Kinshasa", "Congo (Democratic Republic of the)")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Tanzania", "Tanzania, United Republic of")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Iran", "Iran (Islamic Republic of)")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Syria", "Syrian Arab Republic")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Yugoslavia", "Yugoslavia") #
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Bosnia", "Bosnia and Herzegovina")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Serbia and Montenegro", "Serbia") #
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Moldova", "Moldova (Republic of)")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Russia", "Russian Federation")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Ivory Coast", "Côte d'Ivoire")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Congo-Brazzaville", "Congo")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Congo-Kinshasa", "Congo (Democratic Republic of the)")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Congo Brazzaville", "Congo")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Congo Kinshasa", "Congo (Democratic Republic of the)")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Tanzania", "Tanzania, United Republic of")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Iran", "Iran (Islamic Republic of)")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Syria", "Syrian Arab Republic")
 
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Palestine", "Palestine, State of")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Yemen Arab Republic", "Yemen")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Yemen PDR", "Yemen")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Taiwan", "Taiwan, Province of China")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Korea North", "Korea (Democratic People's Republic of)")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Korea South", "Korea (Republic of)")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("North Korea", "Korea (Democratic People's Republic of)")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("South Korea", "Korea (Republic of)")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Myanmar (Burma)", "Myanmar")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Laos", "Lao People's Democratic Republic")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Vietnam", "Viet Nam")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("East Timor", "Timor-Leste")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Palestine", "Palestine, State of")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Yemen Arab Republic", "Yemen")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Yemen PDR", "Yemen")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Taiwan", "Taiwan, Province of China")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Korea North", "Korea (Democratic People's Republic of)")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Korea South", "Korea (Republic of)")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("North Korea", "Korea (Democratic People's Republic of)")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("South Korea", "Korea (Republic of)")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Myanmar (Burma)", "Myanmar")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Laos", "Lao People's Democratic Republic")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Vietnam", "Viet Nam")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("East Timor", "Timor-Leste")
 
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Eastern Europe", "Eastern Europe") #
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Latin America", "Latin America") #
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Former Yugoslavia", "Former Yugoslavia") #
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Former USSR", "Former USSR") #
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("St. Lucia", "Saint Lucia")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("St. Vincent and the Grenadines", "Saint Vincent and the Grenadines")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Antigua & Barbuda", "Antigua and Barbuda")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("St. Kitts and Nevis", "Saint Kitts and Nevis")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Republic of Vietnam", "Viet Nam")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Brunei", "Brunei Darussalam")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Federated States of Micronesia", "Micronesia (Federated States of)")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Eastern Europe", "Eastern Europe") #
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Latin America", "Latin America") #
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Former Yugoslavia", "Former Yugoslavia") #
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Former USSR", "Former USSR") #
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("St. Lucia", "Saint Lucia")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("St. Vincent and the Grenadines", "Saint Vincent and the Grenadines")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Antigua & Barbuda", "Antigua and Barbuda")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("St. Kitts and Nevis", "Saint Kitts and Nevis")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Republic of Vietnam", "Viet Nam")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Brunei", "Brunei Darussalam")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Federated States of Micronesia", "Micronesia (Federated States of)")
 
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Yemen People's Republic", "Yemen")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Palestinian Authority", "Palestine, State of")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Israel, occupied territories only", "Israel")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Israel, pre-1967 borders", "Israel")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Zanzibar", "Tanzania, United Republic of")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Democratic Republic of the Congo", "Congo (Democratic Republic of the)")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Cape Verde", "Cabo Verde")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Kosovo", "Serbia")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("Yugoslavia", "Yugoslavia") #
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Yemen People's Republic", "Yemen")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Palestinian Authority", "Palestine, State of")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Israel, occupied territories only", "Israel")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Israel, pre-1967 borders", "Israel")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Zanzibar", "Tanzania, United Republic of")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Democratic Republic of the Congo", "Congo (Democratic Republic of the)")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Cape Verde", "Cabo Verde")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Kosovo", "Serbia")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("Yugoslavia", "Yugoslavia") #
 
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("German Democratic Republic", "Germany")
-        self.df.ix[:, "country"] = self.df.ix[:, "country"].replace("German Federal Republic", "Germany")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("German Democratic Republic", "Germany")
+        self.df.loc[:, "country"] = self.df.loc[:, "country"].replace("German Federal Republic", "Germany")
 
 
         self.df = pd.merge(self.df, self.iso, how='left', left_on='country', right_on='name')

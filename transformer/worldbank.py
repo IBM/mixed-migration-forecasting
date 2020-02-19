@@ -36,6 +36,7 @@ class WorldBankTransformer(Transformer):
                "AG.PRD.FOOD.XD",  # Food production index (2004-2006 = 100)
                "AG.PRD.LVSK.XD",  # Livestock production index (2004-2006 = 100)
                "SP.URB.GROW",  # Urban population growth (annual %)
+               "SP.POP.GROW", # Total population growth (annual %)
                "EN.POP.DNST",  # Population density (people per sq. km of land area)
                "EN.ATM.PM25.MC.M3",  # PM2.5 air pollution, mean annual exposure (micrograms per cubic meter)
                "EG.ELC.ACCS.ZS",  # Access to electricity (% of population)
