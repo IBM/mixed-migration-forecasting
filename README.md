@@ -39,12 +39,4 @@ This standardizes the data and populates the [processed](https://github.com/IBM/
 (mm4sight) $ python model/trainer.py
 ```
 
-Few additional helper scripts that may be of use.
-
-1. [evaluation.py](https://github.com/IBM/mixed-migration-forecasting/tree/master/evaluation.py) runs the evaluations reported in the paper.
-2. [gridsearch.py](https://github.com/IBM/mixed-migration-forecasting/tree/master/gridsearch.py) determines grid search parameters for a country level model.
-3. [test_prediction.py](https://github.com/IBM/mixed-migration-forecasting/tree/master/test_prediction.py) to see how the scoring API can be invoked and how scenarios can be defined.
-4. [paper-plots.py](https://github.com/IBM/mixed-migration-forecasting/tree/master/paper-plots.py) shows some of the error analysis and plots used in the paper.
-
-
 *Deployment*: We use a cloud foundry build pack which can be deployed to IBM Cloud.
