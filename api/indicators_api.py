@@ -12,6 +12,7 @@ import pandas as pd
 from flask import jsonify, request
 from time import time
 import logging
+import numpy as np
 
 logger = logging.getLogger(__name__)
 
@@ -138,6 +139,91 @@ def set_up(app, config):
 
         return sub_df.to_json(orient='records')
 
+    @app.route("/latestIndicators")
+    def latestIndicators():
+        country = request.args.get('country')
+        indicator = request.args.get('indicator')
+        try:
+            years = request.args.get('years')
+            years = int(years)
+        except:
+            years = 1
+
+        countries = country.split(',')
+
+        if indicator == 'all':
+            if country != 'all':
+                sub_df = df.loc[df["Country Code"].isin(countries)]
+        else:
+            if country != 'all':
+                sub_df = df.loc[(df["Country Code"].isin(countries)) & (df["Indicator Code"] == indicator)]
+            else:
+                sub_df = df.loc[df["Indicator Code"] == indicator]
+            # print(indicators)
+
+        result_df = pd.DataFrame(columns=df.columns)
+        for ind in sub_df["Indicator Code"].unique():
+            y = sub_df.loc[sub_df["Indicator Code"] == ind].groupby('Indicator Code')['year'].max().reset_index()[
+                'year'].values[0]
+            for i in range(0, years):
+                ind_df = sub_df.loc[(sub_df["Indicator Code"] == ind) & (sub_df["year"] == int(y - i))]
+                result_df = result_df.append(ind_df)
+
+        return result_df.to_json(orient='records')
+
+    def get_outliers(data, indicator):
+        """ Get a set of dots with significant change in indicator values
+                which can be considered outliers """
+        sub_df = data.loc[data["Indicator Code"] == indicator]
+        sub_df = sub_df.sort_values(by='year')
+
+        significant = {}
+
+        if len(sub_df['value'].values) > 0:
+
+            diff_sum = 0
+            stored = sub_df['value'].values[0]
+            year_before = sub_df['year'].values[0]
+            i = 0
+            for index, row in sub_df.iterrows():
+                v = row['value']
+                y = row['year']
+                dif = v - stored
+                if y - year_before == 1:
+                    diff_sum = diff_sum + np.abs(dif)
+                stored = v
+                year_before = y
+                i += 1
+            avg = diff_sum / i
+
+            # avg = (max-min)/2
+
+            stored = sub_df['value'].values[0]
+            year_before = sub_df['year'].values[0]
+            for i, row in sub_df.iterrows():
+                v = row['value']
+                y = row['year']
+                dif = v - stored
+                if y - year_before == 1:
+                    if np.abs(dif) >= 2 * (avg):
+                        significant[y] = v
+                        # significant.append(significant_dot)
+                stored = v
+                year_before = y
+
+        return significant
+
+    @app.route("/outliers")
+    def outliers():
+        country = request.args.get('country')
+        indicator = request.args.get('indicator')
+
+        sub_df = df.loc[df["Country Code"] == country]
+
+        outliers = get_outliers(sub_df, indicator)
+
+        return jsonify(outliers), 200
+    
     @app.route("/indicatorCodeByName")
     def indicatorCodeByName():
         indicatorName = request.args.get('indicator')
