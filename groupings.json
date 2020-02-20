@@ -32,11 +32,6 @@
                     "code": "VDEM.FRD.POL.KILL",
                     "description": "Freedom from political killings",
                     "direction-improvement": "lower"
-                },
-                {
-                    "code": "ACLED.COUNT",
-                    "description": "ACLED total number of violent incidents annually.",
-                    "direction-improvement": "lower"
                 }
             ]
         },
@@ -77,11 +72,6 @@
                     "code": "ER.H2O.INTR.PC",
                     "description": "Renewable internal freshwater resources per capita (cubic meters)",
                     "direction-improvement": "higher"
-                },
-                {
-                    "code": "WFP.PRC.WHT",
-                    "description": "Price of wheat in retail",
-                    "direction-improvement": "lower"
                 }
             ]
         },
