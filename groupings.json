@@ -32,6 +32,11 @@
                     "code": "VDEM.FRD.POL.KILL",
                     "description": "Freedom from political killings",
                     "direction-improvement": "lower"
+                },
+                {
+                    "code": "UC.FAT.CIV",
+                    "description": "UCDP annual number of civilian fatalities",
+                    "direction-improvement": "lower"
                 }
             ]
         },
@@ -71,6 +76,11 @@
                 {
                     "code": "ER.H2O.INTR.PC",
                     "description": "Renewable internal freshwater resources per capita (cubic meters)",
+                    "direction-improvement": "higher"
+                },
+                {
+                    "code": "ADESA",
+                    "description": "FAO: Average dietary energy supply adequacy",
                     "direction-improvement": "higher"
                 }
             ]
