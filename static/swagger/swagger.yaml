@@ -16,9 +16,161 @@ servers:
     description: Deployment server
     
 paths:
+  /indicators:
+    summary: List of socio-economic and developmental indicators in the system. 
+    get:
+      tags:
+        - indicators
+      parameters:
+      - name: country
+        in: query
+        description: A comma-separated list of country codes or `all` for which indicator data is requested.
+        required: true
+        example: AFG
+        schema:
+          type: "string"
+      - name: indicator
+        in: query
+        description: specific indicator code or `all`
+        required: true
+        example: SL.UEM.TOTL.ZS
+        schema:
+          type: "string"
+      - name: years
+        in: query
+        description: Year for which data is requested. Can be a single year, e.g. 1980 or a range e.g. 1980-1990.
+        example: 2010
+        schema:
+          type: "string"
+      responses:
+        '200':
+          description: List of indicator codes and names, along with sources and attribution. 
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  type: "object"
+                  properties:
+                    Country Code:
+                      description: ISO-3 country code
+                      example: 'AFG'
+                    Country Name:
+                      description: Country name
+                      example: Afghanistan
+                    Indicator Name:
+                      description: Indicator description 
+                      example: Unemployment, total (% of total labor force) (modeled ILO estimate)
+                    Indicator Code:
+                      description: Indicator code
+                      example: SL.UEM.TOTL.ZS
+                    year:
+                      description: Year for the indicator value
+                      example: 2010
+                    value:
+                      description: The indicator value. 
+                      example: 2.274
+            
+  /latestIndicators:
+    summary: TBC
+    get:
+      tags:
+      - indicators
+      responses:
+        '200':
+          description: TBC
+          content: 
+            application/json:
+              schema:
+                type: object
+  /outliers:
+    summary: TBC
+    get:
+      tags:
+      - indicators
+      responses:
+        '200':
+          description: TBC
+          content: 
+            application/json:
+              schema:
+                type: object
+  /indicatorCodeByName:
+    summary: TBC
+    get:
+      tags:
+      - indicators
+      responses:
+        '200':
+          description: TBC
+          content: 
+            application/json:
+              schema:
+                type: object
+  /uniqueIndicators:
+    summary: TBC
+    get:
+      tags:
+      - indicators
+      responses:
+        '200':
+          description: TBC
+          content: 
+            application/json:
+              schema:
+                type: object
+  
+  /uniqueIndicatorNames:
+    summary: TBC
+    get:
+      tags:
+      - indicators
+      responses:
+        '200':
+          description: TBC
+          content: 
+            application/json:
+              schema:
+                type: object
+                
+  /indicatorMetadata:
+    summary: TBC
+    get:
+      tags:
+      - indicators
+      responses:
+        '200':
+          description: TBC
+          content: 
+            application/json:
+              schema:
+                type: object
+  /countries:
+    summary: Returns list of countries for the forecast model.
+    get:
+      tags: 
+      - model
+      parameters: []
+      responses:
+        '200':
+          description: Response object with list of country codes and names
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  type: "object"
+                  properties:
+                    Country Code:
+                      description: ISO-3 country code
+                      example: 'AFG'
+                    Country Name:
+                      description: Country name
+                      example: Afghanistan
+  
   /scenarios:
     summary: Returns supported scenarios for the model. 
-    description: A Scenario is defined by a theme, and associated indicator variables. 
+    description: A Scenario is defined by a theme, labels, and associated indicator variables. Labels are user
     get:
       tags: 
       - model
@@ -32,89 +184,92 @@ paths:
                 $ref: '#/components/schemas/ScenarioResponse'
     
   /predict:
-    summary: Generate a set of forecasts for a source country.
-    description: Given a source `country`, `year`, and optionally any `scenario` paramaters, returns a point forecast, confidence interval, and explanations.
+    summary: Generate forced displacement forecast for a country
+    description: Given a source `country` (ISO3 code) and optionally any `scenario` paramaters, returns a point forecast, confidence interval, and explanations.
     get:
       tags:
       - model
       parameters:
       - name: source
         in: query
-        description: Source country from which to forecast. ISO-3 code.
-        example: 'ETH'
+        description: Source country from which to forecast. ISO-3 code. Currently supports Afghanistan (`AFG`) and Myanmar (`MMR`)
+        example: 'AFG'
         schema:
           type: string
-        required: true
-      - name: year
-        in: query
-        description: Year for which the forecast is requested.
-        example: 2016
-        schema:
-          type: integer
         required: true
       - name: scenario
         in: query
         required: false
-        description: Indicator clusters names along with labels indicating relative change with respect to Sub-Saharan African countries. Cluster themes currently supported are `societal`, `health`, `food-security`, `infrastructure`, and `conflict`.
+        description: Optional indicator clusters themes along with labels indicating percentage change for a basket of indicators per cluster. Cluster themes currently supported are `Economy`, `Conflict`, `Governance`, `Natural`, and `Population`. A scenario can have any subset of these dimensions.
         schema:
           type: object
           properties:
-            societal:
+            Economy:
               type: string
               enum: 
-              - worse
-              - poor
-              - average
-              - good
-              - best
-              example: good
-            health: 
+              - -10%
+              - -5%
+              - NC
+              - +5%
+              - +10%
+              example: -5%
+            Conflict: 
               type: string
               enum: 
-              - worse
-              - poor
-              - average
-              - good
-              - best
-              example: average
-            food-security: 
+              - -10%
+              - -5%
+              - NC
+              - +5%
+              - +10%
+              example: +5%
+            Governance: 
               type: string
               enum: 
-              - worse
-              - poor
-              - average
-              - good
-              - best
-              example: average
-            infrastructure: 
+              - -10%
+              - -5%
+              - NC
+              - +5%
+              - +10%
+              example: +10%
+            Natural: 
               type: string
               enum: 
-              - worse
-              - poor
-              - average
-              - good
-              - best
-              example: average
-            conflict: 
+              - -10%
+              - -5%
+              - NC
+              - +5%
+              - +10%
+              example: +5%
+            Population: 
               type: string
               enum: 
-              - worse
-              - poor
-              - average
-              - good
-              - best
-              example: average
+              - -10%
+              - -5%
+              - NC
+              - +5%
+              - +10%
         style: form
         explode: true
       responses:
         '200':
-          description: A valid forecast response with a point forecast, a 95% confidence interval (CI) and a explanation set.
+          description: A valid forecast series response with a point forecast, a 95% confidence interval (CI) and a explanation set.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ForecastResponse'
         '405':
-          description: "Invalid input"
+          description: Error returned by the forecast method. Mosty due to an invalid call. 
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  status:
+                    type: "string"
+                    example: "error"
+                  msg:
+                    type: "string"
+                    example: "Invalid call. Source country missing."
 
 components:
   schemas:
@@ -126,6 +281,7 @@ components:
         properties:
           labels:
             type: "array"
+            example: ['-10%', '-5%', 'NC', '+5%', '+10%']
             description: Set of user-facing labels that describe change in theme variables.
             items:
               type: "string"
@@ -137,7 +293,8 @@ components:
               type: "object"
               properties:
                 theme: 
-                  type: "string"
+                  type: string
+                  example: Economy
                   description: Theme label
                 indicators:
                   type: "array"
@@ -147,12 +304,15 @@ components:
                     properties:
                       code:
                         type: "string"
+                        example: SL.UEM.TOTL.ZS
                         description: Indicator code
                       description:
                         type: "string"
+                        example: Unemployment, total (% of total labor force) (modeled ILO estimate)
                         description: Indicator description
                       direction-improvement:
-                        type: "string"
+                        type: string
+                        example: lower
                         description: Order of indicator that represents improvement (higher/lower)
 
       
@@ -162,31 +322,43 @@ components:
       items:
         type: object  
         properties:
-          target:
+          country:
             type: "string"
-            description: The ISO-3 code of the destination country (e.g. ZAF)
-          forecast:
-            type: "number"
-            format: "float64"
-            description: Point forecast associated with the source->target flow.
-          CI:
-            type: "array"
-            description: Confidence interval associated with the point forecast.
-            items:
-              type: "number"
-              format: "float64"
+            example: AFG
+            description: The ISO-3 code of the requested country.
           explanation:
+            type: "string"
+            example: This is a test explanation.
+            description: Text to describe the main model findings.
+          prediction:
             type: "array"
-            description: Features and magnitude associated with the point forecast
-            items: 
+            description: Predictions from the forecast model
+            items:
               type: "object"
+              properties:
+                
+                CI_high:
+                  type: "number"
+                  example: 9740.00
+                  description: 95% confidence interval estimated by empirical bootstrap (small samples).
+                CI_low:
+                  type: "number"
+                  example: 8000.00
+                  description: 95% confidence interval estimated by empirical bootstrap (small samples). 
+                forecast:
+                  type: "number"
+                  example: 9000.00
+                  description: Point forecast
+                scenario: 
+                  type: "object"
+                  example: null
+                  description: User scenario (if any) that the forecast is for.
+                year:
+                  type: "number"
+                  example: 2018
+                  description: Year for which this forecast object is for.
           status:
             type: "string"
-          year :
-            description: Year in the input query
-            type: "integer"
-          scenario:
-            description: "Scenario in the input query (if any)"
-            type: "array"
-            items:
-              type: "object"
+            example: OK
+            description: Forecast status 
+          

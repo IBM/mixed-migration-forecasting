@@ -23,7 +23,7 @@ class Scenario(object):
         groupings = json.load(open(config['GROUPING'], 'rt'))
         self.featureset = [i['code']
                            for c in groupings['clusters'] for i in c['indicators']]
-        self.CLUSTERS = groupings['CLUSTERS']
+        self.CLUSTERS = groupings['clusters']
         self.THEMES = [c['theme'] for c in self.CLUSTERS]
         self.theme_indicator_map = {c['theme']: c['indicators'] for c in self.CLUSTERS}
 

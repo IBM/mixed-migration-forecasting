@@ -36,19 +36,21 @@ class Trainer(object):
 
     @lru_cache(maxsize=1024)
     def score(self, countries=COUNTRIES, scenario=None):
-        """ Scoring loop to generate forecasts """
+        """
+        Scoring loop to generate forecasts
+        countries: List or a string 
+        scenario: a tuple of tuple (an immutable represention of a Dict so it can be cached)
+        """
         
+        if scenario:
+            scenario = {k: v for (k, v) in scenario}
+
         if not hasattr(self, 'models'):
             logger.warning("Models have not been trained. Training.")
             self.train()
 
         if isinstance(countries, str):
             countries = [countries]
-
-        for c in countries:
-            if c not in COUNTRIES: # Support list of countries for models
-                return {'status': 'error', 
-                        'msg': "Forecast not supported for country {}.".format(c)}
 
         result = []
 

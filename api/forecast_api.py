@@ -7,6 +7,7 @@ import json
 import os
 import pandas as pd
 import logging
+from model.displacement import COUNTRIES, LABELS
 
 logger = logging.getLogger(__name__)
 
@@ -27,6 +28,11 @@ def set_up(app, config):
     tr = Trainer(config)
     tr.train()
 
+    # get the clustering
+    with open(config['GROUPING'], 'rt') as infile:
+        groupings = json.load(infile)
+    THEMES = [t['theme'] for t in groupings['clusters']]
+
     @app.route("/predict", methods=['get'])
     def forecast():  # pylint: disable=W0612
 
@@ -37,13 +43,31 @@ def set_up(app, config):
             return make_response(jsonify({"status": "error",
                                           "msg": "Invalid call. Source country missing."}), 405)
 
-        logger.info(
-            "Predicting for country {} for current/base year {}.".format(source, config['BASEYEAR']))
+        if not source in COUNTRIES:
+            return make_response(jsonify({"status": "error",
+                                          "msg": "Invalid call. Source country: {} not supported.".format(source)}), 405)
 
-        result = tr.score(source)
-        logger.info(result)
+        # Fetch the optional scenario
+        scenario = {}
+        for t in THEMES:
+            k = request.args.get(t)
+            if k is not None:
+                if k not in LABELS:
+                    return make_response(jsonify({"msg":
+                                                  "Invalid call. Unknown class {} for type {}.".format(k, t)}), 405)
+                scenario[t] = k
 
-        if result['status'] == "OK":
-            return jsonify(result), 200
+        if scenario:
+            sc = tuple((k, scenario[k]) for k in sorted(scenario.keys()))
+            logger.info("Scenario forecast query: Source: {}, base year: {} Scenario: {}".format(
+                source, config['BASEYEAR'], scenario))
+            result = tr.score(source, sc)
         else:
-            return jsonify(result), 405
+            logger.info(
+                "Predicting for country {} for current/base year {}.".format(source, config['BASEYEAR']))
+
+            result = tr.score(source)
+
+        logger.info(result)
+        return jsonify(result), 200
+        

@@ -8,6 +8,7 @@ exploratory/Cross-validation experiments.ipynb
 exploratory/Testbed.ipynb
 exploratory/Scenario tests.ipynb
 changelog.txt
+ipynb_checkpoints
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

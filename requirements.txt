@@ -11,6 +11,7 @@ Flask>=1.0.2
 Flask-Cors>=3.0.6
 flask-swagger-ui==3.20.9
 furl>=2.0.0
+gunicorn==20.0.4
 ipython>=7.0.1
 ipython-genutils>=0.2.0
 itsdangerous>=1.1.0
