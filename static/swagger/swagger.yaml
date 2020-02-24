@@ -12,7 +12,7 @@ tags:
 servers:
   - url: http://localhost:5000/
     description: Local test server
-  - url: http://foresight.mybluemix.net/
+  - url: http://foresight.eu-gb.mybluemix.net/
     description: Deployment server
     
 paths:

@@ -1,7 +1,10 @@
----
 applications:
-    - name: mm4sight
-      host: mm4sight
-      domain: mybluemix.net
-      buildpack: https://github.com/cloudfoundry/python-buildpack.git
-      memory: 1G
+  - instances: 1
+    timeout: 600
+    name: foresight
+    buildpacks:
+      - python_buildpack
+    memory: 1GB
+    disk_quota: 2GB
+    routes:
+      - route: foresight.eu-gb.mybluemix.net
