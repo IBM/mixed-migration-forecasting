@@ -19,6 +19,7 @@ from sklearn.base import clone
 
 from . import *
 from .features import Generator
+from .scenarios import Scenario
 
 logger = logging.getLogger(__name__)
 
@@ -31,6 +32,7 @@ class Trainer(object):
         self.config = config
         self.baseyear = config['BASEYEAR']
         self.generator = Generator(config, self.baseyear)
+        self.scenarios = Scenario(self.generator.data, config)
 
     @lru_cache(maxsize=1024)
     def score(self, countries=COUNTRIES, scenario=None):
@@ -59,6 +61,13 @@ class Trainer(object):
             _, _, Xdv = D['data']
             curr_for = D['baseline']
 
+            if scenario:
+                # get the total scenario change
+                deltaT = self.scenarios.compute_target_change(Xv, scenario, c)
+                MC = {'country': c, 
+                      'explanation': deltaT[(c, 0)]['significance']}
+
+            # TODO: Add non-scenario model explanation statements.
             MC = {'country': c,
                  'explanation': "Here is a test explanation clause that will be updated."}
             
@@ -81,10 +90,16 @@ class Trainer(object):
                 # ensemble
                 forecast = 0.5 * (fb + fc)
 
+                if scenario:
+                    # We assume year2 impacts persist across future years
+                    sclag = max(SCENARIO_LAGS) if lg > max(SCENARIO_LAGS) else lg
+                    forecast += deltaT[(c, sclag)]['change']
+
                 logger.info("Forecasts {} (lag {}): base: {} change: {} ensemble:{}".format(c, lg, fb, fc, forecast))
 
                 M = {'year' :self.baseyear + lg, 
                      'forecast' : forecast, 
+                     'scenario': scenario,
                      'CI_low':  forecast - CI_LOOKUP[key]['lower'], 
                      'CI_high': forecast + CI_LOOKUP[key]['upper']}
                 

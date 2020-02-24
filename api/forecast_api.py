@@ -10,6 +10,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 def set_up(app, config):
     """
     Set up the prediction api's with
@@ -27,19 +28,22 @@ def set_up(app, config):
     tr.train()
 
     @app.route("/predict", methods=['get'])
-    def forecast(): # pylint: disable=W0612
+    def forecast():  # pylint: disable=W0612
 
         # get required query parameters
         source = request.args.get('source')
 
         if source is None:
-            return make_response(jsonify({"msg": "Invalid call. Source country missing."}), 405)
+            return make_response(jsonify({"status": "error",
+                                          "msg": "Invalid call. Source country missing."}), 405)
 
-        logger.info("Predicting for country {} for current/base year {}.".format(source, config['BASEYEAR']))
-        
-        try:
-            result = tr.score(source)
-            logger.info(result)
+        logger.info(
+            "Predicting for country {} for current/base year {}.".format(source, config['BASEYEAR']))
+
+        result = tr.score(source)
+        logger.info(result)
+
+        if result['status'] == "OK":
             return jsonify(result), 200
-        except AssertionError as e:
-            result = {e}
+        else:
+            return jsonify(result), 405

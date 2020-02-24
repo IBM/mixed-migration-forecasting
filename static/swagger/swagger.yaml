@@ -1,19 +1,36 @@
 openapi: "3.0.0"
 info:
   description: "API specification"
-  version: "0.0.5"
-  title: "mm4sight"
+  version: "0.1.0"
+  title: "Foresight"
 
 tags:
 - name: "model"
-  description: "Prediction model related api's for forecasts, confidence intervals and explanations"
+  description: "Model related api's for forecasts, confidence intervals, scenarios and explanations"
+- name: "indicators"
+  description: "Calls related to indicator level data, outliers"
 servers:
   - url: http://localhost:5000/
     description: Local test server
-  - url: http://mm4sight.mybluemix.net/
+  - url: http://foresight.mybluemix.net/
     description: Deployment server
     
 paths:
+  /scenarios:
+    summary: Returns supported scenarios for the model. 
+    description: A Scenario is defined by a theme, and associated indicator variables. 
+    get:
+      tags: 
+      - model
+      parameters: []
+      responses:
+        '200':
+          description: A response object that contains user labels, thematic cluster definitions with component indicators.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScenarioResponse'
+    
   /predict:
     summary: Generate a set of forecasts for a source country.
     description: Given a source `country`, `year`, and optionally any `scenario` paramaters, returns a point forecast, confidence interval, and explanations.
@@ -101,16 +118,44 @@ paths:
 
 components:
   schemas:
-    ScenarioValues:
-      type: string
-      title: Labels for indicator themes
-      description: Permitted labels for indicator cluster themes.
-      enum:
-      - worse
-      - poor
-      - average
-      - good
-      - best
+    ScenarioResponse:
+      type: "array"
+      title: Scenario definitions
+      items:
+        type: "object"
+        properties:
+          labels:
+            type: "array"
+            description: Set of user-facing labels that describe change in theme variables.
+            items:
+              type: "string"
+              description: User label
+          clusters:
+            type: "array"
+            description: A set of theme's supported by model
+            items: 
+              type: "object"
+              properties:
+                theme: 
+                  type: "string"
+                  description: Theme label
+                indicators:
+                  type: "array"
+                  description: Set of indicators within the theme
+                  items:
+                    type: "object"
+                    properties:
+                      code:
+                        type: "string"
+                        description: Indicator code
+                      description:
+                        type: "string"
+                        description: Indicator description
+                      direction-improvement:
+                        type: "string"
+                        description: Order of indicator that represents improvement (higher/lower)
+
+      
     ForecastResponse:
       title: Forecast Response object
       type: "array"

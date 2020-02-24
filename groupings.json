@@ -31,7 +31,7 @@
                 {
                     "code": "VDEM.FRD.POL.KILL",
                     "description": "Freedom from political killings",
-                    "direction-improvement": "lower"
+                    "direction-improvement": "higher"
                 },
                 {
                     "code": "UC.FAT.CIV",
@@ -46,22 +46,22 @@
                 {
                     "code": "DRC.CORR.INDEX",
                     "description": "DRC Collected Corruption Index",
-                    "direction-improvement": "lower"
+                    "direction-improvement": "higher"
                 },
                 {
                     "code": "HR.SCR.MEAN",
                     "description": "Human Rights Score Mean",
-                    "direction-improvement": "lower"
+                    "direction-improvement": "higher"
                 },
                 {
                     "code": "FSI.STA.LEG",
                     "description": "State Legitimacy",
-                    "direction-improvement": "higher"
+                    "direction-improvement": "lower"
                 },
                 {
                     "code": "FSI.PUB.SER",
                     "description": "Public Services",
-                    "direction-improvement": "higher"
+                    "direction-improvement": "lower"
                 }
             ]
         },

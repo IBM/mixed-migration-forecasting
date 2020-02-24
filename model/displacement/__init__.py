@@ -8,8 +8,11 @@ from sklearn.ensemble import GradientBoostingRegressor
 # Countries for which forecasts are generated, ISO-3 codes.
 COUNTRIES = ['AFG', 'MMR']
 
-# Earliest year to include for building the model
+# Earliest year to include for building the forecast model
 MIN_YEAR = 1995
+
+# Earliest year to estimate elasticities 
+MIN_OLS_YEAR = 1980
 
 # A forecast is made for a base-year, defined in `configuration.json`
 # Lags here define years from the base year for which the prediction
@@ -17,14 +20,18 @@ MIN_YEAR = 1995
 # error beyond year 3 can be high (~25-30%).
 LAGS = [0, 1, 2, 3, 4, 5]
 
+# Scenario-specific lags do not have any statistically significant results
+# beyond lag = 1. Restrict to year 0 and year 1.
+SCENARIO_LAGS = [0, 1]
+
 # If indicators for a country are old, we will attempt an indicator
 # level projection using an AR model. The projection is this included
 # in the model. Here we can constrain the number of years we can project
 # for.
 PROJECTION_MAX_LAGS = 3
 
-# End user labels (used to assign quantiles of indicators)
-LABELS = ['worse', 'poor', 'average', 'good', 'best']
+# End user labels
+LABELS = ['-10%', '-5%', 'NC', '+5%', '+10%']
 
 # Target variable in the data - this is the internally displaced
 # population + total external population.
