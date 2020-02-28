@@ -19,7 +19,7 @@ class HumanRightsTransformer(Transformer):
 
         try:
             self.scor_df = pd.read_csv(self.source,
-                                        usecols=[1,17,18,19],
+                                        usecols=[1,25,26,27],
                                         names=['year', 'mean', 'sd', 'country'],
                                        header=0)
 

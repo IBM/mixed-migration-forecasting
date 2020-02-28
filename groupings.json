@@ -29,9 +29,9 @@
                     "direction-improvement": "lower"
                 },
                 {
-                    "code": "VDEM.FRD.POL.KILL",
-                    "description": "Freedom from political killings",
-                    "direction-improvement": "higher"
+                    "code": "UC.EVT.TOT",
+                    "description": "UCDP Number of conflict events per year",
+                    "direction-improvement": "lower"
                 },
                 {
                     "code": "UC.FAT.CIV",
@@ -74,8 +74,8 @@
                     "direction-improvement": "lower"
                 },
                 {
-                    "code": "ER.H2O.INTR.PC",
-                    "description": "Renewable internal freshwater resources per capita (cubic meters)",
+                    "code": "EMDAT.NAT.TOTAL.AFFECTED",
+                    "description": "EMDAT estimate of total affected for Natural disaster group",
                     "direction-improvement": "higher"
                 },
                 {
