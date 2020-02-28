@@ -9,7 +9,9 @@ def set_up(app, config):
         groupings = json.load(infile)
 
     # User-facing labels recognized by model for scenario building
-    groupings['labels'] = LABELS
+    for c in groupings['clusters']:
+        c['labels'] = LABELS
+    # groupings['labels'] = LABELS
     
     @app.route("/scenarios")
     def groups(): # pylint: disable=W0612

@@ -279,13 +279,6 @@ components:
       items:
         type: "object"
         properties:
-          labels:
-            type: "array"
-            example: ['-10%', '-5%', 'NC', '+5%', '+10%']
-            description: Set of user-facing labels that describe change in theme variables.
-            items:
-              type: "string"
-              description: User label
           clusters:
             type: "array"
             description: A set of theme's supported by model
@@ -296,6 +289,13 @@ components:
                   type: string
                   example: Economy
                   description: Theme label
+                labels:
+                  type: "array"
+                  example: ['-10%', '-5%', 'NC', '+5%', '+10%']
+                  description: Set of user-facing labels that describe change in theme variables.
+                  items:
+                    type: "string"
+                    description: User label
                 indicators:
                   type: "array"
                   description: Set of indicators within the theme
