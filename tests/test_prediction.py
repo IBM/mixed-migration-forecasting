@@ -1,4 +1,4 @@
-from model.displacement.model import Trainer
+
 import json
 import logging
 from pprint import pprint
@@ -6,6 +6,12 @@ import numpy as np
 
 import seaborn as sns
 import matplotlib.pyplot as plt
+
+import sys, os
+sys.path.insert(0, os.path.join(os.getcwd()))
+print(sys.path)
+
+from model.displacement.model import Trainer
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
 logger = logging.getLogger(__name__)
@@ -43,17 +49,13 @@ def plot_result(tr, pred):
     plt.xticks(np.arange(1995, config['BASEYEAR'] + 8, 1))
     plt.title(pred[0]['country'])
     
-
-    
-
-if __name__ == "__main__":
-
+def test_prediction():
 
     tr = Trainer(config)
     tr.train()
     afg = tr.score('AFG')
     mmr = tr.score('MMR')
-    plot_result(tr, afg)
-    plot_result(tr, mmr)
-    plt.show()
-    pprint(tr.score.cache_info())
+    # plot_result(tr, afg)
+    # plot_result(tr, mmr)
+    #plt.show()
+    #pprint(tr.score.cache_info())
