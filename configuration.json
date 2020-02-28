@@ -26,7 +26,7 @@
             "name": "HumanRights",
             "source": "Human Rights",
             "detail": "Human rights protection scores.",
-            "sourcefile": "HumanRights/HumanRightsProtectionScores_v2.03.csv",
+            "sourcefile": "HumanRights/HumanRightsProtectionScores_v3.02.csv",
             "transformer": "transformer.humanrights.HumanRightsTransformer"
         },
         {
@@ -41,7 +41,7 @@
             "name": "emdat",
             "source": "EMDAT",
             "detail": "Data from the Emergency-Events Database from the Centre for Research on the Epidemiology of Disasters (CRED).",
-            "sourcefile": "EMDAT/AllData.csv",
+            "sourcefile": "EMDAT/AllData_extended.csv",
             "transformer": "transformer.emdat.EMDATTransformer"
         },
         {
