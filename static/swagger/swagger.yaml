@@ -72,79 +72,178 @@ paths:
                       example: 2.274
             
   /latestIndicators:
-    summary: TBC
+    summary: List of latest by year indicators in the system. 
     get:
       tags:
-      - indicators
+        - indicators
+      parameters:
+      - name: country
+        in: query
+        description: A comma-separated list of country codes or `all` for which indicator data is requested.
+        required: true
+        example: AFG
+        schema:
+          type: "string"
+      - name: indicator
+        in: query
+        description: specific indicator code or `all`
+        required: true
+        example: SL.UEM.TOTL.ZS
+        schema:
+          type: "string"
+      - name: years
+        in: query
+        description: Number of latest values to return. 1 by default.
+        example: 5
+        schema:
+          type: "string"
       responses:
         '200':
-          description: TBC
-          content: 
+          description: List of indicator codes and names, along with sources and attribution. 
+          content:
             application/json:
               schema:
-                type: object
+                type: "array"
+                items:
+                  type: "object"
+                  properties:
+                    Country Code:
+                      description: ISO-3 country code
+                      example: 'AFG'
+                    Country Name:
+                      description: Country name
+                      example: Afghanistan
+                    Indicator Name:
+                      description: Indicator description 
+                      example: Unemployment, total (% of total labor force) (modeled ILO estimate)
+                    Indicator Code:
+                      description: Indicator code
+                      example: SL.UEM.TOTL.ZS
+                    year:
+                      description: Year for the indicator value
+                      example: 2010
+                    value:
+                      description: The indicator value. 
+                      example: 2.274
   /outliers:
-    summary: TBC
+    summary: List of indicator values and years when indicator changed significantly.
     get:
       tags:
       - indicators
+      parameters:
+      - name: country
+        in: query
+        description: A comma-separated list of country codes or `all` for which indicator data is requested.
+        required: true
+        example: AFG
+        schema:
+          type: "string"
+      - name: indicator
+        in: query
+        description: specific indicator code
+        required: true
+        example: SL.UEM.TOTL.ZS
+        schema:
+          type: "string"
       responses:
         '200':
-          description: TBC
+          description: List of indicator values and years, when indicator changed significantly. 
           content: 
             application/json:
               schema:
-                type: object
+                type: "object"
+                properties:
+                  2012:
+                    example: 8
+                  2014:
+                    example: 12
+                  2016:
+                    example: 15
   /indicatorCodeByName:
-    summary: TBC
+    summary: return indicator code by specific indicator name
     get:
       tags:
       - indicators
+      parameters:
+      - name: indicator
+        in: query
+        description: specific indicator name
+        required: true
+        example: Economy
+        schema:
+          type: "string"
       responses:
         '200':
-          description: TBC
+          description: indicator code
           content: 
-            application/json:
+            application/json: 
               schema:
-                type: object
+                type: "string"
+                example: "FSI.ECON"
+              
   /uniqueIndicators:
-    summary: TBC
+    summary: list of all indicator codes
     get:
       tags:
       - indicators
       responses:
         '200':
-          description: TBC
+          description: list of indicators codes
           content: 
             application/json:
               schema:
-                type: object
+                type: "array"
+                items:
+                  type: "string"
+                  example: SL.UEM.TOTL.ZS
+                  
+                  
+                    
   
   /uniqueIndicatorNames:
-    summary: TBC
+    summary: list of all indicator names
     get:
       tags:
       - indicators
       responses:
         '200':
-          description: TBC
+          description: list of indicators names
           content: 
             application/json:
               schema:
-                type: object
+                type: "array"
+                items:
+                  type: "string"
+                  example: "Scaled annual number of deaths (range 0-5.0)"
                 
   /indicatorMetadata:
-    summary: TBC
+    summary: indicators code, description, last updated year and source
     get:
       tags:
       - indicators
       responses:
         '200':
-          description: TBC
-          content: 
+          description: List of indicator codes and names, along with sources and attribution. 
+          content:
             application/json:
               schema:
-                type: object
+                type: "array"
+                items:
+                  type: "object"
+                  properties:
+                    Indicator Code:
+                      description: indicator code
+                      example: 'AG.PRD.FOOD.XD'
+                    detail:
+                      description: Country name
+                      example: "Data from the Worldbank Development Indicators information product."
+                    last updated:
+                      description: latest indicator year available  
+                      example: 2016
+                    source:
+                      description: Indicator provider
+                      example: "Wordbank"
+                   
   /countries:
     summary: Returns list of countries for the forecast model.
     get:
