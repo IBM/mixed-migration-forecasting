@@ -41,7 +41,7 @@
             "name": "emdat",
             "source": "EMDAT",
             "detail": "Data from the Emergency-Events Database from the Centre for Research on the Epidemiology of Disasters (CRED).",
-            "sourcefile": "EMDAT/AllData_extended.csv",
+            "sourcefile": "EMDAT/All_emdat_data_interpolated.csv",
             "transformer": "transformer.emdat.EMDATTransformer"
         },
         {

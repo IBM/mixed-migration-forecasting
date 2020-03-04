@@ -43,8 +43,8 @@ class CorruptionTransformer(Transformer):
 
     def transform_corruption_info(self):
 
-        self.corr_df.loc[:, "Indicator Code"] = "DRC.CORR.INDEX"
-        self.corr_df.loc[:, "Indicator Name"] = "DRC Collected Corruption Index"
+        self.corr_df.loc[:, "Indicator Code"] = "TRI.CORR.INDEX"
+        self.corr_df.loc[:, "Indicator Name"] = "Transparency Intl. Corruption Index"
 
 
         self.df = self.corr_df

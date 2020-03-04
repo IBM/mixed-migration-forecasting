@@ -26,23 +26,22 @@ class EMDATTransformer(Transformer):
 
     def transform(self):
         """ Generate features based on each disaster group """
-        grouped = self.df.groupby('disaster group', group_keys=False).apply(self.__helper)
+        grouped = self.df.groupby('disaster.group', group_keys=False).apply(self.__helper)
         self.df = grouped.dropna()
 
     @staticmethod
     def __helper(grp):
 
         # Features in this data
-        cols = ['occurrence', 'Total deaths', 'Injured', 'Affected',
-                'Homeless', 'Total affected', 'Total damage']
+        cols = ['occurrence', 'Total.deaths','Total.affected', 'Total.damage']
 
-        lbl = grp['disaster group'].unique()[0]
+        lbl = grp['disaster.group'].unique()[0]
         colnames = {c: "EMDAT.{}.{}".format(PREFIX[lbl], c.replace(" ", ".").upper()) for c in cols}
         indnames = {"EMDAT.{}.{}".format(PREFIX[lbl], c.replace(" ", ".").upper()):
                     "EMDAT estimate of {} for {} disaster group".format(c, lbl) for c in cols}
 
         k = grp.rename(columns=colnames)
-        k.drop(columns="disaster group", inplace=True)
+        k.drop(columns="disaster.group", inplace=True)
 
         out = pd.melt(k, id_vars=['year', 'iso', 'country_name'], value_vars=list(colnames.values()))
 
