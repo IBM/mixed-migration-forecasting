@@ -25,7 +25,7 @@ LAGS = [0, 1, 2, 3, 4, 5]
 SCENARIO_LAGS = [0, 1]
 
 # If indicators for a country are old, we will attempt an indicator
-# level projection using an AR model. The projection is this included
+# level projection using an AR model. The projection is then included
 # in the model. Here we can constrain the number of years we can project
 # for.
 PROJECTION_MAX_LAGS = 3

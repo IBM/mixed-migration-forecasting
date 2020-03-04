@@ -34,6 +34,27 @@ class Trainer(object):
         self.generator = Generator(config, self.baseyear)
         self.scenarios = Scenario(self.generator.data, config)
 
+        # get the grid search parameter results
+        gs_params = json.load(open('params.json', 'rt'))
+        self.parameters = {}
+        for k in gs_params:
+            self.parameters[(k['country'], k['lag'])] = k['params']
+
+    def get_parameters(self, country, lag):
+        """ Returns grid search parameters from look up """
+
+        key = country, lag
+        if key in self.parameters.keys():
+            return self.parameters[key]
+
+        else:
+            logger.debug("Using default model parameters ({}, {}).".format(country, lag))
+            return {"Estimator__loss": "ls", 
+                "Estimator__n_estimators": 500, 
+                "Estimator__learning_rate": 0.01, 
+                "Estimator__max_depth": 5}
+
+
     @lru_cache(maxsize=1024)
     def score(self, countries=COUNTRIES, scenario=None):
         """
@@ -137,6 +158,8 @@ class Trainer(object):
             Xt, yt, _ = F['data']
 
             base_model = clone(CLF)
+            base_model.set_params(self.get_parameters(c, lg))
+
             base_model.fit(Xt, yt)
             M['base'] = base_model
 

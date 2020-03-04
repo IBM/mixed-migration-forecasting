@@ -1,0 +1,122 @@
+[
+    {
+        "params": {
+            "Estimator__loss": "ls",
+            "Estimator__n_estimators": 10,
+            "Estimator__learning_rate": 1.0,
+            "Estimator__max_depth": 4
+        },
+        "country": "AFG",
+        "lag": 0
+    },
+    {
+        "params": {
+            "Estimator__loss": "ls",
+            "Estimator__n_estimators": 500,
+            "Estimator__learning_rate": 0.01,
+            "Estimator__max_depth": 6
+        },
+        "country": "MMR",
+        "lag": 0
+    },
+    {
+        "params": {
+            "Estimator__loss": "lad",
+            "Estimator__n_estimators": 500,
+            "Estimator__learning_rate": 0.2,
+            "Estimator__max_depth": 5
+        },
+        "country": "AFG",
+        "lag": 1
+    },
+    {
+        "params": {
+            "Estimator__loss": "ls",
+            "Estimator__n_estimators": 200,
+            "Estimator__learning_rate": 0.01,
+            "Estimator__max_depth": 4
+        },
+        "country": "MMR",
+        "lag": 1
+    },
+    {
+        "params": {
+            "Estimator__loss": "lad",
+            "Estimator__n_estimators": 50,
+            "Estimator__learning_rate": 0.5,
+            "Estimator__max_depth": 4
+        },
+        "country": "AFG",
+        "lag": 2
+    },
+    {
+        "params": {
+            "Estimator__loss": "ls",
+            "Estimator__n_estimators": 500,
+            "Estimator__learning_rate": 0.01,
+            "Estimator__max_depth": 4
+        },
+        "country": "MMR",
+        "lag": 2
+    },
+    {
+        "params": {
+            "Estimator__loss": "lad",
+            "Estimator__n_estimators": 150,
+            "Estimator__learning_rate": 0.25,
+            "Estimator__max_depth": 4
+        },
+        "country": "AFG",
+        "lag": 3
+    },
+    {
+        "params": {
+            "Estimator__loss": "huber",
+            "Estimator__n_estimators": 200,
+            "Estimator__learning_rate": 0.1,
+            "Estimator__max_depth": 6
+        },
+        "country": "MMR",
+        "lag": 3
+    },
+    {
+        "params": {
+            "Estimator__loss": "lad",
+            "Estimator__n_estimators": 500,
+            "Estimator__learning_rate": 0.1,
+            "Estimator__max_depth": 5
+        },
+        "country": "AFG",
+        "lag": 4
+    },
+    {
+        "params": {
+            "Estimator__loss": "huber",
+            "Estimator__n_estimators": 100,
+            "Estimator__learning_rate": 0.1,
+            "Estimator__max_depth": 3
+        },
+        "country": "MMR",
+        "lag": 4
+    },
+    {
+        "params": {
+            "Estimator__loss": "ls",
+            "Estimator__n_estimators": 300,
+            "Estimator__learning_rate": 0.1,
+            "Estimator__max_depth": 3
+        },
+        "country": "AFG",
+        "lag": 5
+    },
+    {
+        "params": {
+            "Estimator__loss": "ls",
+            "Estimator__n_estimators": 10,
+            "Estimator__learning_rate": 0.5,
+            "Estimator__max_depth": 6
+        },
+        "country": "MMR",
+        "lag": 5
+    }
+]

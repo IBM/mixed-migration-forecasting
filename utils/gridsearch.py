@@ -43,14 +43,15 @@ LAGS = [0, 1, 2, 3, 4, 5]
 COUNTRIES = config['supported-countries']['displacement']
 result = []
 
-generator = Generator(config, 2019) # Base year is not used
+generator = Generator(config, 2019)  # Base year is not used
+
 
 def get_data(c, lg):
     """ Custom feature generator """
 
     # source data
     df = generator.proj_df.copy(deep=True)
-    
+
     if lg > 0:
         data, varname = generator._Generator__lag_variables(df, TARGETS, lg)
         true_target_var = varname
@@ -59,15 +60,15 @@ def get_data(c, lg):
     else:
         data = df.copy(deep=True)
         true_target_var = TARGETS
-        true_feature_var= generator.indicators[c]
+        true_feature_var = generator.indicators[c]
 
     c1 = data['Country Code'] == c
     c2 = ~pd.isnull(data[true_target_var[0]])
-    
+
     df = data.loc[c1 & c2, ['year'] + true_feature_var + true_target_var]
     df = df.sort_values(by=['year'])
     df = (df.fillna(method='ffill')
-                .fillna(method='bfill'))
+          .fillna(method='bfill'))
 
     X = df[true_feature_var]
     y = df[true_target_var]
@@ -75,8 +76,9 @@ def get_data(c, lg):
 
     print("Country: {}, lag: {}".format(c, lg))
     print("Data has {} rows, {} cols.".format(*df.shape))
-    
+
     return X.values, np.ravel(y.values)
+
 
 def execute():
     for lg in LAGS:
@@ -91,7 +93,7 @@ def execute():
             # do the grid search. Scoring follows the convention that
             # higher values are better (hence the `neg')
             grid_search = GridSearchCV(CLF, parameters, scoring='neg_mean_absolute_error',
-                                    cv=tscv.split(X), n_jobs=-1, verbose=1)
+                                       cv=tscv.split(X), n_jobs=-1, verbose=1)
 
             print("Performing grid search...")
             t0 = time()
@@ -100,16 +102,15 @@ def execute():
 
             # record best result
             par_res = grid_search.best_estimator_.get_params()
-            
-            m = {pn: par_res[pn] for pn in parameters.keys()}
-            m['country'] = c
-            m['lag'] = lg
-            
-            result.append(m)
 
+            m = {'params': {pn: par_res[pn] for pn in parameters.keys()},
+                 'country': c, 'lag': lg}
+
+            result.append(m)
 
     json.dump(result, open("model/displacement/params.json", 'w'))
     print("Done")
+
 
 if __name__ == "__main__":
     execute()
