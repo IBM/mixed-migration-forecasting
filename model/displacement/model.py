@@ -120,11 +120,15 @@ class Trainer(object):
 
                 logger.info("Forecasts {} (lag {}): base: {} change: {} ensemble:{}".format(c, lg, fb, fc, forecast))
 
+                # Centre the range around the forecast
+                ci_range = CI_LOOKUP[key]['upper'] - CI_LOOKUP[key]['lower']
+                di = ci_range / 2.0
+
                 M = {'year' :self.baseyear + lg, 
                      'forecast' : forecast, 
                      'scenario': scenario,
-                     'CI_low':  forecast - CI_LOOKUP[key]['lower'], 
-                     'CI_high': forecast + CI_LOOKUP[key]['upper']}
+                     'CI_low':  forecast - di, 
+                     'CI_high': forecast + di}
                 
                 pred.append(M)
 
