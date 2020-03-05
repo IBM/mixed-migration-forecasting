@@ -14,6 +14,7 @@
         "datasets": "prm-datasets/indicators/",
         "output": "prm-datasets/processed/"
     },
+    "gridsearch-parameters": "model/displacement/params.json",
     "sources": [
         {
             "name": "worldbank",

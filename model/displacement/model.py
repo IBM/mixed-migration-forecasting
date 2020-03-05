@@ -35,7 +35,7 @@ class Trainer(object):
         self.scenarios = Scenario(self.generator.data, config)
 
         # get the grid search parameter results
-        gs_params = json.load(open('params.json', 'rt'))
+        gs_params = json.load(open(config['gridsearch-parameters'], 'rt'))
         self.parameters = {}
         for k in gs_params:
             self.parameters[(k['country'], k['lag'])] = k['params']
@@ -162,7 +162,8 @@ class Trainer(object):
             Xt, yt, _ = F['data']
 
             base_model = clone(CLF)
-            base_model.set_params(self.get_parameters(c, lg))
+            pset = self.get_parameters(c, lg)
+            base_model.set_params(**pset)
 
             base_model.fit(Xt, yt)
             M['base'] = base_model

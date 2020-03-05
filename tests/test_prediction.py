@@ -55,7 +55,10 @@ def test_prediction():
     tr.train()
     afg = tr.score('AFG')
     mmr = tr.score('MMR')
-    # plot_result(tr, afg)
-    # plot_result(tr, mmr)
-    #plt.show()
+    plot_result(tr, afg)
+    plot_result(tr, mmr)
+    plt.show()
     #pprint(tr.score.cache_info())
+
+if __name__ == "__main__":
+    test_prediction()

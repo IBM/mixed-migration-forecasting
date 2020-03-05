@@ -44,8 +44,8 @@
             "theme": "Governance",
             "indicators": [
                 {
-                    "code": "DRC.CORR.INDEX",
-                    "description": "DRC Collected Corruption Index",
+                    "code": "TRI.CORR.INDEX",
+                    "description": "Transparency Intl. Corruption Index",
                     "direction-improvement": "higher"
                 },
                 {

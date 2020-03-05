@@ -108,7 +108,7 @@ def execute():
 
             result.append(m)
 
-    json.dump(result, open("model/displacement/params.json", 'w'))
+    json.dump(result, open(config['gridsearch-parameters'], 'w'))
     print("Done")
 
 
