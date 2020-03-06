@@ -37,7 +37,6 @@
             "sourcefile": "Myanmar/200124_Foresight_Myanmar_data_NSO.xlsx",
             "transformer": "transformer.mso.MyanmarTransformer"
         },
-
         {
             "name": "emdat",
             "source": "EMDAT",

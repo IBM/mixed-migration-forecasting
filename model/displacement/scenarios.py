@@ -19,6 +19,7 @@ class Scenario(object):
     def __init__(self, data, config):
         self.data = data
         self.config = config
+        self.COUNTRIES = config['supported-countries']['displacement']
 
         groupings = json.load(open(config['GROUPING'], 'rt'))
         self.featureset = [i['code']
@@ -35,7 +36,7 @@ class Scenario(object):
         logger.info("Estimating elasticities for scenario models.")
         self.models = {}
 
-        for lag, c in product(SCENARIO_LAGS, COUNTRIES):
+        for lag, c in product(SCENARIO_LAGS, self.COUNTRIES):
 
             X, Y = self.model_case(lag, c)
 

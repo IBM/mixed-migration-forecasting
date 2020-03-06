@@ -5,7 +5,7 @@ import json
 import numpy as np
 import pandas as pd
 from time import time
-from model.displacement import *
+from model.displacement import TARGETS
 from model.displacement.model import Trainer
 from model.displacement.features import Generator
 

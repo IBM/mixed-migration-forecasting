@@ -5,9 +5,6 @@ from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
 from sklearn.ensemble import GradientBoostingRegressor
 
-# Countries for which forecasts are generated, ISO-3 codes.
-COUNTRIES = ['AFG', 'MMR']
-
 # Earliest year to include for building the forecast model
 MIN_YEAR = 1995
 
@@ -18,7 +15,7 @@ MIN_OLS_YEAR = 1980
 # Lags here define years from the base year for which the prediction
 # models are trained and generate forecasts. Mean-absolute percentage
 # error beyond year 3 can be high (~25-30%).
-LAGS = [0, 1, 2, 3, 4, 5]
+LAGS = [0, 1, 2, 3]
 
 # Scenario-specific lags do not have any statistically significant results
 # beyond lag = 1. Restrict to year 0 and year 1.
@@ -56,7 +53,7 @@ def feature_sets(cols):
     allfeatures = list(set(cols) - set(FE_IDX + FE_MM + FE_ENDO + FE_MISSING + TARGETS))
 
     # We have some Myanmar specific data there
-    mmr_data = [f for f in allfeatures if f.startswith('MMR.NSO')]
+    mmr_data = [f for f in allfeatures if f.startswith('MMR.NSO')] + ['UC.FAT.RAKH', 'UC.EVT.RAKH']
 
     features = {
         'all': allfeatures,

@@ -31,7 +31,8 @@ class Trainer(object):
 
         self.config = config
         self.baseyear = config['BASEYEAR']
-        self.generator = Generator(config, self.baseyear)
+        self.COUNTRIES = config['supported-countries']['displacement']
+        self.generator = Generator(config)
         self.scenarios = Scenario(self.generator.data, config)
 
         # get the grid search parameter results
@@ -56,13 +57,15 @@ class Trainer(object):
 
 
     @lru_cache(maxsize=1024)
-    def score(self, countries=COUNTRIES, scenario=None):
+    def score(self, countries=None, scenario=None):
         """
         Scoring loop to generate forecasts
         countries: List or a string 
         scenario: a tuple of tuple (an immutable represention of a Dict so it can be cached)
         """
-        
+        if not countries:
+            countries = self.COUNTRIES 
+
         if scenario:
             scenario = {k: v for (k, v) in scenario}
 
@@ -77,13 +80,6 @@ class Trainer(object):
 
         for c in countries:
 
-            F = self.generator.features(c, self.baseyear)
-            _, _, Xv = F['data']
-
-            D = self.generator.features(c, self.baseyear, differencing=True)
-            _, _, Xdv = D['data']
-            curr_for = D['baseline']
-
             if scenario:
                 # get the total scenario change
                 deltaT = self.scenarios.compute_target_change(Xv, scenario, c)
@@ -97,27 +93,41 @@ class Trainer(object):
             pred = []
 
             for lg in LAGS:
+
+                F = self.generator.features(c, self.baseyear + lg)
+                _, _, Xv = F['data']
+
+                D = self.generator.features(c, self.baseyear + lg, differencing=True)
+                _, _, Xdv = D['data']
+                curr_for = D['baseline']
                 
                 key = (c, lg)
                 
                 bm = self.models[key]['base']
-                cm = self.models[key]['change']
+                b_features = self.models[key]['bfeatures']
 
+                Xv = Xv[b_features]
                 fb = bm.predict(Xv)[0]
 
                 # changes model predicts change in displacement.
                 # for subsequent lag, update the displacement
+                cm = self.models[key]['change']
+                c_features = self.models[key]['cfeatures']
+                Xdv = Xdv[c_features]
+                
                 fc = cm.predict(Xdv)[0] + curr_for
                 curr_for = fc
 
                 # ensemble
-                forecast = 0.5 * (fb + fc)
-
+                # forecast = 0.5 * (fb + fc)
+                forecast = fb
+                
                 if scenario:
                     # We assume year2 impacts persist across future years
                     sclag = max(SCENARIO_LAGS) if lg > max(SCENARIO_LAGS) else lg
                     forecast += deltaT[(c, sclag)]['change']
 
+                fc = None
                 logger.info("Forecasts {} (lag {}): base: {} change: {} ensemble:{}".format(c, lg, fb, fc, forecast))
 
                 # Centre the range around the forecast
@@ -143,12 +153,12 @@ class Trainer(object):
         """ Main training loop """
 
         logger.info("Training {} models for {} countries.".format(
-            2 * len(LAGS), len(COUNTRIES)))
+            len(self.COUNTRIES) * len(LAGS), len(self.COUNTRIES)))
 
         start_time = time()
         self.models = {}
 
-        for c, lg in product(COUNTRIES, LAGS):
+        for c, lg in product(self.COUNTRIES, LAGS):
 
             M = {'country': c, 'lag': lg, 'baseyear': self.baseyear}
 
@@ -161,23 +171,30 @@ class Trainer(object):
 
             Xt, yt, _ = F['data']
 
+            # print(pd.isnull(Xt).sum().sort_values(ascending=False).head(10))
+
             base_model = clone(CLF)
             pset = self.get_parameters(c, lg)
             base_model.set_params(**pset)
 
             base_model.fit(Xt, yt)
             M['base'] = base_model
+            M['bfeatures'] = F['features']
 
+            
             Xdt, ydt, _ = D['data']
             change_model = clone(CLF)
+            pset = self.get_parameters(None, None)
+            change_model.set_params(**pset)
             change_model.fit(Xdt, ydt)
             M['change'] = change_model
+            M['cfeatures'] = D['features']
             M['baseline'] = D['baseline']
 
             self.models[(c, lg)] = M
 
         logger.info("Done with {} models in {:3.2f} sec."
-                    .format(len(LAGS) * len(COUNTRIES), time() - start_time))
+                    .format(len(LAGS) * len(self.COUNTRIES), time() - start_time))
 
     def load(self):
         """ load persisted models """

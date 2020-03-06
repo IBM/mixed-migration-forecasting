@@ -22,13 +22,14 @@ class Generator(object):
     4. TODO: Scenario conversions from user-labels to indicator values
     """
 
-    def __init__(self, config, baseyear):
+    def __init__(self, config):
         """ 
         Get the data from static assets described in `config` object.
         `baseyear` is the current year for which the feature set is determined.
         """
 
-        self.baseyear = baseyear
+        self.baseyear = config['BASEYEAR']
+        self.COUNTRIES = config['supported-countries']['displacement']
 
         start_time = time()
 
@@ -42,7 +43,9 @@ class Generator(object):
                              for f in sources), sort=False, ignore_index=True)
 
         # Summary stats
-        logger.info("Base year          : {}".format(baseyear))
+        logger.info("Feature generation summary")
+        logger.info(30*'-')
+        logger.info("Base year          : {}".format(self.baseyear))
         logger.info("Sources            : {}".format(len(sources)))
         logger.info("Row count          : {}".format(len(self.raw)))
         logger.info("Geographies        : {}".format(
@@ -75,7 +78,7 @@ class Generator(object):
         self.indicators = feature_sets(self.data.columns.tolist())
 
         # filter down to the countries we are interested in.
-        c1 = self.data['Country Code'].isin(COUNTRIES)
+        c1 = self.data['Country Code'].isin(self.COUNTRIES)
         c2 = self.data.year >= MIN_YEAR
 
         # References to raw and subset of the data
@@ -87,7 +90,7 @@ class Generator(object):
         self.proj_df = pd.pivot_table(tmp, index=['Country Code', 'year'],
                                    columns='Indicator Code', values='value')
         self.proj_df.reset_index(inplace=True)
-        c1 = self.proj_df['Country Code'].isin(COUNTRIES)
+        c1 = self.proj_df['Country Code'].isin(self.COUNTRIES)
         c2 = self.proj_df.year >= MIN_YEAR
         self.proj_df = self.proj_df.loc[c1 & c2, FE_IDX + self.indicators['all'] + TARGETS]
 
@@ -114,7 +117,7 @@ class Generator(object):
         start_time = time()
 
         pdf = self.raw.copy(deep=True)
-        pdf = pdf[pdf['Country Code'].isin(COUNTRIES)]
+        pdf = pdf[pdf['Country Code'].isin(self.COUNTRIES)]
         pdf['year_idx'] = pd.to_datetime(pdf.year, format='%Y')
         pdf = pdf.set_index('year_idx').to_period(freq='Y')
 
@@ -270,21 +273,24 @@ class Generator(object):
             t1 = self.proj_df.year == self.baseyear
             bv = self.proj_df.loc[c1 & t1, TARGETS[0]].values[0]
 
-            logger.debug("Baseline value: {}".format(bv))
+            logger.debug("Baseline value ({}, {}): {}".format(country, self.baseyear, bv))
 
         else:
             data = self.proj_df.copy(deep=True)
             bv = None
 
         # Target variable offset by a year (y_(t+dt))
-        # TODO: Fix cases when dt == 0 (no lagged target variables)
-        data, varname = self.__lag_variables(data, TARGETS, dt)
-        true_target_var = varname[0]
-        logger.debug("Target: {}".format(true_target_var))
-        
+        if dt > 0:
+            data, varname = self.__lag_variables(data, TARGETS, dt)
+            true_target_var = varname[0]
 
-        # Include current year target as a feature
-        true_feature_var = self.indicators[country] + TARGETS
+            # Include current year target as a feature
+            true_feature_var = self.indicators[country] + TARGETS
+        else:
+            true_target_var = TARGETS[0]
+            true_feature_var = self.indicators[country]
+
+        logger.debug("Target: {}".format(true_target_var))
         logger.debug("Total # Features: {}".format(len(true_feature_var)))
 
         # Handle the missing features
@@ -308,18 +314,29 @@ class Generator(object):
             idx = ~pd.isnull(yt)
             yt = yt[idx]
             Xt = Xt[idx]
-            logger.debug("Training samples: {} obs, {} features.".format(*Xt.shape))
+            if sum(~idx) > 0:
+                logger.debug("Dropping missing labels. Training samples: {} obs, {} features.".format(*Xt.shape))
+            
+            # Drop missing columns from feature set
+            cols = Xt.columns
+            Xt.dropna(how='all', axis=1, inplace=True)
+            featureset = Xt.columns
+            if len(cols) != len(featureset):
+                logger.debug("Dropped missing features: {}".format(",".join(list(set(cols)- set(featureset)))))
 
+            
         elif method == 'scoring':
 
             Xt = None
             yt = None
             Xv = data.loc[t1 & s1, true_feature_var]
             logger.debug("Scoring samples: {} obs, {} features.".format(*Xv.shape))
+            featureset = None
 
 
         
         return {'data': (Xt, yt, Xv), 
+                'features': featureset,
                 'Country code': country, 
                 'baseyear': self.baseyear,
                 'baseline': bv}
@@ -344,6 +361,6 @@ class Generator(object):
         tmp.rename(columns={k: v for (k, v) in zip(
             var, col_name)}, inplace=True)
         tmp.year -= lag
-        data = pd.merge(data, tmp, on=idx_cols, how='left')
+        res = pd.merge(data, tmp, on=idx_cols, how='left')
 
-        return data, col_name
+        return res, col_name

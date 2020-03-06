@@ -7,7 +7,7 @@ import json
 import os
 import pandas as pd
 import logging
-from model.displacement import COUNTRIES, LABELS
+from model.displacement import LABELS
 
 logger = logging.getLogger(__name__)
 
@@ -27,6 +27,8 @@ def set_up(app, config):
     logger.info("Training the models.")
     tr = Trainer(config)
     tr.train()
+
+    COUNTRIES = config['supported-countries']['displacement']
 
     # get the clustering
     with open(config['GROUPING'], 'rt') as infile:

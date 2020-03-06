@@ -9,20 +9,20 @@ import matplotlib.pyplot as plt
 
 import sys, os
 sys.path.insert(0, os.path.join(os.getcwd()))
-print(sys.path)
 
 from model.displacement.model import Trainer
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
 logger = logging.getLogger(__name__)
+logging.getLogger("matplotlib").setLevel(logging.WARNING)
 
-countries = ['AFG', 'MMR']
 
 CONFIGURATION = 'configuration.json'
 
 with open(CONFIGURATION, 'rt') as infile:
     config = json.load(infile)
 
+COUNTRIES = config['supported-countries']['displacement']
 
 def plot_result(tr, pred):
 
@@ -42,7 +42,7 @@ def plot_result(tr, pred):
     plt.plot(pred_x, pred_y, 'rs', label=u'Forecast')
     plt.fill(np.concatenate([pred_x, pred_x[::-1]]),
          np.concatenate([ci_high, ci_low[::-1]]),
-         alpha=.5, fc='g', ec='None', label='90% interval')
+         alpha=.5, fc='g', ec='None', label='95% interval')
     plt.legend(loc=0)
 
     plt.xlim([1995, config['BASEYEAR']])
@@ -53,12 +53,12 @@ def test_prediction():
 
     tr = Trainer(config)
     tr.train()
-    afg = tr.score('AFG')
-    mmr = tr.score('MMR')
-    plot_result(tr, afg)
-    plot_result(tr, mmr)
+    for c in COUNTRIES:
+
+        pred = tr.score(c)
+        plot_result(tr, pred)
+
     plt.show()
-    #pprint(tr.score.cache_info())
 
 if __name__ == "__main__":
     test_prediction()
