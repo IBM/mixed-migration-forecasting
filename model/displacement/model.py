@@ -81,7 +81,11 @@ class Trainer(object):
         for c in countries:
 
             if scenario:
+
                 # get the total scenario change
+                F = self.generator.features(c, self.baseyear)
+                _, _, Xv = F['data']
+                
                 deltaT = self.scenarios.compute_target_change(Xv, scenario, c)
                 MC = {'country': c, 
                       'explanation': deltaT[(c, 0)]['significance']}
