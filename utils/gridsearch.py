@@ -43,7 +43,7 @@ LAGS = [0, 1, 2, 3, 4, 5]
 COUNTRIES = config['supported-countries']['displacement']
 result = []
 
-generator = Generator(config, 2019)  # Base year is not used
+generator = Generator(config) 
 
 
 def get_data(c, lg):
