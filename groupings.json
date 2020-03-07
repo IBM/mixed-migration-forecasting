@@ -2,6 +2,13 @@
     "clusters": [
         {
             "theme": "Economy",
+            "labels": [
+                "-10%",
+                "-5%",
+                "NC",
+                "+5%",
+                "+10%"
+            ],
             "indicators": [
                 {
                     "code": "NY.GDP.PCAP.PP.CD",
@@ -22,6 +29,13 @@
         },
         {
             "theme": "Conflict",
+            "labels": [
+                "-10%",
+                "-5%",
+                "NC",
+                "+5%",
+                "+10%"
+            ],
             "indicators": [
                 {
                     "code": "VC.BTL.DETH",
@@ -29,9 +43,9 @@
                     "direction-improvement": "lower"
                 },
                 {
-                    "code": "UC.EVT.TOT",
-                    "description": "UCDP Number of conflict events per year",
-                    "direction-improvement": "lower"
+                    "code": "VDEM.FRD.POL.KILL",
+                    "description": "Freedom from political killings",
+                    "direction-improvement": "higher"
                 },
                 {
                     "code": "UC.FAT.CIV",
@@ -42,6 +56,13 @@
         },
         {
             "theme": "Governance",
+            "labels": [
+                "-4%",
+                "-2%",
+                "NC",
+                "+2%",
+                "+4%"
+            ],
             "indicators": [
                 {
                     "code": "TRI.CORR.INDEX",
@@ -67,6 +88,13 @@
         },
         {
             "theme": "Natural",
+            "labels": [
+                "-4%",
+                "-2%",
+                "NC",
+                "+2%",
+                "+4%"
+            ],
             "indicators": [
                 {
                     "code": "EMDAT.NAT.OCCURRENCE",
@@ -87,6 +115,13 @@
         },
         {
             "theme": "Population",
+            "labels": [
+                "-4%",
+                "-2%",
+                "NC",
+                "+2%",
+                "+4%"
+            ],
             "indicators": [
                 {
                     "code": "SP.POP.GROW",
