@@ -119,15 +119,16 @@ def set_up(app, config):
         years = request.args.get('years')
 
         countries = country.split(',')
+        indicators = indicator.split(',')
 
         if indicator == 'all':
             if country != 'all':
                 sub_df = df.loc[df["Country Code"].isin(countries)]
         else:
             if country != 'all':
-                sub_df = df.loc[(df["Country Code"].isin(countries)) & (df["Indicator Code"] == indicator)]
+                sub_df = df.loc[(df["Country Code"].isin(countries)) & (df["Indicator Code"].isin(indicators))]
             else:
-                sub_df = df.loc[df["Indicator Code"] == indicator]
+                sub_df = df.loc[df["Indicator Code"].isin(indicators)]
             # print(indicators)
 
         if years:
@@ -150,15 +151,16 @@ def set_up(app, config):
             years = 1
 
         countries = country.split(',')
+        indicators = indicator.split(',')
 
         if indicator == 'all':
             if country != 'all':
                 sub_df = df.loc[df["Country Code"].isin(countries)]
         else:
             if country != 'all':
-                sub_df = df.loc[(df["Country Code"].isin(countries)) & (df["Indicator Code"] == indicator)]
+                sub_df = df.loc[(df["Country Code"].isin(countries)) & (df["Indicator Code"].isin(indicators))]
             else:
-                sub_df = df.loc[df["Indicator Code"] == indicator]
+                sub_df = df.loc[df["Indicator Code"].isin(indicators)]
             # print(indicators)
 
         result_df = pd.DataFrame(columns=df.columns)
