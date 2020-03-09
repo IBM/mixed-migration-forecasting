@@ -54,7 +54,7 @@ class FreedomTransformer(Transformer):
         # merge with country codes
         self.transform_country_code()
         # merge with indicator names
-        inames = pd.DataFrame([['PR', 'Political Rights'], ['CL', 'Civil Liberties'], ['Status', 'Freedom Status']], columns=['Indicator Code', 'Indicator Name'])
+        inames = pd.DataFrame([['PR', 'Freedom House: Political Rights [From 1 (best) to 7 (worst)]'], ['CL', 'Freedom House: Civil Liberties  [From 1 (best) to 7 (worst)]'], ['Status', 'Freedom House: Freedom Status']], columns=['Indicator Code', 'Indicator Name'])
         self.df = pd.merge(self.df, inames, how='left', left_on='Indicator Code', right_on='Indicator Code')
         # rename indicator values
         self.df.replace(to_replace=['PR', 'CL', 'Status'], value=['FIW.PR', 'FIW.CL', 'FIW.Status'], inplace=True)

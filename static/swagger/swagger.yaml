@@ -31,7 +31,7 @@ paths:
           type: "string"
       - name: indicator
         in: query
-        description: specific indicator code or `all`
+        description: A comma-separated list of indicators or `all` 
         required: true
         example: SL.UEM.TOTL.ZS
         schema:
@@ -86,7 +86,7 @@ paths:
           type: "string"
       - name: indicator
         in: query
-        description: specific indicator code or `all`
+        description: A comma-separated list of indicators or `all` 
         required: true
         example: SL.UEM.TOTL.ZS
         schema:

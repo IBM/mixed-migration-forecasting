@@ -52,11 +52,11 @@ class PolityTransformer(Transformer):
 
 
         democ_df.loc[:, "Indicator Code"] = "SP.POL.DEM"
-        democ_df.loc[:, "Indicator Name"] = "Institutionalized Democracy"
+        democ_df.loc[:, "Indicator Name"] = "Polity Index: Institutionalized Democracy (0-10)"
         autoc_df.loc[:, "Indicator Code"] = "SP.POL.AUT"
-        autoc_df.loc[:, "Indicator Name"] = "Institutionalized Autocracy"
+        autoc_df.loc[:, "Indicator Name"] = "Polity Index: Institutionalized Autocracy (0-10)"
         score_df.loc[:, "Indicator Code"] = "SP.POL.SCR.TWO"
-        score_df.loc[:, "Indicator Name"] = "Revised Combined PolityScore"
+        score_df.loc[:, "Indicator Name"] = "Polity Index: Revised Combined PolityScore (-10 - 10)"
 
 
         self.polity_df = democ_df.append(autoc_df, sort="True").append(score_df, sort="True")

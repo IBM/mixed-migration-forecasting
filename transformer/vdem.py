@@ -56,16 +56,16 @@ class VDemTransformer(Transformer):
 
 
         poly_df.loc[:, "Indicator Code"] = "VDEM.DEM.IDX"
-        poly_df.loc[:, "Indicator Name"] = "Electoral democracy index"
+        poly_df.loc[:, "Indicator Name"] = "V-Dem: Electoral democracy index"
         relig_df.loc[:, "Indicator Code"] = "VDEM.FRD.REL"
-        relig_df.loc[:, "Indicator Name"] = "Freedom of religion"
+        relig_df.loc[:, "Indicator Name"] = "V-Dem: Freedom of religion"
         kill_df.loc[:, "Indicator Code"] = "VDEM.FRD.POL.KILL"
-        kill_df.loc[:, "Indicator Name"] = "Freedom from political killings"
+        kill_df.loc[:, "Indicator Name"] = "V-Dem: Freedom from political killings"
 
         ex_pol_df.loc[:, "Indicator Code"] = "VDEM.EXL.POL.GRP"
-        ex_pol_df.loc[:, "Indicator Name"] = "Exclusion by Political Group index"
+        ex_pol_df.loc[:, "Indicator Name"] = "V-Dem: Exclusion by Political Group index"
         ex_soc_df.loc[:, "Indicator Code"] = "VDEM.EXL.SOC.GRP"
-        ex_soc_df.loc[:, "Indicator Name"] = "Exclusion by Social Group index "
+        ex_soc_df.loc[:, "Indicator Name"] = "V-Dem: Exclusion by Social Group index "
 
         self.vdem_df = poly_df.append(relig_df, sort="True")\
             .append(kill_df, sort="True").append(ex_pol_df, sort="True").append(ex_soc_df, sort="True")
