@@ -184,10 +184,10 @@ def rte(logs):
 def execute_learning(X, G):
     start_time = time()
     model = BayesianNetwork.from_samples(X,
-                                         algorithm='greedy',
+                                         algorithm='exact',
                                          state_names=X.columns,
                                          constraint_graph=G,
-                                         max_parents=3,
+                                         max_parents=3, verbose=True,
                                          n_jobs=-1)
     print("Structure learning (constrained) in {:3.2f} sec.".format(
         time() - start_time))
