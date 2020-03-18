@@ -1,6 +1,16 @@
 {
     "indicators": [
         {
+            "code": "SP.POP.GROW",
+            "description": "Population growth (annual %)",
+            "direction-improvement": "higher"
+        },
+	{
+            "code": "SP.URB.GROW",
+            "description": "Urban population growth (annual %)",
+            "direction-improvement": "higher"
+        },
+	{
             "code": "NY.GDP.PCAP.PP.CD",
             "description": "GDP per capita, PPP (current international $)",
             "direction-improvement": "higher"
@@ -11,16 +21,6 @@
             "direction-improvement": "lower"
         },
         {
-            "code": "SL.UEM.TOTL.FE.ZS",
-            "description": "Unemployment, female (% of female labor force) (modeled ILO estimate)",
-            "direction-improvement": "lower"
-        },
-        {
-            "code": "SL.UEM.TOTL.MA.ZS",
-            "description": "Unemployment, male (% of male labor force) (modeled ILO estimate)",
-            "direction-improvement": "lower"
-        },
-        {
             "code": "SL.UEM.TOTL.ZS",
             "description": "Unemployment, total (% of total labor force) (modeled ILO estimate)",
             "direction-improvement": "lower"
@@ -28,16 +28,6 @@
         {
             "code": "TRI.CORR.INDEX",
             "description": "Transparency Intl. Corruption Index",
-            "direction-improvement": "higher"
-        },
-        {
-            "code": "IQ.CPA.PROP.XQ",
-            "description": "CPIA property rights and rule-based governance rating (1=low to 6=high)",
-            "direction-improvement": "higher"
-        },
-        {
-            "code": "EG.ELC.ACCS.ZS",
-            "description": "Access to electricity (% of population)",
             "direction-improvement": "higher"
         },
         {
@@ -56,24 +46,9 @@
             "direction-improvement": "lower"
         },
         {
-            "code": "FIW.CL",
-            "description": "Civil Liberties",
+            "code": "HR.SCR.MEAN",
+            "description": "Human Rights Score Mean",
             "direction-improvement": "higher"
-        },
-        {
-            "code": "FIW.PR",
-            "description": "Political Rights",
-            "direction-improvement": "higher"
-        },
-        {
-            "code": "SP.SF.MAG.COLLAPSE",
-            "description": "Scaled collapse of democratic institutions (range 1-4; 9=missing)",
-            "direction-improvement": "lower"
-        },
-        {
-            "code": "SP.SF.MAG.FAIL",
-            "description": "Scaled failure of State authority (range 1-4; 9=missing)",
-            "direction-improvement": "lower"
         },
         {
             "code": "FSI.STA.LEG",
@@ -86,11 +61,6 @@
             "direction-improvement": "lower"
         },
         {
-            "code": "IT.NET.USER.ZS",
-            "description": "Individuals using the Internet (% of population)",
-            "direction-improvement": "higher"
-        },
-        {
             "code": "EMDAT.NAT.OCCURRENCE",
             "description": "EMDAT estimate of occurrence for Natural disaster group",
             "direction-improvement": "lower"
@@ -101,39 +71,9 @@
             "direction-improvement": "lower"
         },
         {
-            "code": "ER.GDP.FWTL.M3.KD",
-            "description": "Water productivity, total (constant 2010 US$ GDP per cubic meter of total freshwater withdrawal)",
-            "direction-improvement": "higher"
-        },
-        {
-            "code": "ER.H2O.INTR.PC",
-            "description": "Renewable water resources",
-            "direction-improvement": "higher"
-        },
-        {
             "code": "ADESA",
             "description": "Average dietary energy supply adequacy",
             "direction-improvement": "higher"
-        },
-        {
-            "code": "FSI.GRP.GRI",
-            "description": "Group Grievance",
-            "direction-improvement": "lower"
-        },
-        {
-            "code": "UNHCR.OUT.IDP",
-            "description": "Internally displaced persons",
-            "direction-improvement": "lower"
-        },
-        {
-            "code": "UNHCR.OUT.RET",
-            "description": "Returned refugees",
-            "direction-improvement": "lower"
-        },
-        {
-            "code": "UNHCR.OUT.REF",
-            "description": "Refugees (incl. refugee-like situations)",
-            "direction-improvement": "lower"
         },
         {
             "code": "DRC.TOT.DISP",
@@ -142,129 +82,94 @@
         }
     ],
     "nodes": {
-        "growth": [
+	"population-growth": [
+            "SP.POP.GROW"
+        ],
+	"urbanization": [
+            "SP.URB.GROW"
+        ],
+        "gdp": [
             "NY.GDP.PCAP.PP.CD"
         ],
         "inequality": [
             "SI.POV.GINI"
         ],
         "employment": [
-            "SL.UEM.TOTL.FE.ZS",
-            "SL.UEM.TOTL.MA.ZS",
             "SL.UEM.TOTL.ZS"
         ],
         "corruption": [
             "TRI.CORR.INDEX"
         ],
-        "rule-of-law": [
-            "IQ.CPA.PROP.XQ",
-            "EG.ELC.ACCS.ZS"
-        ],
-        "violence": [
+        "conflict": [
             "VC.BTL.DETH",
             "VDEM.FRD.POL.KILL",
             "UC.FAT.CIV"
         ],
         "rights": [
-            "FIW.CL",
-            "FIW.PR",
-            "SP.SF.MAG.COLLAPSE",
-            "SP.SF.MAG.FAIL"
+            "HR.SCR.MEAN"
         ],
-        "institutions": [
+        "state-legitimacy": [
             "FSI.STA.LEG"
         ],
         "services": [
             "FSI.PUB.SER"
         ],
-        "access-to-tech": [
-            "IT.NET.USER.ZS"
-        ],
         "disasters": [
             "EMDAT.NAT.OCCURRENCE",
             "EMDAT.NAT.TOTAL.AFFECTED"
         ],
-        "water": [
-            "ER.GDP.FWTL.M3.KD",
-            "ER.H2O.INTR.PC"
-        ],
         "food-security": [
             "ADESA"
-        ],
-        "ethnic-composition": [
-            "FSI.GRP.GRI"
-        ],
-        "vulnerable-groups": [
-            "UNHCR.OUT.IDP",
-            "UNHCR.OUT.RET",
-            "UNHCR.OUT.REF"
         ],
         "forced-displacement": [
             "DRC.TOT.DISP"
         ]
     },
     "edges": {
-        "vulnerable-groups": [
-            "forced-displacement"
-        ],
         "rights": [
             "services",
             "inequality",
-            "violence",
-            "vulnerable-groups",
+            "conflict",
             "forced-displacement"
         ],
-        "access-to-tech": [
-            "violence"
-        ],
-        "institutions": [
-            "growth",
+        "state-legitimacy": [
             "rights",
             "services",
-            "violence",
-            "inequality"
-        ],
-        "ethnic-composition": [
-            "rights"
+            "disasters"
         ],
         "services": [
             "forced-displacement",
             "inequality"
         ],
-        "growth": [
+        "gdp": [
             "forced-displacement",
-            "rights",
             "inequality",
-            "employment"
+            "employment",
+            "conflict"
         ],
         "employment": [
             "inequality",
-            "violence"
+            "conflict"
         ],
         "inequality": [
-            "violence",
+            "conflict",
             "forced-displacement"
         ],
         "disasters": [
-            "water",
             "employment",
             "food-security",
-            "violence",
-            "forced-displacement",
-            "services"
+            "conflict",
+            "forced-displacement"
         ],
         "food-security": [
             "forced-displacement"
         ],
-        "violence": [
+        "conflict": [
             "forced-displacement",
             "food-security"
         ],
-        "water": [
-            "forced-displacement"
-        ],
         "corruption": [
-            "growth"
+            "gdp"
         ]
     }
 }
