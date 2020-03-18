@@ -13,6 +13,7 @@ import networkx
 import tempfile
 import pickle
 
+
 LABELS = ['worse', 'poor', 'average', 'good', 'best']
 
 # Sub-Saharan countries codes
@@ -67,6 +68,12 @@ def get_data():
     data = data[c1 & c2]
 
     print("Filtered data of size  : {} (rows) {} (columns)".format(*data.shape))
+
+    # Generate the displacement stock per 100K inhabitants
+    print("Generating displacement stock per 100K inhabitants")
+    print("{} -> {}".format(data['DRC.TOT.DISP'].min(), data['DRC.TOT.DISP'].max()))
+    data['DRC.TOT.DISP'] = 100000 * data['DRC.TOT.DISP'] / data["SP.POP.TOTL"]
+    print("{} -> {}".format(data['DRC.TOT.DISP'].min(), data['DRC.TOT.DISP'].max()))
     return data
 
 
@@ -126,7 +133,7 @@ def discretization(x):
         # Resort to ranking if data is sparse
         # WARNING: Same values will be discretized to separate bins
         try:
-            print("Column: {} +++ Ranked bins".format(x.name))
+            print("Column: {} +++ Ranked bins (n={})".format(x.name, sum(~pd.isnull(x))))
             return pd.qcut(x.rank(method='first'), 5, labels=lbl, duplicates='drop').astype(str)
         except ValueError:
             print("Column: {} ------------- ERROR.".format(x.name))
@@ -187,7 +194,7 @@ def execute_learning(X, G):
                                          algorithm='exact',
                                          state_names=X.columns,
                                          constraint_graph=G,
-                                         max_parents=3, verbose=True,
+                                         #max_parents=3,
                                          n_jobs=-1)
     print("Structure learning (constrained) in {:3.2f} sec.".format(
         time() - start_time))
