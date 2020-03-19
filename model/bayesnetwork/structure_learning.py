@@ -12,14 +12,20 @@ from pomegranate import BayesianNetwork
 import networkx
 import tempfile
 import pickle
+import argparse
+import datetime
+from itertools import product
+
+import faulthandler
+faulthandler.enable()
 
 
 LABELS = ['worse', 'poor', 'average', 'good', 'best']
 
 # Sub-Saharan countries codes
-subglobal = ['SYR','COL','AFG','COG','SSD','SOM','VEN','ETH','SDN','NGA',
-             'IRQ','YEM','UKR','MMR','CAF','CMR','ERI','BDI','GEO','MLI',
-             'TCD','LBY','NER','BFA','COD']
+subglobal = ['SYR', 'COL', 'AFG', 'COG', 'SSD', 'SOM', 'VEN', 'ETH', 'SDN', 'NGA',
+             'IRQ', 'YEM', 'UKR', 'MMR', 'CAF', 'CMR', 'ERI', 'BDI', 'GEO', 'MLI',
+             'TCD', 'LBY', 'NER', 'BFA', 'COD']
 
 CONFIGURATION = "configuration.json"
 NETWORK = "model/bayesnetwork/network.json"
@@ -31,14 +37,13 @@ def get_data():
     with open(CONFIGURATION, 'rt') as infile:
         config = json.load(infile)
 
-
-    sources = [os.path.join(config['paths']['output'], 
-                            d['name'], 
+    sources = [os.path.join(config['paths']['output'],
+                            d['name'],
                             'data.csv') for d in config['sources'] if d['name']]
 
-
     # Generate a data frame with all indicators
-    df = pd.concat((pd.read_csv(f) for f in sources), sort=False, ignore_index=True)
+    df = pd.concat((pd.read_csv(f)
+                    for f in sources), sort=False, ignore_index=True)
 
     # Summary stats
     print("Sources            : {}".format(len(sources)))
@@ -50,17 +55,16 @@ def get_data():
 
     print("\nLoaded data in {:3.2f} sec.".format(time() - start_time))
 
-
     # Now arrange data in wide form
     data = pd.pivot_table(df, index=['Country Code', 'year'],
-                        columns='Indicator Code', values='value')
+                          columns='Indicator Code', values='value')
 
     # Consider country/year as features (and not an index)
     data.reset_index(inplace=True)
 
     print("Long form of size  : {} (rows) {} (columns)".format(*data.shape))
 
-        # Spatial filter
+    # Spatial filter
     c1 = data['Country Code'].isin(subglobal)
 
     # Temporal filter
@@ -69,11 +73,17 @@ def get_data():
 
     print("Filtered data of size  : {} (rows) {} (columns)".format(*data.shape))
 
+    print("Null values            : {}".format(pd.isnull(data).sum().sum()))
+
+    data = data.fillna(method='bfill').fillna(method='ffill')
+
     # Generate the displacement stock per 100K inhabitants
     print("Generating displacement stock per 100K inhabitants")
-    print("{} -> {}".format(data['DRC.TOT.DISP'].min(), data['DRC.TOT.DISP'].max()))
+    print(
+        "{} -> {}".format(data['DRC.TOT.DISP'].min(), data['DRC.TOT.DISP'].max()))
     data['DRC.TOT.DISP'] = 100000 * data['DRC.TOT.DISP'] / data["SP.POP.TOTL"]
-    print("{} -> {}".format(data['DRC.TOT.DISP'].min(), data['DRC.TOT.DISP'].max()))
+    print(
+        "{} -> {}".format(data['DRC.TOT.DISP'].min(), data['DRC.TOT.DISP'].max()))
     return data
 
 
@@ -96,7 +106,8 @@ def lag_variables(data, var, lag, mode="replace"):
     if mode == 'replace':
         data.drop(columns=var, inplace=True)
         # Hack to keep the network files consistent
-        data.rename(columns={v: k for (k, v) in zip(var, col_name)}, inplace=True)
+        data.rename(columns={v: k for (k, v) in zip(
+            var, col_name)}, inplace=True)
     elif mode == 'retain':
         pass
     else:
@@ -117,7 +128,7 @@ def discretization(x):
     try:
         if x.name in INDICATORS.keys():
             print("Column: {}".format(x.name))
-        
+
             if INDICATORS[x.name] == "higher":
                 lbl = LABELS
             else:
@@ -184,36 +195,108 @@ def get_constraint_graph(X):
 
     return G, indicators
 
+
 def rte(logs):
-    print ("Total Improvement: {:4.4}".format(logs['improvement']))
+    print("Total Improvement: {:4.4}".format(logs['improvement']))
 
 
-def execute_learning(X, G):
+def get_parent_structure(G, X):
+    """ Translates G into the structure of tuple of tuples
+    that pomegranate expects.
+    A bit convoluted by:
+    - G is defined for clusters of nodes, while the structure
+    is for indicators
+    """
+    parentset = {}
+    for parent_c, child_c in G.edges:
+        for p, c in product(parent_c, child_c):
+            try:
+                parentset[c].append(p)
+            except KeyError:
+                parentset[c] = [p]
+    
+    struct =[]
+    for i, c in enumerate(X.columns):
+        if i in parentset.keys():
+            struct.append(tuple(parentset[i]))
+        else:
+            struct.append(tuple())
+            
+    return tuple(struct)
+
+def execute_learning(X, G, algo, constrained):
+    """
+    Wrapper to run bayesian learning
+    X - evidence (dataframe)
+    G - domain expert graph (DiGraph)
+    algo - one of ('greedy', 'exact', 'no-struct')
+    constrained (bool) - use G to constrain search if true
+
+    returns None (model persisted to disk)
+    """
     start_time = time()
-    model = BayesianNetwork.from_samples(X,
-                                         algorithm='exact',
-                                         state_names=X.columns,
-                                         constraint_graph=G,
-                                         #max_parents=3,
-                                         n_jobs=-1)
-    print("Structure learning (constrained) in {:3.2f} sec.".format(
+    if algo in ['exact', 'greedy']:
+        print("Starting structure learning algorithm:{} constrained:{}.".format(algo, str(constrained)))
+        cg = G if constrained else None
+        print(algo)
+        print(G.nodes)
+        model = BayesianNetwork.from_samples(X,
+                                             algorithm=algo,
+                                             state_names=X.columns,
+                                             constraint_graph=cg,
+                                             # max_parents=3,
+                                             n_jobs=-1)
+    elif algo == 'no-struct':
+        print("Learning probabilites from known structure.")
+        struct = get_parent_structure(G, X)
+        model = BayesianNetwork.from_structure(X, struct,
+                                              state_names=X.columns)
+
+        raise NotImplementedError
+
+    print("Completed in {:3.2f} sec.".format(
         time() - start_time))
 
-    with open("model.json", 'wt') as outfile:
+    timestr = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+    with open("{}.model-{}-{}.json".format(timestr, algo, constrained), 'wt') as outfile:
         outfile.write(model.to_json())
 
-    print("Output serialized to json and written to model.json")
+    print("Output serialized to json and persisted.")
 
 
 if __name__ == "__main__":
 
+    parser = argparse.ArgumentParser(prog='Bayesian network learning')
+    algor = parser.add_mutually_exclusive_group(required=False)
+    algor.add_argument('--exact', dest='algo', action='store_const',
+                       const='exact', help='Use the exact structure learning routine.')
+    algor.add_argument('--greedy', dest='algo', action='store_const',
+                       const='greedy', help='Use a greedy algorithm to learn structure.')
+    algor.add_argument('--no-struct', dest='algo', action='store_const',
+                       const='no-struct', help='Use structure provided and only learn probabilities')
+
+    graph = parser.add_mutually_exclusive_group(required=False)
+    graph.add_argument('--constrained', dest='constrained',
+                       action='store_true')
+    graph.add_argument('--unconstrained', dest='constrained',
+                       action='store_false')
+
+    parser.set_defaults(algo='greedy', constrained=True)
+
+    args = parser.parse_args()
+
+    # Fetch the data
     data = get_data()
-    G, indicators = get_constraint_graph(data)
+
+    # Load the indicator definitions
+    with open(NETWORK, 'rt') as infile:
+        net = json.load(infile)
+    indicators = net['indicators']
 
     INDICATORS = {i['code']: i['direction-improvement'] for i in indicators}
-
     X = data[list(INDICATORS.keys())].apply(discretization, axis=0)
-    X.dropna(axis=1, how='all', inplace=True)
+    G, _ = get_constraint_graph(X)
 
-    execute_learning(X, G)
+    # Run
+    execute_learning(X, G, **vars(args))
     print("Done.")
