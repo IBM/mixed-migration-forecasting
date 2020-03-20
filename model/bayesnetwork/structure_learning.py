@@ -208,7 +208,7 @@ def get_parent_structure(G, X):
     is for indicators
     """
     parentset = {}
-    for parent_c, child_c in G.edges:
+    for parent_c, child_c in G.edges():
         for p, c in product(parent_c, child_c):
             try:
                 parentset[c].append(p)
@@ -247,12 +247,16 @@ def execute_learning(X, G, algo, constrained):
                                              # max_parents=3,
                                              n_jobs=-1)
     elif algo == 'no-struct':
+
+        raise NotImplementedError
+        # FIXME: Conditional probability tables are too large for the current
+        # configuration.
         print("Learning probabilites from known structure.")
         struct = get_parent_structure(G, X)
         model = BayesianNetwork.from_structure(X, struct,
                                               state_names=X.columns)
-
-        raise NotImplementedError
+    
+    model.bake()
 
     print("Completed in {:3.2f} sec.".format(
         time() - start_time))
