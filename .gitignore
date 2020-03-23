@@ -10,6 +10,7 @@ exploratory/Scenario tests.ipynb
 changelog.txt
 ipynb_checkpoints
 model.json
+*.model*.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
