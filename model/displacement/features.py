@@ -75,7 +75,11 @@ class Generator(object):
                                  .tolist())}
 
         # Indicators in the data. This a a country specific feature set
-        self.indicators = feature_sets(self.data.columns.tolist())
+        fs = feature_sets(self.data.columns.tolist())
+        self.indicators =  {c: fs[c] if c in fs.keys() else fs['base'] for c in self.COUNTRIES + ['all'] }
+        
+        
+        feature_sets(self.data.columns.tolist())
 
         # filter down to the countries we are interested in.
         c1 = self.data['Country Code'].isin(self.COUNTRIES)

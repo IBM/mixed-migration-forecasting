@@ -58,7 +58,8 @@ def feature_sets(cols):
     features = {
         'all': allfeatures,
         'AFG': list(set(allfeatures) - set(mmr_data)),
-        'MMR': allfeatures}
+        'MMR': allfeatures,
+        'base': list(set(allfeatures) - set(mmr_data))}
     
     return features
 

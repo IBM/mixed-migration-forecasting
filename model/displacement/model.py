@@ -135,7 +135,12 @@ class Trainer(object):
                 logger.info("Forecasts {} (lag {}): base: {} change: {} ensemble:{}".format(c, lg, fb, fc, forecast))
 
                 # Centre the range around the forecast
-                ci_range = CI_LOOKUP[key]['upper'] - CI_LOOKUP[key]['lower']
+                try: 
+                    ci_range = CI_LOOKUP[key]['upper'] - CI_LOOKUP[key]['lower']
+                except KeyError:
+                    logger.warn("Using confidence estimates from Afghanistan. Rerun CI bootstrap estimates for {}.".format(c))
+                    k2 = ('AFG', lg)
+                    ci_range = CI_LOOKUP[k2]['upper'] - CI_LOOKUP[k2]['lower']
                 di = ci_range / 2.0
 
                 M = {'year' :self.baseyear + lg, 
