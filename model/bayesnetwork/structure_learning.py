@@ -84,6 +84,8 @@ def get_data():
     data['DRC.TOT.DISP'] = 100000 * data['DRC.TOT.DISP'] / data["SP.POP.TOTL"]
     print(
         "{} -> {}".format(data['DRC.TOT.DISP'].min(), data['DRC.TOT.DISP'].max()))
+
+    data.set_index(['Country Code', 'year'], inplace=True)
     return data
 
 
@@ -299,6 +301,8 @@ if __name__ == "__main__":
 
     INDICATORS = {i['code']: i['direction-improvement'] for i in indicators}
     X = data[list(INDICATORS.keys())].apply(discretization, axis=0)
+
+    X.to_pickle("exploratory/df.pkl")
     G, _ = get_constraint_graph(X)
 
     # Run
