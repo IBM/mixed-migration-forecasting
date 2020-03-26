@@ -7,12 +7,7 @@ def set_up(app, config):
 
     with open(config['GROUPING'], 'rt') as infile:
         groupings = json.load(infile)
-
-    # User-facing labels recognized by model for scenario building
-    for c in groupings['clusters']:
-        c['labels'] = LABELS
-    # groupings['labels'] = LABELS
-    
+ 
     @app.route("/scenarios")
     def groups(): # pylint: disable=W0612
         return jsonify(groupings), 200
