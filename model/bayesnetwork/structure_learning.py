@@ -116,6 +116,7 @@ def lag_variables(data, var, lag, mode="replace"):
         raise ValueError("Mode {} not valid.".format(mode))
     return data, col_name
 
+BINLABELS = {}
 
 def discretization(x):
     """ Discretize indicators """
@@ -123,7 +124,9 @@ def discretization(x):
     # Target variable has larger number of bins
     if x.name.startswith("DRC.TOT"):
         print("Column: {}".format(x.name))
-        return pd.qcut(x, 10).astype(str)
+        s, bins = pd.qcut(x, 10, retbins=True)
+        BINLABELS[x.name] = bins.tolist()
+        return s.astype(str)
 
     # Quantile discretization of 5 classes for all other numeric quantities
 
@@ -139,7 +142,9 @@ def discretization(x):
             # We don't use these labels
             lbl = LABELS
 
-        return pd.qcut(x, 5, labels=lbl, duplicates='drop').astype(str)
+        s, bins = pd.qcut(x, 5, labels=lbl, duplicates='drop', retbins=True)
+        BINLABELS[x.name] = bins.tolist()
+        return s.astype(str)
 
     except ValueError:
 
@@ -147,7 +152,10 @@ def discretization(x):
         # WARNING: Same values will be discretized to separate bins
         try:
             print("Column: {} +++ Ranked bins (n={})".format(x.name, sum(~pd.isnull(x))))
-            return pd.qcut(x.rank(method='first'), 5, labels=lbl, duplicates='drop').astype(str)
+            s, bins = pd.qcut(x.rank(method='first'), 5, labels=lbl, duplicates='drop', retbins=True)
+            BINLABELS[x.name] = bins.tolist()
+            return s.astype(str)
+
         except ValueError:
             print("Column: {} ------------- ERROR.".format(x.name))
             return None
@@ -302,6 +310,8 @@ if __name__ == "__main__":
     INDICATORS = {i['code']: i['direction-improvement'] for i in indicators}
     X = data[list(INDICATORS.keys())].apply(discretization, axis=0)
 
+    X.to_csv("exploratory/foresight.csv")
+    json.dump(BINLABELS, open("exploratory/bins.json", 'w'))
     X.to_pickle("exploratory/df.pkl")
     G, _ = get_constraint_graph(X)
 
