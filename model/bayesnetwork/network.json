@@ -170,6 +170,13 @@
         ],
         "corruption": [
             "gdp"
+        ],
+	"urbanization": [
+	   "services",
+	   "employment"
+        ],
+        "population-growth": [
+            "urbanization"
         ]
     }
 }
