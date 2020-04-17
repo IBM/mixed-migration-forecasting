@@ -1,0 +1,13 @@
+applications:
+    - name: DRC-TDP-S2-UI-poc
+      instances: 1
+      timeout: 600
+      buildpacks:
+          - sdk-for-nodejs
+      command: npm start
+      memory: 256M
+      routes:
+          - route: drc-tdp-s2-poc.eu-gb.mybluemix.net
+      services:
+          - DRC-TDP-S2-mongoDB
+          - DRC-TDP-S2-App-ID

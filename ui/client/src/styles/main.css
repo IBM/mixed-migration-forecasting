@@ -1,0 +1,33 @@
+body {
+  margin: 0;
+  box-sizing: border-box;
+  font-family: Helvetica, sans-serif;
+}
+.mapboxgl-popup-anchor-top .mapboxgl-popup-tip {
+  border-bottom-color: #666;
+}
+.mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip {
+  border-top-color: #666;
+}
+.mapboxgl-popup-anchor-right .mapboxgl-popup-tip {
+  border-left-color: #666;
+}
+.mapboxgl-popup-anchor-left .mapboxgl-popup-tip {
+  border-right-color: #666;
+}
+.mapboxgl-popup-anchor-top-left .mapboxgl-popup-tip {
+  border-bottom-color: #666;
+}
+.mapboxgl-popup-anchor-top-right .mapboxgl-popup-tip {
+  border-bottom-color: #666;
+}
+.mapboxgl-popup-anchor-bottom-left .mapboxgl-popup-tip {
+  border-top-color: #666;
+}
+.mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-tip {
+  border-top-color: #666;
+}
+.mapboxgl-popup-content {
+  background-color: #666;
+  color: #fff;
+}

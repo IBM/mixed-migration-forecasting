@@ -1,0 +1,12 @@
+node_modules
+client/node_modules
+client/src
+manifest*.yml
+server/localdev-config.json
+.git
+test
+.vscode
+*.log
+
+db/
+server/data/

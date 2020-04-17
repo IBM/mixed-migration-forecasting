@@ -1,0 +1,15 @@
+export { watchFilteredDataSaga } from './dashboardContent/saga';
+export { watchFilterSaga } from './dashboardFilter/saga';
+export { watchMapDataSaga } from './mapContent/saga';
+export { watchUserDataSaga } from './account/saga';
+export { watchGenericDataSaga } from './genericCountryData/saga';
+export { watchUserListSaga } from './userList/saga';
+export { watchModal } from './ui/Modal/saga';
+export { watchForecastDataSaga } from './homepageForecast/saga';
+export { watchDataTrendsSaga } from './homepageDataTrends/saga';
+export { watchUserActionSaga } from './userConfigurations/saga';
+export { watchSarSaga } from './sar/saga';
+export { watchSingleSarSaga } from './sarSinglePage/saga';
+export { watchIndicatorsSaga } from './allIndicators/saga';
+export { watchCausalityDemoSaga } from './causalityDemo/saga';
+export { watchScenarioDataSaga } from './homepageScenario/saga';

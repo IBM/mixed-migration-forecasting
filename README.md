@@ -1,42 +1,21 @@
-# mm4sight
-Asset with the Danish Refugee Council for the mixed migration and displacement forecasting project.
+# mixed-migration-forecasting
 
-### Setting up
+The Foresight system (previously Mixed Migration Forecasting) is a forecasting system for the Danish Refugee Council (DRC) aimed at providing long term forecasts on forced displacement volumes and causal analysis of drivers of displacement. 
 
-To get started, clone this repository.
+This repository contains code assets related to data aggregation, machine learning and bayesian network learning, and user interface components. It is organized in two separate applications. 
 
-```
-$ git clone git@github.com:IBM/mixed-migration-forecasting.git
-```
-
-Then setup a python environment. If you use the Anaconda distribution (recommended), create a python virtual environment using `conda`. This way your project specific dependencies are isolated.
-
-```
-$ conda create -n mm4sight python=3.7.4
-$ source activate mm4sight
-(mm4sight) $ pip install -r requirements.txt
-```
-
-Here `source activate mm4isght` activates the virtual environment (`source deactivate` will deactivate it). `pip install` directives will install packages for the virtual environment.
-
-Fetch the data artifacts. TBD
+* `server`  - Contains data aggregation, model generation, APIs. See [README.md](server/README.md)
+* `ui` - responsible for data visualisation, user-managment, report handling unit of a system. See [README](ui/README.md)
 
 
-### Running
+## References
 
-The code is in three parts. 
-
-*Data Transformation* (optional): Scripts related to data manipulation. Data transformations are run based on the `configuration.json` file that has a source file along with a transformer class for each source. All transformer implementations are within the [transformer](https://github.com/IBM/mixed-migration-forecasting/tree/master/transformer) folder. The entire transformation script can be run by activating your python virtual environment and running the wrapper script so. 
+Some details are describe in this [blog post](https://www.ibm.com/blogs/research/2019/01/machine-learning-humanitarian-sector/)
+and a [paper](https://ieeexplore.ieee.org/document/8880487) which can be cited as follows:
 
 ```
-$ source activate mm4sight
-(mm4sight) $ python executor.py
+@ARTICLE{8880487,  author={R. {Nair} and B. S. {Madsen} and H. {Lassen} and S. {Baduk} and S. {Nagarajan} and L. H. {Mogensen} and R. {Novack} and R. {Curzon} and J. {Paraszczak} and S. {Urbak}},  
+journal={IBM Journal of Research and Development},  
+title={A machine learning approach to scenario analysis and forecasting of mixed migration},   
+year={2020},  volume={64},  number={1/2},  pages={7:1-7:7}}
 ```
-This standardizes the data and populates the [processed](https://github.com/IBM/mixed-migration-forecasting/tree/master/prm-datasets/processed) folder. A base set of processed data is available. So this step is only needed when new data sources or features are added.
-
-*Models*: The models specification is available as a module in this repository. To recreate the model objects, run
-```
-(mm4sight) $ python model/trainer.py
-```
-
-*Deployment*: We use a cloud foundry build pack which can be deployed to IBM Cloud.
