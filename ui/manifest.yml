@@ -1,0 +1,12 @@
+applications:
+    - name: SolutionTwoDRC-TDP
+      instances: 1
+      timeout: 600
+      buildpacks:
+          - sdk-for-nodejs
+      command: npm start
+      memory: 256M
+      routes:
+          - route: solution-two-drc.eu-de.mybluemix.net   
+      services:
+          - tah-dev-mongo-uk
