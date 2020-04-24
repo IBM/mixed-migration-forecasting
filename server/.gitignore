@@ -6,7 +6,6 @@ prm-datasets/.DS_Store
 venv2
 exploratory/Cross-validation experiments.ipynb
 exploratory/Testbed.ipynb
-exploratory/Scenario tests.ipynb
 changelog.txt
 ipynb_checkpoints
 model.json
