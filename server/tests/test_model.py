@@ -4,6 +4,7 @@ import logging
 from pprint import pprint
 import numpy as np
 import pytest
+from itertools import product
 
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -19,9 +20,10 @@ logging.getLogger("matplotlib").setLevel(logging.WARNING)
 
 
 CONFIGURATION = 'configuration.json'
+GROUPINGS = 'groupings.json'
 
-with open(CONFIGURATION, 'rt') as infile:
-    config = json.load(infile)
+config = json.load(open(CONFIGURATION, 'rt'))
+groupings = json.load(open(GROUPINGS, 'rt'))
 
 COUNTRIES = config['supported-countries']['displacement']
 
@@ -52,16 +54,31 @@ def plot_result(tr, pred):
 
 @pytest.fixture
 def trainer():
-    return Trainer(config)
+    tr = Trainer(config)
+    tr.train()
+    return tr
 
 def test_prediction(trainer):
+    """ Base prediction - no scenario """
 
-    trainer.train()
     for c in COUNTRIES:
         pred = trainer.score(c)
 
 def test_scenario(trainer):
-    pass
+    """ What-if scenarios """
+
+    featureset = [i['code']
+                           for c in groupings['clusters'] for i in c['indicators']]
+    THEMES = [c['theme'] for c in groupings['clusters']]
+    LABELS = {t['theme']: t['labels'] for t in groupings['clusters']}
+
+    for c in COUNTRIES:
+        for t in THEMES:
+            for lbl in LABELS[t]:
+                user_scenario = ((t, lbl),)
+                trainer.score(c, user_scenario)
+
 
 if __name__ == "__main__":
-    test_prediction(Trainer(config))
+    #test_prediction(Trainer(config))
+    test_scenario(Trainer(config))

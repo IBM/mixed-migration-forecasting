@@ -94,9 +94,9 @@ class Trainer(object):
                 MC = {'country': c, 
                       'explanation': deltaT[(c, 0)]['significance']}
 
-            # TODO: Add non-scenario model explanation statements.
-            MC = {'country': c,
-                 'explanation': "Here is a test explanation clause that will be updated."}
+            else:
+                MC = {'country': c,
+                    'explanation': self.scenarios.summary(c)}
             
             pred = []
 

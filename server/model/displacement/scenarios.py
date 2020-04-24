@@ -46,7 +46,7 @@ class Scenario(object):
             else:
                 X, Y = self.model_case(lag, c)
 
-            X1 = sm.add_constant(X.values)
+            X1 = sm.add_constant(X)
 
             M = {}
             key = c, lag
@@ -141,12 +141,11 @@ class Scenario(object):
             sig = self.models[key]['significance']
 
             # the fall back elasticities (assumed to be significant)
-            e_fb = self.models[('subglobal', lg)]['elasticities']
+            e_fb = self.models[('subglobal', lg)]['elasticity']
 
             # Check which elasticities to use. Significance is looked at
             # at the cluster/theme level. 
             country_e = []
-            baseline_e = []
 
             theme_sig_report = {}
             for theme in user_themes:
@@ -154,24 +153,55 @@ class Scenario(object):
                 indicatorset = self.theme_indicator_map[theme]
                 theme_sig_report[theme] = self.get_significance(sig, indicatorset)
 
-                if theme_sig_report[theme] == 'ns':
-                    # Not significant, so use the baseline for this indicator set
-                    baseline_e.append(indicatorset)
-                else:
+                if not (theme_sig_report[theme] == 'ns'):
                     country_e.append(indicatorset)
 
             # Finally compute the revised forecast
-            total_change = 0.0
-            for k, v in num_change.items():
-                if k in baseline_e:
-                    total_change += e_fb[k] * v
-                elif k in country_e:
-                    total_change += e[k] * v
+            if country == 'MMR':
+                # Short-circuit for Myanmmar, since the data is poor
+                total_change = sum([e_fb[kcode] * value_n for kcode, value_n in num_change.items()])
+                resultset[key] = {'change': total_change,
+                    'significance': self.summary(country)}
 
-            resultset[key] = {'change': total_change,
-                           'significance': self.__report(theme_sig_report) }
+            else:
+                total_change = 0.0
+                for kcode, value_n in num_change.items():
+                    if kcode in country_e:
+                        total_change += (e[kcode] * value_n)
+                    else:
+                        # use the fallback
+                        total_change += (e_fb[kcode] * value_n)
+                
+                resultset[key] = {'change': total_change,
+                            'significance': self.summary(country) + self.__report(theme_sig_report) }
         
         return resultset
+
+    def summary(self, c):
+        """
+        Summary of elasticities per country 
+        Refer to the notebook for the results table.
+        exploratory/Scenario tests.ipynb
+        """
+        if c == 'AFG':
+            return ("Key themes that impact displacement in Afghanistan are Governance, Conflict and Economy. " +
+                    "A 4% improvement in Governance is estimated to drop displacement by roughly 24%. " +
+                    "A 5% increase in conflict results in an estimated 5.5% increase in displacement. " + 
+                    "These rates are estimated from elasticities of an ordinary least squares model for a limited feature set. ")
+
+
+        elif c == 'MMR':
+        
+            return ("In Myanmmar, the what-if forecast estimates are based on a data from several countries as in Myanmmar alone " +
+                    "the relationships between forced displacement and key themes are not statistically significant. " +
+                    "The sub-global estimates rely on a basket of 25 countries with recent displacements. This analysis suggests " +
+                    " Governance improvement of 4% leads to a drop in displacement of 5.5%, a 10% reduction in conflict reflects " + 
+                    " a 2.7% drop in displacement, while a 10% increase in Economy results in 2.4% increase in displacement. " + 
+                    "These rates are estimated from elasticities of an ordinary least squares model for a limited feature set." )
+
+        else:
+            return ("Country code '{}' currently not supported.".format(c))
+
 
     def __report(self, s):
         """
@@ -184,13 +214,13 @@ class Scenario(object):
 
         stmt = ""
         if alls:
-            stmt += "Estimated change in clusters {} is statistically significant.".format(", ".join(alls))
+            stmt += "Estimated change in cluster(s) '{}' are statistically significant.".format(", ".join(alls))
         
         if soms:
-            stmt += "Only some indicators in clusters {} is statistically significant.".format(", ".join(soms))
+            stmt += "Only some indicators in cluster(s) '{}' are statistically significant.".format(", ".join(soms))
         
         if nots:
-            stmt += "Changes estimated for clusters {} is NOT statistically significant.".format(", ".join(nots))
+            stmt += "Changes estimated for cluster(s) '{}' are NOT statistically significant.".format(", ".join(nots))
 
         return stmt
 
