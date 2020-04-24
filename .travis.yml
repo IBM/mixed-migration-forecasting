@@ -1,0 +1,11 @@
+language: python
+python:
+  - 3.7.6
+
+before_script: cd server
+
+install:
+  - pip install -r server/requirements.txt
+
+script:
+  - pytest
