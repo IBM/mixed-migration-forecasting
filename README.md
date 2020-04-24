@@ -4,7 +4,8 @@ The Foresight system (previously Mixed Migration Forecasting) is a forecasting s
 
 This repository contains code assets related to data aggregation, machine learning and bayesian network learning, and user interface components. It is organized in two separate applications. 
 
-* `server`  - Contains data aggregation, model generation, APIs. See [README.md](server/README.md)
+* `server`  - Contains data aggregation, model generation, APIs. See [README.md](server/README.md) 
+[![Build Status](https://travis-ci.org/IBM/mixed-migration-forecasting.svg?branch=master)](https://travis-ci.org/IBM/mixed-migration-forecasting)
 * `ui` - responsible for data visualisation, user-managment, report handling unit of a system. See [README](ui/README.md)
 
 
