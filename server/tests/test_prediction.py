@@ -56,9 +56,9 @@ def test_prediction():
     for c in COUNTRIES:
 
         pred = tr.score(c)
-        plot_result(tr, pred)
+        #plot_result(tr, pred)
 
-    plt.show()
+    #plt.show()
 
 if __name__ == "__main__":
     test_prediction()

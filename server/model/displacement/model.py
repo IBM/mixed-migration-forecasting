@@ -27,12 +27,16 @@ logger = logging.getLogger(__name__)
 class Trainer(object):
 
     def __init__(self, config):
-        """ Needs a configuration object and base year """
+        """ Needs a configuration object """
 
         self.config = config
         self.baseyear = config['BASEYEAR']
         self.COUNTRIES = config['supported-countries']['displacement']
+
+        # Handle feature generation portions
         self.generator = Generator(config)
+
+        # Handle scenarios
         self.scenarios = Scenario(self.generator.data, config)
 
         # get the grid search parameter results
@@ -100,10 +104,6 @@ class Trainer(object):
 
                 F = self.generator.features(c, self.baseyear + lg)
                 _, _, Xv = F['data']
-
-                D = self.generator.features(c, self.baseyear + lg, differencing=True)
-                _, _, Xdv = D['data']
-                curr_for = D['baseline']
                 
                 key = (c, lg)
                 
@@ -111,28 +111,14 @@ class Trainer(object):
                 b_features = self.models[key]['bfeatures']
 
                 Xv = Xv[b_features]
-                fb = bm.predict(Xv)[0]
-
-                # changes model predicts change in displacement.
-                # for subsequent lag, update the displacement
-                cm = self.models[key]['change']
-                c_features = self.models[key]['cfeatures']
-                Xdv = Xdv[c_features]
-                
-                fc = cm.predict(Xdv)[0] + curr_for
-                curr_for = fc
-
-                # ensemble
-                # forecast = 0.5 * (fb + fc)
-                forecast = fb
+                forecast = bm.predict(Xv.values)[0]
                 
                 if scenario:
                     # We assume year2 impacts persist across future years
                     sclag = max(SCENARIO_LAGS) if lg > max(SCENARIO_LAGS) else lg
                     forecast += deltaT[(c, sclag)]['change']
 
-                fc = None
-                logger.info("Forecasts {} (lag {}): base: {} change: {} ensemble:{}".format(c, lg, fb, fc, forecast))
+                logger.info("Forecasts {} (lag {}): base: {}".format(c, lg, forecast))
 
                 # Centre the range around the forecast
                 try: 
@@ -175,12 +161,7 @@ class Trainer(object):
             F = self.generator.features(
                 c, self.baseyear + lg, method='training')
 
-            D = self.generator.features(
-                c, self.baseyear + lg, method='training', differencing=True)
-
             Xt, yt, _ = F['data']
-
-            # print(pd.isnull(Xt).sum().sort_values(ascending=False).head(10))
 
             base_model = clone(CLF)
             pset = self.get_parameters(c, lg)
@@ -189,16 +170,6 @@ class Trainer(object):
             base_model.fit(Xt, yt)
             M['base'] = base_model
             M['bfeatures'] = F['features']
-
-            
-            Xdt, ydt, _ = D['data']
-            change_model = clone(CLF)
-            pset = self.get_parameters(None, None)
-            change_model.set_params(**pset)
-            change_model.fit(Xdt, ydt)
-            M['change'] = change_model
-            M['cfeatures'] = D['features']
-            M['baseline'] = D['baseline']
 
             self.models[(c, lg)] = M
 

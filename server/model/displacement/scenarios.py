@@ -26,6 +26,7 @@ class Scenario(object):
                            for c in groupings['clusters'] for i in c['indicators']]
         self.CLUSTERS = groupings['clusters']
         self.THEMES = [c['theme'] for c in self.CLUSTERS]
+        self.LABELS = {t['theme']: t['labels'] for t in groupings['clusters']}
         self.theme_indicator_map = {c['theme']: c['indicators'] for c in self.CLUSTERS}
 
         self.train()
@@ -95,7 +96,7 @@ class Scenario(object):
 
         for k, v in scenario.items():
             assert k in self.THEMES, "Theme: {} is not supported".format(k)
-            assert v in LABELS, "Label {} not supported.".format(v)
+            assert v in self.LABELS[k], "Change label {} not supported for theme {}.".format(v, k)
         
         # Transform to indicator-level scenario that accounts for the 
         # direction of the indicator.
