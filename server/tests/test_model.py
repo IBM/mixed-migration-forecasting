@@ -3,6 +3,7 @@ import json
 import logging
 from pprint import pprint
 import numpy as np
+import pytest
 
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -48,17 +49,19 @@ def plot_result(tr, pred):
     plt.xlim([1995, config['BASEYEAR']])
     plt.xticks(np.arange(1995, config['BASEYEAR'] + 8, 1))
     plt.title(pred[0]['country'])
-    
-def test_prediction():
 
-    tr = Trainer(config)
-    tr.train()
+@pytest.fixture
+def trainer():
+    return Trainer(config)
+
+def test_prediction(trainer):
+
+    trainer.train()
     for c in COUNTRIES:
+        pred = trainer.score(c)
 
-        pred = tr.score(c)
-        #plot_result(tr, pred)
-
-    #plt.show()
+def test_scenario(trainer):
+    pass
 
 if __name__ == "__main__":
-    test_prediction()
+    test_prediction(Trainer(config))

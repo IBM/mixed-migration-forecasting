@@ -86,3 +86,10 @@ CI_LOOKUP = {('AFG', 0): {'lower': 60793.58326530255, 'upper': 208890.3185875239
  ('MMR', 4): {'lower': 195978.37924330475, 'upper': 281538.21813497896},
  ('MMR', 5): {'lower': 159372.50146062503, 'upper': 365527.7701653139},
  ('MMR', 6): {'lower': 114040.03350491042, 'upper': 385435.55818664486}}
+
+
+# ISO-3 Country codes for the 25 country basket with recent displacement crisis
+# This is used to determine a baseline elasticity for scenarios. 
+subglobal = ['SYR','COL','AFG','COG','SSD','SOM','VEN','ETH','SDN','NGA',
+             'IRQ','YEM','UKR','MMR','CAF','CMR','ERI','BDI','GEO','MLI',
+             'TCD','LBY','NER','BFA','COD']

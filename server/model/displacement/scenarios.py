@@ -19,7 +19,7 @@ class Scenario(object):
     def __init__(self, data, config):
         self.data = data
         self.config = config
-        self.COUNTRIES = config['supported-countries']['displacement']
+        self.COUNTRIES = config['supported-countries']['displacement'] + ['subglobal']
 
         groupings = json.load(open(config['GROUPING'], 'rt'))
         self.featureset = [i['code']
@@ -39,9 +39,14 @@ class Scenario(object):
 
         for lag, c in product(SCENARIO_LAGS, self.COUNTRIES):
 
-            X, Y = self.model_case(lag, c)
+            logger.info("Lag: {} Country: {}".format(lag, c))
 
-            X1 = sm.add_constant(X)
+            if c == 'subglobal':
+                X, Y = self.model_case(lag, subglobal)
+            else:
+                X, Y = self.model_case(lag, c)
+
+            X1 = sm.add_constant(X.values)
 
             M = {}
             key = c, lag
@@ -98,9 +103,11 @@ class Scenario(object):
             assert k in self.THEMES, "Theme: {} is not supported".format(k)
             assert v in self.LABELS[k], "Change label {} not supported for theme {}.".format(v, k)
         
-        # Transform to indicator-level scenario that accounts for the 
+        # Transform from clusters
+        # to indicator-level scenario that accounts for the 
         # direction of the indicator.
-        user_scenario = {}
+        user_indicators = {}
+        user_themes = list(scenario.keys())
 
         for theme, change in scenario.items():
 
@@ -117,28 +124,52 @@ class Scenario(object):
             for i in indicatorset:
                 if i['direction-improvement'] == 'lower':
                     # flip the direction
-                    user_scenario[i['code']] = -1 * ds
+                    user_indicators[i['code']] = -1 * ds
                 else:
-                    user_scenario[i['code']] =  ds
+                    user_indicators[i['code']] =  ds
 
         # numerical change sought by user
-        num_change = {k: v * np.abs(Xv[k].values[0]) for k, v in user_scenario.items()}
+        num_change = {k: v * np.abs(Xv[k].values[0]) for k, v in user_indicators.items()}
 
         # finally - apply elasticities
         resultset = {}
         for lg in SCENARIO_LAGS:
             key = country, lg
+            
+            # get the country specific elasticities
             e = self.models[key]['elasticity']
             sig = self.models[key]['significance']
-            total_change = sum([e[k] * v for k, v in num_change.items()])
 
-            sig_report = {}
-            for theme, _ in scenario.items():
+            # the fall back elasticities (assumed to be significant)
+            e_fb = self.models[('subglobal', lg)]['elasticities']
+
+            # Check which elasticities to use. Significance is looked at
+            # at the cluster/theme level. 
+            country_e = []
+            baseline_e = []
+
+            theme_sig_report = {}
+            for theme in user_themes:
+
                 indicatorset = self.theme_indicator_map[theme]
-                sig_report[theme] = self.get_significance(sig, indicatorset)
+                theme_sig_report[theme] = self.get_significance(sig, indicatorset)
+
+                if theme_sig_report[theme] == 'ns':
+                    # Not significant, so use the baseline for this indicator set
+                    baseline_e.append(indicatorset)
+                else:
+                    country_e.append(indicatorset)
+
+            # Finally compute the revised forecast
+            total_change = 0.0
+            for k, v in num_change.items():
+                if k in baseline_e:
+                    total_change += e_fb[k] * v
+                elif k in country_e:
+                    total_change += e[k] * v
 
             resultset[key] = {'change': total_change,
-                           'significance': self.__report(sig_report) }
+                           'significance': self.__report(theme_sig_report) }
         
         return resultset
 
@@ -167,7 +198,7 @@ class Scenario(object):
         """ Generate a data frame to estimate elasticities """
 
         # spatial filter
-        if ~isinstance(countries, list):
+        if not isinstance(countries, list):
             countries = [countries]
         c1 = self.data['Country Code'].isin(countries)
 
