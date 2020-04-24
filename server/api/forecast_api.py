@@ -7,7 +7,6 @@ import json
 import os
 import pandas as pd
 import logging
-from model.displacement import LABELS
 
 logger = logging.getLogger(__name__)
 
@@ -34,6 +33,7 @@ def set_up(app, config):
     with open(config['GROUPING'], 'rt') as infile:
         groupings = json.load(infile)
     THEMES = [t['theme'] for t in groupings['clusters']]
+    LABELS = {t['theme']: t['labels'] for t in groupings['clusters']}
 
     @app.route("/predict", methods=['get'])
     def forecast():  # pylint: disable=W0612
@@ -54,9 +54,9 @@ def set_up(app, config):
         for t in THEMES:
             k = request.args.get(t)
             if k is not None:
-                if k not in LABELS:
+                if k not in LABELS[t]:
                     return make_response(jsonify({"msg":
-                                                  "Invalid call. Unknown class {} for type {}.".format(k, t)}), 405)
+                                                  "Invalid call. Unsupported change {} for theme {}. Supported changes: {}".format(k, t, ",".join(LABELS[t]))}), 405)
                 scenario[t] = k
 
         if scenario:

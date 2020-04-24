@@ -27,9 +27,6 @@ SCENARIO_LAGS = [0, 1]
 # for.
 PROJECTION_MAX_LAGS = 3
 
-# End user labels
-LABELS = ['-10%', '-5%', 'NC', '+5%', '+10%']
-
 # Target variable in the data - this is the internally displaced
 # population + total external population.
 TARGETS = ['DRC.TOT.DISP']
