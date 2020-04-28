@@ -27,11 +27,15 @@ subglobal = ['SYR', 'COL', 'AFG', 'COG', 'SSD', 'SOM', 'VEN', 'ETH', 'SDN', 'NGA
              'IRQ', 'YEM', 'UKR', 'MMR', 'CAF', 'CMR', 'ERI', 'BDI', 'GEO', 'MLI',
              'TCD', 'LBY', 'NER', 'BFA', 'COD']
 
+# Number of new displacements in a country per year for it to be considered
+# a surge in displacement. (from DRC).             
+NEW_DISP_THRESHOLD = 75000
+
 CONFIGURATION = "configuration.json"
 NETWORK = "model/bayesnetwork/network.json"
 
 
-def get_data():
+def get_data(outcome):
 
     start_time = time()
     with open(CONFIGURATION, 'rt') as infile:
@@ -77,16 +81,39 @@ def get_data():
 
     data = data.fillna(method='bfill').fillna(method='ffill')
 
-    # Generate the displacement stock per 100K inhabitants
-    print("Generating displacement stock per 100K inhabitants")
-    print(
-        "{} -> {}".format(data['DRC.TOT.DISP'].min(), data['DRC.TOT.DISP'].max()))
-    data['DRC.TOT.DISP'] = 100000 * data['DRC.TOT.DISP'] / data["SP.POP.TOTL"]
-    print(
-        "{} -> {}".format(data['DRC.TOT.DISP'].min(), data['DRC.TOT.DISP'].max()))
+   
+    if outcome:
+        # Binary outcomes - Compute new displacements
+        print("Generating binary outcomes for surge of new displacements.")
+        d = data.groupby(['Country Code']).apply(new_displacement)
+        tar = d.reset_index().melt(id_vars=['Country Code'], value_vars=d.columns)
+        tar.rename(columns={'value': 'TARGET'}, inplace=True)
+        data = data.merge(right=tar, on=['Country Code', 'year'])
+        c1 = data.TARGET > NEW_DISP_THRESHOLD
+        data.drop(columns='TARGET', inplace=True)
+        data['DRC.TOT.DISP'] = c1
+        print(data['DRC.TOT.DISP'].value_counts())
 
-    data.set_index(['Country Code', 'year'], inplace=True)
+    else:
+        # Generate the displacement stock per 100K inhabitants
+        print("Generating displacement stock per 100K inhabitants")
+        print(
+            "{} -> {}".format(data['DRC.TOT.DISP'].min(), data['DRC.TOT.DISP'].max()))
+        data['DRC.TOT.DISP'] = 100000 * data['DRC.TOT.DISP'] / data["SP.POP.TOTL"]
+        print(
+            "{} -> {}".format(data['DRC.TOT.DISP'].min(), data['DRC.TOT.DISP'].max()))
+
+        data.set_index(['Country Code', 'year'], inplace=True)
     return data
+
+
+def new_displacement(x):
+    """ Compute new displacements each year """
+    
+    x = x.sort_values(by='year')
+    x.set_index('year', inplace=True)
+    new_stock = x['DRC.TOT.DISP'].diff()
+    return new_stock
 
 
 def lag_variables(data, var, lag, mode="replace"):
@@ -118,15 +145,18 @@ def lag_variables(data, var, lag, mode="replace"):
 
 BINLABELS = {}
 
-def discretization(x):
+def discretization(x, outcome):
     """ Discretize indicators """
 
     # Target variable has larger number of bins
     if x.name.startswith("DRC.TOT"):
         print("Column: {}".format(x.name))
-        s, bins = pd.qcut(x, 10, retbins=True)
-        BINLABELS[x.name] = bins.tolist()
-        return s.astype(str)
+        if not outcome:
+            s, bins = pd.qcut(x, 10, retbins=True)
+            BINLABELS[x.name] = bins.tolist()
+            return s.astype(str)
+        else:
+            return x.astype(str)
 
     # Quantile discretization of 5 classes for all other numeric quantities
 
@@ -234,12 +264,13 @@ def get_parent_structure(G, X):
             
     return tuple(struct)
 
-def execute_learning(X, G, algo, constrained):
+def execute_learning(X, G, algo, constrained, outcome):
     """
     Wrapper to run bayesian learning
     X - evidence (dataframe)
     G - domain expert graph (DiGraph)
     algo - one of ('greedy', 'exact', 'no-struct')
+    outcome - binary or bins
     constrained (bool) - use G to constrain search if true
 
     returns None (model persisted to disk)
@@ -285,22 +316,30 @@ if __name__ == "__main__":
     algor.add_argument('--exact', dest='algo', action='store_const',
                        const='exact', help='Use the exact structure learning routine.')
     algor.add_argument('--greedy', dest='algo', action='store_const',
-                       const='greedy', help='Use a greedy algorithm to learn structure.')
+                       const='greedy', help='Use a greedy algorithm to learn structure. (default)')
     algor.add_argument('--no-struct', dest='algo', action='store_const',
                        const='no-struct', help='Use structure provided and only learn probabilities')
 
     graph = parser.add_mutually_exclusive_group(required=False)
     graph.add_argument('--constrained', dest='constrained',
-                       action='store_true')
+                       action='store_true', 
+                       help='Use a subject expert provided constraint network (default)')
     graph.add_argument('--unconstrained', dest='constrained',
-                       action='store_false')
+                       action='store_false',
+                       help='Do not use the constraint network from the expert.')
 
-    parser.set_defaults(algo='greedy', constrained=True)
+    outcomes = parser.add_mutually_exclusive_group(required=False)
+    outcomes.add_argument('--binary', dest='outcome', action='store_true', 
+        help='Target outcome is binary (yes/no) of if there is a surge of new displacement.')
+    outcomes.add_argument('--bins', dest='outcome', action='store_false',
+        help='Target outcome is a bin on volume of total displacement stock. (default)')
+
+    parser.set_defaults(algo='greedy', constrained=True, outcome=False)
 
     args = parser.parse_args()
 
     # Fetch the data
-    data = get_data()
+    data = get_data(args.outcome)
 
     # Load the indicator definitions
     with open(NETWORK, 'rt') as infile:
@@ -308,7 +347,7 @@ if __name__ == "__main__":
     indicators = net['indicators']
 
     INDICATORS = {i['code']: i['direction-improvement'] for i in indicators}
-    X = data[list(INDICATORS.keys())].apply(discretization, axis=0)
+    X = data[list(INDICATORS.keys())].apply(discretization, args=(args.outcome,), axis=0)
 
     X.to_csv("exploratory/foresight.csv")
     json.dump(BINLABELS, open("exploratory/bins.json", 'w'))
