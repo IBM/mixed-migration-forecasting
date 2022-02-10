@@ -32,7 +32,7 @@
     "jspdf": "^1.5.3",
     "log4js": "^6.1.0",
     "material-ui": "^0.20.2",
-    "node-sass": "^4.13.1",
+    "node-sass": "^7.0.0",
     "numeral": "^2.0.6",
     "path": "^0.12.7",
     "plotly.js-basic-dist": "^1.52.1",
